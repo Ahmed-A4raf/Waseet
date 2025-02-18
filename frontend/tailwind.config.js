@@ -14,10 +14,9 @@ export default {
       colors: {
         'primary': '#fd7e14',
         'primary-dark': '#e97415',
-        'primary-light': '#f4e5ec',
+        'primary-light': '#f7f8fc',
         'text-dark': '#0f172a',
         'text-light': '#64748b',
-        'extra-light': '#f8fafc',
       },
     },
   },
