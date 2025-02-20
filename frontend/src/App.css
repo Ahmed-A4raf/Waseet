@@ -245,7 +245,7 @@ nav {
   max-width: var(--max-width-900);
   margin: 4rem auto;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 2rem;
 }
 
@@ -275,7 +275,8 @@ nav {
 .product__card__content p s {
   font-size: 0.9rem;
   font-weight: 400;
-  color: var(--text-light);
+  /* color: var(--text-light); */
+  color: var(--primary-color);
 }
 
 .product__btn {
