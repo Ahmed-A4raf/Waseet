@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import RatingStars from "../../components/RatingStars";
 
 const ProductCards = ({ products }) => {
+<<<<<<< HEAD
   // console.log(products);
+=======
+  console.log(products);
+>>>>>>> 56f12dcf997f851445817413c19312c95aef6080
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
       {products.map((product, index) => (
