@@ -5,7 +5,7 @@ import bannerImg from '../../assets/header.png'
 
 const Banner = () => {
   return (
-    <div className='section__container header__container shadow-sm'>
+    <div className='section__container header__container rounded-md shadow-sm'>
         {/* header content */}
         <div className='header__content z-30'>
             <h4 className='uppercase'>Search Your one From Thousand of Products</h4>

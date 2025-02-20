@@ -18,6 +18,25 @@
   margin: 0;
   box-sizing: border-box;
 }
+::selection {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+::-webkit-scrollbar {
+  width: 13px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 100vh;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  inset: 0;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--extra-light);
+}
 
 .section__container {
   max-width: var(--max-width-1400);
@@ -188,7 +207,7 @@ nav {
   max-width: 100px;
   margin: auto;
   margin-bottom: 1rem;
-  border: 5px solid var(--white);
+  /* border: 5px solid var(--white); */
   border-radius: 100%;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }

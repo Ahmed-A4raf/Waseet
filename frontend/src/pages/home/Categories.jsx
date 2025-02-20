@@ -20,7 +20,11 @@ const Categories = () => {
         {
         categories.map((category) => (
             <Link key={category.name} to={`/categories/${category.path}`}className='categories__card'>
-                <img src={category.image} alt={category.name} />
+              <div className="relative mx-auto w-fit">
+              <div className="absolute inset-0 rounded-full border-8 border-white animate-pulse"></div>
+              <img src={category.image} alt={category.name} className='w-full h-full object-cover' />
+              </div>
+               
                 <h4>{category.name}</h4>
             </Link>
         ))
