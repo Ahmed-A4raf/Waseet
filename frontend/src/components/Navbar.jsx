@@ -15,7 +15,8 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed-nav-bar w-nav shadow-sm z-50">
+    <header className="fixed-nav-bar w-nav shadow-sm z-50 fixed w-full  bg-[#fffffff9]">
+      
       <nav className="max-w-screen-2xl mx-auto flex px-4 justify-between items-center">
         {/* nav links */}
         <ul className="nav__links">
