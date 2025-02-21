@@ -19,7 +19,7 @@ const Search = () => {
   return (
     <div className="pt-24">
       {/* search header */}
-      <section className="section__container bg-primary-light ">
+      <section className="section__container bg-primary-light rounded-md">
         <h2 className="section__header capitalize">Search Page</h2>
         <p className="section__subheader">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem natus

@@ -505,7 +505,7 @@ nav {
   border-top: 2px solid var(--extra-light);
 }
 
-@media (width < 900px) {
+@media (width < 640px) {
   .nav__links {
     display: none;
   }

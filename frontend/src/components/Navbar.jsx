@@ -82,7 +82,7 @@ const Navbar = () => {
         </div>
 
         {/* menu button */} 
-        <div className="block md:hidden ml-7 text-xl">
+        <div className="block sm:hidden md:hidden lg:hidden xl:hidden ml-7 text-xl">
           <button
             onClick={handleToggle}
             className={`focus:outline-none  text-primary ${
