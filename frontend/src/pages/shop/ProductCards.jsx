@@ -1,9 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import RatingStars from "../../components/RatingStars";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/features/cart/cartSlice";
 
 const ProductCards = ({ products }) => {
-  // console.log(products);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+  }
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       {products.map((product, index) => (
@@ -20,7 +27,13 @@ const ProductCards = ({ products }) => {
               />
             </Link>
             <div className="hover:block absolute top-3 right-3">
-              <button className="hover:block">
+              <button 
+              onClick={(e) =>{
+                e.stopPropagation();
+                handleAddToCart(product);
+              }}
+              
+              className="hover:block">
                 <i className="ri-shopping-cart-2-line bg-primary p-1.5 text-white hover:bg-primary-dark rounded-md"></i>
               </button>
             </div>

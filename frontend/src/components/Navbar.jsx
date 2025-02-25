@@ -1,9 +1,16 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import Cart from "../pages/shop/Cart";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const products = useSelector((state) => state.cart.products);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const handleToggleCart = () => {
+    setIsCartOpen(!isCartOpen);
+  }
 
 
   const handleToggle = () => {
@@ -67,10 +74,12 @@ const Navbar = () => {
             </Link>
           </span>
           <span>
-            <button className="hover:text-primary">
+            <button
+            onClick={handleToggleCart}
+            className="hover:text-primary">
               <i className="ri-shopping-bag-line"></i>
               <sup className="text-sm inline-block px-1.5 text-white rounded-full bg-primary text-center">
-                0
+                {products.length}
               </sup>
             </button>
           </span>
@@ -93,7 +102,10 @@ const Navbar = () => {
           </button>
         </div>
       </nav>
-
+      
+      {
+        isCartOpen && <Cart products={products} isOpen={isCartOpen} onClose={handleToggleCart} />
+      }
       {/* mobile menu */}
       {isOpen && (
         <nav className="md:hidden">
