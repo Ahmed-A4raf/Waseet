@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import RatingStars from "../../../components/RatingStars";
 const SingleProduct = () => {
   const { id } = useParams();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
 
   return (
     <div className="pt-24">

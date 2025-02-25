@@ -84,9 +84,9 @@ const ShopPage = () => {
       </section>
 
       <section className="section__container">
-        <div className="flex flex-col md:flex-row gap-8">
+        <div className="flex flex-col-1 md:flex-row gap-8">
           {/* left side */}
-          <div className="bg-primary-light p-4 rounded-md w-1/4">
+          <div className="bg-primary-light p-4 rounded-md w-1/2 md:w-1/4">
             <ShopFiltring
               filters={filters}
               filtersState={filtersState}
