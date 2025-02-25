@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState} from "react";
 
 import productsData from "../../data/products.json";
 import ProductCards from "./ProductCards";
@@ -67,6 +67,10 @@ const ShopPage = () => {
       priceRange: "",
     });
   };
+
+   useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
 
   return (
     <div className="pt-24">

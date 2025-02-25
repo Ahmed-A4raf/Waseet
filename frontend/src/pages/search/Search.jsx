@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import productsData from "../../data/products.json";
 import ProductCards from "../shop/ProductCards";
 const Search = () => {
@@ -11,10 +11,15 @@ const Search = () => {
     const filtered = productsData.filter(
       (product) =>
         product.name.toLowerCase().includes(query) ||
+        product.category.toLowerCase().includes(query) ||
         product.description.toLowerCase().includes(query)
     );
     setFilteredProducts(filtered);
   };
+
+   useEffect(() => {
+      window.scrollTo(0, 0);
+    }, []);
 
   return (
     <div className="pt-24">
