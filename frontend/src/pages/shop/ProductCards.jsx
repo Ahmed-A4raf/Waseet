@@ -57,7 +57,7 @@ const ProductCards = ({ products }) => {
           <div className="product__card__content rounded-lg">
             <h4>{product.name}</h4>
             <p>
-              ${product.price}{" "}
+              ${product.price}
               {product.oldPrice ? <s>${product?.oldPrice}</s> : null}
             </p>
             <RatingStars rating={product.rating} />

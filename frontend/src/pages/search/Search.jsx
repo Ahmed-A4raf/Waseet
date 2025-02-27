@@ -52,7 +52,15 @@ const Search = () => {
           </button>
         </div>
 
-        <ProductCards products={filteredProducts} />
+        {/* if no results */}
+        {
+          filteredProducts.length === 0 ? (
+            <p className="text-center text-2xl font-semibold">
+              <span className="text-primary">No</span> results found.
+            </p>
+          ) : <ProductCards products={filteredProducts} />
+        }
+  
       </section>
     </div>
   );

@@ -40,7 +40,7 @@ const Cart = ({ products, isOpen, onClose }) => {
           <div className="mt-8">
             {products.length === 0 ? (
               <div className="bg-primary-light p-5 font-semibold text-xl mt-8 rounded-md shadow-sm text-center">
-                Your Cart is Empty <br />
+                Your Cart is <span className="text-primary">Empty</span> <br />
                  <i className="ri-emotion-sad-line text-primary text-4xl"></i>
               </div>
             ) : (

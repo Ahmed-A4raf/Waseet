@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import productsData from "../../data/products.json";
 import ProductCards from "./ProductCards";
@@ -68,9 +68,9 @@ const ShopPage = () => {
     });
   };
 
-   useEffect(() => {
-      window.scrollTo(0, 0);
-    }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className="pt-24">
@@ -100,7 +100,14 @@ const ShopPage = () => {
             <h3 className="text-xl font-semibold mb-5 bg-white p-1 rounded-md">
               Available Services/Products : {products.length}
             </h3>
-            <ProductCards products={products} />
+            {products.length === 0 ? (
+              <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md">
+                <span className="text-primary">No</span> products found <br />
+                <i className="ri-emotion-sad-line text-primary text-2xl"></i>
+              </h4>
+            ) : (
+              <ProductCards products={products} />
+            )}
           </div>
         </div>
       </section>
