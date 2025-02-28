@@ -62,13 +62,14 @@ const Contact = () => {
 
           {/* Contact form */}
           <div className="md:w-1/2 lg:w-1/3 w-full rounded-md">
-            <form  className="space-y-4">
+            <form action="https://getform.io/f/bwnqwoja" method="post" className="space-y-4">
               <input
                 className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md"
                 type="text"
                 placeholder="Name"
                 name="name"
                 id="name"
+                autoComplete="name"
                 required
               />
               <input
@@ -77,6 +78,7 @@ const Contact = () => {
                 placeholder="Email"
                 name="email"
                 id="email"
+                autoComplete="email"
                 required
               />
               <input
@@ -85,6 +87,7 @@ const Contact = () => {
                 placeholder="Phone Number"
                 name="phone"
                 id="phone"
+                autoComplete="phone"
                 required
               />
               <textarea

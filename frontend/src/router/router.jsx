@@ -8,6 +8,7 @@ import SingleProduct from "../pages/shop/productDetails/SingleProduct";
 import Login from "../components/Login";
 import Register from "../components/Register";
 import Contact from "../pages/contact/Contact";
+import Forgetpass from "../components/Forgetpass";
 
 
 const router = createBrowserRouter([
@@ -25,11 +26,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <Login />
   },
   {
     path: "/register",
     element: <Register />
+  },
+  {
+    path: "/forgetpass",
+    element: <Forgetpass />
+  },
+  {
+    path: "*",
+    element: <h1 className="text-7xl text-red-600 text-center mt-32">404</h1>
   }
 ]);
 

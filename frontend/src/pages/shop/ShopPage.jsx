@@ -96,7 +96,7 @@ const ShopPage = () => {
           </div>
 
           {/* right side */}
-          <div className="bg-primary-light p-4 rounded-md">
+          <div className="bg-primary-light p-4 rounded-md w-full">
             <h3 className="text-xl font-semibold mb-5 bg-white p-1 rounded-md">
               Available Services/Products : {products.length}
             </h3>
