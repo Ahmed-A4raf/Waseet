@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterUserMutation } from "../redux/features/auth/authApi";
 
 const Register = () => {
   const [massage, setMassage] = useState("");
@@ -7,21 +8,12 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+const [registerUser, { isLoading }] = useRegisterUserMutation();
+const navigate = useNavigate();
+
   const handleRegister = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    // console.log(form)
-    const email = form.email.value;
-    const password = form.password.value;
-    const confirmPassword = form.confirmPassword.value;
-    console.log(email, password, confirmPassword);
-    if(password !== confirmPassword){
-      setMassage("Please check your password, It doesn't match");
-    }else{
-      setMassage("");
-    //   alredy exist
-
-    }
     const data = {
         name,
         email,
@@ -29,6 +21,13 @@ const Register = () => {
         confirmPassword,
       };
     // console.log(data)
+    try {
+      await registerUser(data).unwrap();
+      alert("Registration successful");
+      navigate("/login");
+    } catch (error) {
+      setMassage("Registration failed");
+    }
   };
    
     

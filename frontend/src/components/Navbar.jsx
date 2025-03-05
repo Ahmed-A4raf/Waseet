@@ -1,7 +1,9 @@
 import React, { use, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import Cart from "../pages/shop/Cart";
+
+import avatarImg from "../assets/avatar.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,6 +12,14 @@ const Navbar = () => {
   const handleToggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
+
+
+  const disptach = useDispatch();
+  const {user} = useSelector((state) => state.auth);
+  console.log(user)
+
+
+
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -125,9 +135,14 @@ const Navbar = () => {
             </button>
           </span>
           <span>
-            <Link to="/login">
-              <i className="ri-user-line"></i>
-            </Link>
+            {
+              user && user ? (<>
+              <img src={user?.profileImage || avatarImg} alt="profileImage" className="size-6 rounded-full cursor-pointer"/>
+              </>) : (<Link to="/login">
+                <i className="ri-user-line"></i>
+              </Link>)
+            }
+            
           </span>
           <span
             onClick={handelDropdownToggle}

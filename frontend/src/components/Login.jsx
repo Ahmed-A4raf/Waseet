@@ -1,10 +1,21 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useLoginUserMutation } from "../redux/features/auth/authApi";
+import { setUser } from "../redux/features/auth/authSlice";
+
 
 const Login = () => {
   const [massage, setMassage] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const disptach = useDispatch();
+  const [loginUser, { isLoading: loginLoading }] = useLoginUserMutation();
+  const navigate = useNavigate(); 
+
+
+  // handle login
   const handleLogin = async (e) => {
     e.preventDefault();
     const data = {
@@ -12,6 +23,16 @@ const Login = () => {
       password,
     };
     // console.log(data)
+    try {
+      const response = await loginUser(data).unwrap();
+       console.log(response);
+      const { token, user } = response;
+      disptach(setUser({user}));
+      alert("login successful");
+      navigate("/");
+    } catch (error) {
+      setMassage("please check your email and password");
+    }
   };
 
   return (
