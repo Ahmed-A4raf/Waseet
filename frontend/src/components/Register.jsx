@@ -76,6 +76,45 @@ const Register = () => {
             id="confirmPassword"
             required
           />
+          {/* Role */}
+          <div className="flex justify-between gap-2 p-1">
+          <label className="cursor-pointer capitalize relative flex items-center">
+            <input
+              className="sr-only peer"
+              type="radio"
+              id="admin"
+              name="role"
+            />
+            <div className="w-4 h-4 bg-transparent border-2 rounded-full peer-checked:bg-primary peer-hover:shadow-lg peer-hover:shadow-primary/50 peer-checked:shadow-lg peer-checked:shadow-primary/50 transition duration-300 ease-in-out"></div>
+            <span className="text-sm text-gray-500 ml-1 hover:text-primary transition-all duration-200 peer-checked:text-primary">
+              Admin
+            </span>
+          </label>
+          <label className="cursor-pointer capitalize relative flex items-center">
+            <input
+              className="sr-only peer"
+              type="radio"
+              id="serviceProvider"
+              name="role"
+            />
+            <div className="w-4 h-4 bg-transparent border-2 rounded-full peer-checked:bg-primary peer-hover:shadow-lg peer-hover:shadow-primary/50 peer-checked:shadow-lg peer-checked:shadow-primary/50 transition duration-300 ease-in-out"></div>
+            <span className="text-sm text-gray-500 ml-1 hover:text-primary transition-all duration-200 peer-checked:text-primary">
+              Service Provider
+            </span>
+          </label>
+          <label className="cursor-pointer capitalize relative flex items-center">
+            <input
+              className="sr-only peer"
+              type="radio"
+              id="customer"
+              name="role"
+            />
+            <div className="w-4 h-4 bg-transparent border-2 rounded-full peer-checked:bg-primary peer-hover:shadow-lg peer-hover:shadow-primary/50 peer-checked:shadow-lg peer-checked:shadow-primary/50 transition duration-300 ease-in-out"></div>
+            <span className="text-sm text-gray-500 ml-1 hover:text-primary transition-all duration-200 peer-checked:text-primary">
+              Customer
+            </span>
+          </label>
+          </div>
 
           {/* massage */}
           {massage && <p className="text-red-500">{massage}</p>}

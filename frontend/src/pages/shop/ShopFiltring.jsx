@@ -17,9 +17,12 @@ const ShopFiltring = ({
         <h4 className="text-lg font-medium ">Category</h4>
 
         {filters.Categories.map((category) => (
-          <label key={category} className="cursor-pointer capitalize">
+          <label
+            key={category}
+            className="cursor-pointer capitalize relative flex items-center"
+          >
             <input
-              className="mr-1"
+              className="mr-1 sr-only peer"
               type="radio"
               id="category"
               name="category"
@@ -29,7 +32,8 @@ const ShopFiltring = ({
                 setFiltersState({ ...filtersState, category: e.target.value })
               }
             />
-            <span className="ml-1 hover:text-primary transtion-all duration-200">
+            <div className="w-4 h-4 bg-transparent border-2 rounded-full peer-checked:bg-primary peer-hover:shadow-lg peer-hover:shadow-primary/50 peer-checked:shadow-lg peer-checked:shadow-primary/50 transition duration-300 ease-in-out"></div>
+            <span className="ml-1 hover:text-primary transition-all duration-200 peer-checked:text-primary">
               {category}
             </span>
           </label>
@@ -41,9 +45,12 @@ const ShopFiltring = ({
         <h4 className="text-lg font-medium ">Price Range</h4>
 
         {filters.priceRanges.map((range) => (
-          <label key={range.label} className="cursor-pointer capitalize">
+          <label
+            key={range.label}
+            className="cursor-pointer capitalize relative flex items-center"
+          >
             <input
-             className="mr-1"
+              className="mr-1 sr-only peer"
               type="radio"
               id="priceRange"
               name="priceRange"
@@ -53,13 +60,20 @@ const ShopFiltring = ({
                 setFiltersState({ ...filtersState, priceRange: e.target.value })
               }
             />
-            <span className="ml-1 hover:text-primary transtion-all duration-200">{range.label}</span>
+            <div className="w-4 h-4 bg-transparent border-2 rounded-full peer-checked:bg-primary peer-hover:shadow-lg peer-hover:shadow-primary/50 peer-checked:shadow-lg peer peer-checked:shadow-primary/50 transition duration-300 ease-in-out"></div>
+            <span className="ml-1 hover:text-primary transition-all duration-200 peer-checked:text-primary">
+              {range.label}
+            </span>
           </label>
         ))}
       </div>
 
       {/* clear filters */}
-      <button className="bg-primary py-1 px-4 w-full rounded-md text-white hover:bg-primary-dark" onClick={clearFilters} type="button">
+      <button
+        className="bg-primary py-1 px-4 w-full rounded-md text-white hover:bg-primary-dark"
+        onClick={clearFilters}
+        type="button"
+      >
         Clear All Filters
       </button>
     </div>

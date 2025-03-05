@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import bannerImg from '../../assets/header.png'
+// import bannerImg from '../../assets/header-new.png'
 
 const Banner = () => {
   return (

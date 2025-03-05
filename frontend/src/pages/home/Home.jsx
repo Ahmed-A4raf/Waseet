@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Banner from "./Banner";
 import Categories from "./Categories";
 import Hero from "./Hero";
@@ -10,6 +10,9 @@ import Blogs from "../blogs/Blogs";
 
 
 const Home = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="pt-24">
       <Banner />
