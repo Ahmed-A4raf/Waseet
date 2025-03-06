@@ -24,7 +24,7 @@
 }
 
 ::-webkit-scrollbar {
-  max-width: 13px;
+  max-width: 6px;
 }
 
 ::-webkit-scrollbar-thumb {

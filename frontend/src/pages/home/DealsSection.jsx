@@ -5,8 +5,8 @@ const DealsSection = () => {
   return (
     <section className="section__container deals__container">
       {/* deals image */}
-      <div className="deals__image">
-        <img src={dealImg} alt="dealImg" />
+      <div className="deals__image relative">
+        <img src={dealImg} alt="dealImg" className="w-full absolute inset-0" />
       </div>
 
       {/* deals content */}
