@@ -18,13 +18,18 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
 ::selection {
   background-color: var(--primary-color);
   color: var(--white);
 }
 
 ::-webkit-scrollbar {
-  max-width: 6px;
+  max-width: 7px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -58,6 +63,20 @@
   margin: auto;
   color: var(--text-light);
   text-align: center;
+}
+
+@keyframes marquee {
+  0% {
+      transform: translateX(420%);
+  }
+  100% {
+      transform: translateX(-420%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  animation: marquee 17s linear infinite;
 }
 
 .btn {
@@ -216,12 +235,11 @@ nav {
   font-size: 1.2rem;
   font-weight: 600;
   font-family: var(--header-font);
-  color: var(--text-dark);
 }
 
 .hero__container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
 }
 

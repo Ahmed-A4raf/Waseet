@@ -9,6 +9,9 @@ import Login from "../components/Login";
 import Register from "../components/Register";
 import Contact from "../pages/contact/Contact";
 import Forgetpass from "../components/Forgetpass";
+import ServiceProvider from "../serviceProvider/ServiceProvider";
+import AdminDashboard from "../admin/AdminDashboard";
+import OverviewSp from "../serviceProvider/supPages/OverviewSp";
 
 
 const router = createBrowserRouter([
@@ -22,6 +25,36 @@ const router = createBrowserRouter([
       {path: "/shop",element:<ShopPage />},
       {path: "/shop/:id",element:<SingleProduct />},
       {path: "/contact",element:<Contact />},
+    ],
+  },
+  //!  Service Provider Routes
+  {
+    path: "/dashboard",
+    element: <ServiceProvider />,
+    children: [
+      {path: "/dashboard",element: <OverviewSp />},
+      {path: "/dashboard/profile",element: <h1>profile</h1>},
+      {path: "/dashboard/products",element: <h1>products</h1>},
+      {path: "/dashboard/products/creat",element: <h1>products creat</h1>},
+      {path: "/dashboard/products/edit/:id",element: <h1>products edit</h1>},
+      {path: "/dashboard/orders",element: <h1>orders</h1>},
+      {path: "/dashboard/payments",element: <h1>payments</h1>},
+      {path: "/dashboard/reviews",element: <h1>reviews</h1>},
+    ],
+  },
+  //! Admin Routes
+  {
+    path: "/admin",
+    element: <AdminDashboard />,
+    children: [
+      {path: "/admin",element: <h1>Admin overview</h1>},
+      {path: "/admin/categories",element: <h1>categories</h1>},
+      {path: "/admin/categories/create",element: <h1>categories create</h1> },
+      {path: "/admin/categories/edit/:id",element: <h1>categories edit</h1> },
+      {path: "/admin/categories/delete/:id",element: <h1>categories delete</h1> },
+      {path: "/admin/users",element: <h1>users</h1>},
+      {path: "/admin/orders",element: <h1>orders</h1>},
+      {path: "/admin/orders/details",element: <h1>orders</h1>},
     ],
   },
   {
@@ -38,7 +71,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <h1 className="text-7xl text-red-600 text-center mt-32">404</h1>
+    element:<Login  />
   }
 ]);
 

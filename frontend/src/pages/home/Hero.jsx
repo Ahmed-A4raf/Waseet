@@ -9,27 +9,34 @@ const cards=[
         id:1,
         image:card1,
         trend:'2025 Trend',
-        title:'Womens shirt'
+        title:'Handicrafts'
     },
     {
         id:2,
         image:card2,
         trend:'2025 Trend',
-        title:'Womens Dersses'
+        title:'Food & Beverages'
     },
     {
         id:3,
         image:card3,
         trend:'2025 Trend',
-        title:'Womens Causals'
-    }
+        title:'Clothing & Fashion'
+    },
+    {
+        id:3,
+        image:card3,
+        trend:'2025 Trend',
+        title:'Electronics'
+    },
+
 ]
 const Hero = () => {
   return (
-    <section className='section__container hero__container'>
+    <section className='section__container hero__container overflow-hidden'>
       {
         cards.map((card) => (
-            <div className='hero__card' key={card.id}> 
+            <div className='animate-marquee flex space-x-14 items-center justify-between ' key={card.id}> 
                 <img src={card.image} alt={card.title} />
                 <div className='hero__content'>
                 <p>{card.trend}</p>

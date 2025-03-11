@@ -98,7 +98,7 @@ const ShopPage = () => {
           {/* right side */}
           <div className="bg-primary-light p-4 rounded-md w-full">
             <h3 className="text-xl font-semibold mb-5 bg-white p-1 rounded-md">
-              Available Services/Products : {products.length}
+              Available : <span className="text-primary">{products.length}</span>
             </h3>
             {products.length === 0 ? (
               <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md">

@@ -1,3 +1,4 @@
+
 [
   {
     "id": 1,
@@ -6,11 +7,10 @@
     "description": "Stylish leather handbag with ample storage space.",
     "price": 79.99,
     "oldPrice": 99.99,
-    "image": "https://images.unsplash.com/photo-1696061873245-3acc4aecfdd9?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "color": "black",
+    "image": "/src/assets/handicraft1.jpg",
     "rating": 4.5,
     "author":"admin",
-    "serviceProviderImg":"https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "serviceProviderImg":"/src/assets/p1.jpg",
     "serviceProviderName":"3sam Sasa"
   },
   {
@@ -20,10 +20,9 @@
     "description": "Elegant evening gown for special occasions.",
     "price": 149.99,
     "oldPrice": 199.99,
-    "image": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "color": "red",
+    "image": "/src/assets/food1.jpg",
     "rating": 4.0,
-    "serviceProviderImg":"https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "serviceProviderImg":"/src/assets/p2.jpg",
     "serviceProviderName":"3sam Sasa"
   },
   {
@@ -32,10 +31,9 @@
     "category": "handicrafts",
     "description": "Exquisite gold necklace with intricate design.",
     "price": 199.99,
-    "image": "https://images.unsplash.com/photo-1673436765927-2c94b9705f5b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "color": "gold",
+    "image": "/src/assets/handicraft2.jpg",
     "rating": 4.7,
-    "serviceProviderImg":"https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "serviceProviderImg":"/src/assets/p3.jpg",
     "serviceProviderName":"3sam Sasa"
   },
   {
@@ -44,10 +42,9 @@
     "category": "food",
     "description": "Long-lasting matte lipstick in various shades.",
     "price": 19.99,
-    "image": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=1980&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "color": "red",
+    "image": "/src/assets/food2.jpg",
     "rating": 4.2,
-    "serviceProviderImg":"https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "serviceProviderImg":"/src/assets/p4.jpg",
     "serviceProviderName":"3sam Sasa"
   },
   {
@@ -57,10 +54,9 @@
     "description": "Luxurious silk scarf with vibrant colors.",
     "price": 29.99,
     "oldPrice": 39.99,
-    "image": "https://images.unsplash.com/photo-1698755681139-452c7213f8e7?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "color": "blue",
+    "image": "/src/assets/handicraft3.jpg",
     "rating": 5,
-    "serviceProviderImg":"https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "serviceProviderImg":"/src/assets/p5.jpg",
     "serviceProviderName":"3sam Sasa"
   },
   {
@@ -69,10 +65,9 @@
     "category": "clothing",
     "description": "Chic cocktail dress for parties and events.",
     "price": 89.99,
-    "image": "https://images.unsplash.com/photo-1600950207944-0d63e8edbc3f?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "color": "black",
+    "image": "/src/assets/clothe1.jpg",
     "rating": 4.4,
-    "serviceProviderImg":"https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "serviceProviderImg":"/src/assets/p6.jpg",
     "serviceProviderName":"3sam Sasa"
   },
   {
@@ -82,10 +77,9 @@
     "description": "Sparkling diamond earrings that add elegance to any outfit.",
     "price": 299.99,
     "oldPrice": 349.99,
-    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmONeC8QKiva20Sr9feik7f_M2L7Zz85b41A&s",
-    "color": "silver",
+    "image": "/src/assets/car1.jpg",
     "rating": 4.8,
-    "serviceProviderImg":"https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "serviceProviderImg":"/src/assets/p7.jpg",
     "serviceProviderName":"3sam Sasa"
   },
   {
@@ -94,10 +88,9 @@
     "category": "clothing",
     "description": "High-coverage foundation for a flawless finish.",
     "price": 39.99,
-    "image": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?q=80&w=2010&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "color": "beige",
+    "image": "/src/assets/clothe2.jpg",
     "rating": 4,
-    "serviceProviderImg":"https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "serviceProviderImg":"/src/assets/p8.jpg",
     "serviceProviderName":"3sam Sasa"
   },
   {
@@ -106,10 +99,9 @@
     "category": "automobiles",
     "description": "Trendy sunglasses with UV protection.",
     "price": 49.99,
-    "image": "https://image.blob.ix.co.za/Used/8104224/1/2020-White-Volkswagen-Golf-GTI-20-TSI-GTI-DSG-8104224-1-1024x768.jpg",
-    "color": "black",
+    "image": "/src/assets/car2.jpg",
     "rating": 2,
-    "serviceProviderImg":"https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "serviceProviderImg":"/src/assets/p1.jpg",
     "serviceProviderName":"3sam Sasa"
     },
   {
@@ -119,10 +111,9 @@
     "description": "Comfortable maxi dress for casual outings.",
     "price": 59.99,
     "oldPrice": 79.99,
-    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7w498GI_3bpgYovTv8TSaVAU92lSMh3l3-Q&s",
-    "color": "green",
+    "image": "/src/assets/lab1.jpg",
     "rating": 3,
-    "serviceProviderImg":"https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "serviceProviderImg":"/src/assets/p1.jpg",
     "serviceProviderName":"3sam Sasa"
   }
 ]

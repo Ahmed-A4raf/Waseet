@@ -36,20 +36,29 @@ const Navbar = () => {
   };
   //! admin dropdown
   const adminDropdown = () => [
-    { lable: "Dashboard", path: "/dashboard/admin" },
-    { lable: "Manage Items", path: "/dashboard/manage-products" },
-    { lable: "All Orders", path: "/dashboard/manage-orders" },
-    { lable: "Add New", path: "/dashboard/add-new" },
+    { lable: "Dashboard", path: "/admin/dashboard" },
+    { lable: "Manage Products", path: "/admin/dashboard/manage-products" },
+    { lable: "Manage orders", path: "/admin/dashboard/manage-orders" },
+    { lable: "Orders", path: "/admin/dashboard/orders" },
+    { lable: "Payments", path: "/admin/dashboard/payments" },
+    
   ];
-  //! user dropdown
-  const userDropdown = () => [
+  //! serviceProvider dropdown
+  const serviceProviderDropdown = () => [
     { lable: "Dashboard", path: "/dashboard" },
     { lable: "Profile", path: "/dashboard/profile" },
-    { lable: "Payments", path: "/dashboard/payments" },
-    { lable: "Orders", path: "/dashboard/orders" },
+    // { lable: "Add New", path: "/dashboard/add-new" },
   ];
+
+  // ! customer dropdown
+  const customerDropdown = () => [
+    { lable: "Profile", path: "/profileCustomer" },
+    { lable: "Orders", path: "/dashboard/orders" },
+    { lable: "Payments", path: "/dashboard/payments" },
+  ];
+
   //! user role (Future work)
-  //* const dropDownMenus = user?.role ==='admin'? [...adminDropdown] : [...userDropdown]
+  //  const dropDownMenus = user?.role === "admin" ? adminDropdown() : user?.role === "serviceProvider" ? serviceProviderDropdown() : customerDropdown();
 
   //! Logout (Future work)
    const handelLogout = async () => {}
@@ -134,7 +143,7 @@ const Navbar = () => {
               </sup>
             </button>
           </span>
-          <span>
+          <span className="bg-primary-light py-1 px-6 rounded-full hover:bg-gray-100">
             {
               user && user ? (<>
               <img src={user?.profileImage || avatarImg} alt="profileImage" className="size-6 rounded-full cursor-pointer"/>
@@ -152,7 +161,7 @@ const Navbar = () => {
             {isDropdownOpen && (
               <div className="absolute right-0 mt-3 p-4 w-48 border border-gray-200  bg-white rounded-lg shadow-lg z-50">
                 <ul className="font-medium space-y-4 p-2">
-                  {userDropdown().map((menu, index) => (
+                  {serviceProviderDropdown().map((menu, index) => (
                     <li key={index}>
                       <Link
                         onClick={() => setIsDropdownOpen(false)}

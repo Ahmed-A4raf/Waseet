@@ -47,7 +47,7 @@ const Register = () => {
           <input
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md"
+            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none"
             type="text"
             placeholder="Full Name"
             required
@@ -55,7 +55,7 @@ const Register = () => {
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md"
+            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none"
             type="email"
             placeholder="Email Address"
             required
@@ -63,8 +63,8 @@ const Register = () => {
           <input
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md"
-            type="text"
+            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none"
+            type="number"
             placeholder="Phone Number (optional)"
           />
 
@@ -72,7 +72,7 @@ const Register = () => {
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md"
+            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none"
             type="password"
             placeholder="Password"
             required
@@ -80,7 +80,7 @@ const Register = () => {
           <input
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md"
+            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none"
             type="password"
             placeholder="Confirm Password"
             required
@@ -120,6 +120,46 @@ const Register = () => {
             Sign in
           </Link>
         </p>
+
+         {/* or */}
+         <div className="flex items-center justify-center">
+          <div className="relative flex items-center justify-center">
+            <span className="relative z-10 p-1 text-sm text-white font-bold">
+              OR
+            </span>
+            <span className="absolute w-1/3 h-1/3 rounded-full bg-primary animate-ping"></span>
+            <span className="absolute w-1/2 h-1/2 rounded-full bg-primary animate-ping"></span>
+            <span className="absolute w-3/4 h-3/4 rounded-full bg-primary animate-ping"></span>
+            <span className="absolute w-full h-full rounded-full bg-primary animate-ping"></span>
+            <span className="absolute w-full h-full rounded-full bg-primary"></span>
+          </div>
+        </div>
+
+        {/* social login */}
+        <div className="flex items-center justify-center mt-5">
+          <ul className="flex items-center gap-4">
+            <li>
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+                <i className="ri-google-fill"></i>
+              </button>
+            </li>
+            <li>
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+                <i className="ri-facebook-fill"></i>
+              </button>
+            </li>
+            <li>
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+                <i className="ri-instagram-fill"></i>
+              </button>
+            </li>
+            <li>
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+                <i className="ri-tiktok-fill"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
   );

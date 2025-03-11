@@ -33,7 +33,7 @@ const SingleProduct = () => {
           {/* Single product image */}
           <div className="md:w-3/2 lg:w-1/2 w-full">
             <img
-              src="https://images.unsplash.com/photo-1512201078372-9c6b2a0d528a?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src="/src/assets/car1.jpg"
               alt="Single Product img"
               className="w-full h-full rounded-md"
             />
@@ -43,7 +43,7 @@ const SingleProduct = () => {
           <div className="md:w-3/2 lg:w-1/2 w-full rounded-md p-2">
             <div className="flex items-center gap-2 mb-4">
               <img
-                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src="/src/assets/p7.jpg"
                 alt="Single Product img"
                 className="w-12 h-12 rounded-md object-cover"
               />

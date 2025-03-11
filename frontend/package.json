@@ -11,10 +11,13 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.0",
+    "framer-motion": "^12.5.0",
+    "lucide-react": "^0.479.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
+    "recharts": "^2.15.1",
     "remixicon": "^4.6.0"
   },
   "devDependencies": {
