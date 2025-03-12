@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import StatCardSp from "../commenSp/StatCardSp";
 
 import { Zap, ShoppingBag, Plus } from "lucide-react";
+import SalesOverviewChart from "../overviewSp/SalesOverviewChart";
 
 const OverviewSp = () => {
   return (
@@ -25,6 +26,8 @@ const OverviewSp = () => {
         </motion.div>
 
         {/* CHARTS */}
+          <SalesOverviewChart />
+          
       </main>
     </div>
   );

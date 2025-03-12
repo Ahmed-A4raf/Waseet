@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import SidebarSp from "./commenSP/SidebarSp";
+import SidebarSp from "./commenSp/SidebarSp";
 
 const ServiceProvider = () => {
   return (
@@ -8,7 +8,7 @@ const ServiceProvider = () => {
       <div className="flex h-screen overflow-hidden">
         {/* Baground */}
         <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-light/80 via-primary-light to-primary-light/80 opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-light/95 via-primary-light to-primary-light/95 opacity-80" />
         <div className="absolute inset-0 backdrop-blur-sm" />
       </div>
 
