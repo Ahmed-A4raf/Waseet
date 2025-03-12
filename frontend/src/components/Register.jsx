@@ -109,7 +109,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full mt-5 bg-primary text-white py-3 rounded-md transition-all duration-200"
+            className="w-full mt-5 bg-primary text-white hover:bg-primary-dark hover:text-white hover:shadow-md hover:shadow-primary hover:-translate-y-2 py-3 font-medium rounded-md transition-all duration-200"
           >
             {isLoading ? "Registering..." : "Register"}
           </button>
