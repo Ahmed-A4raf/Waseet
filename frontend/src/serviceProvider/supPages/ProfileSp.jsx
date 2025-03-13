@@ -33,7 +33,7 @@ const ProfileSp = () => {
       <HeaderSp title="My Profile" />
       <div className="p-4">
         <motion.div
-          className="bg-white p-4 rounded-lg shadow-md flex items-center my-5"
+          className="bg-white p-4 rounded-lg shadow-md flex items-center my-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}

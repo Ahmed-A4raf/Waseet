@@ -13,6 +13,7 @@ import ServiceProvider from "../serviceProvider/ServiceProvider";
 import AdminDashboard from "../admin/AdminDashboard";
 import OverviewSp from "../serviceProvider/supPages/OverviewSp";
 import ProfileSp from "../serviceProvider/supPages/ProfileSp";
+import AddProduct from "../serviceProvider/supPages/AddProduct";
 
 
 const router = createBrowserRouter([
@@ -35,9 +36,9 @@ const router = createBrowserRouter([
     children: [
       {path: "/dashboard",element: <OverviewSp />},
       {path: "/dashboard/profile",element: <ProfileSp />},
-      {path: "/dashboard/addProducts",element: <h1>Add products</h1>},
-      {path: "/dashboard/addProducts/creat",element: <h1>products creat</h1>},
-      {path: "/dashboard/addProducts/edit/:id",element: <h1>products edit</h1>},
+      {path: "/dashboard/addProduct",element: <AddProduct />},
+      {path: "/dashboard/addProduct/creat",element: <h1>products creat</h1>},
+      {path: "/dashboard/addProduct/edit/:id",element: <h1>products edit</h1>},
       {path: "/dashboard/orders",element: <h1>orders</h1>},
       {path: "/dashboard/payments",element: <h1>payments</h1>},
       {path: "/dashboard/reviews",element: <h1>reviews</h1>},
