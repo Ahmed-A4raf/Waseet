@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../redux/features/auth/authSlice";
 import HeaderSp from "../commenSp/HeaderSp";
 import avatarImg from "/src/assets/avatar.png";
 import { motion } from "framer-motion";
 
 const ProfileSp = () => {
+  const dispatch = useDispatch();
+  const storedUser = useSelector((state) => state.auth.user);
+  
   const [isEditing, setIsEditing] = useState(false);
-  const [username, setUsername] = useState("");
-  const [profileImage, setProfileImage] = useState("");
-  const [bio, setBio] = useState("N/A");
-  const [profession, setProfession] = useState("N/A");
+  const [username, setUsername] = useState(storedUser?.displayName || "");
+  const [profileImage, setProfileImage] = useState(storedUser?.profileImage || "");
+  const [bio, setBio] = useState(storedUser?.bio || "N/A");
+  const [profession, setProfession] = useState(storedUser?.profession || "N/A");
   const [imageSource, setImageSource] = useState("url");
   const [imageURL, setImageURL] = useState("");
+
+  const token = storedUser?.token; //! get token from localStorage
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -23,9 +30,51 @@ const ProfileSp = () => {
     }
   };
 
-  const handleSave = () => {
-    setProfileImage(imageSource === "url" ? imageURL : profileImage);
-    setIsEditing(false);
+  const handleSave = async () => {
+    try {
+      const formData = new FormData();
+      
+      if (imageSource === "upload") {
+        const response = await fetch(profileImage);
+        const blob = await response.blob();
+        formData.append("profileImage", blob, "profile.jpg");
+      } else {
+        formData.append("profileImage", imageURL);
+      }
+
+      formData.append("displayName", username);
+      formData.append("bio", bio);
+      formData.append("profession", profession);
+
+      const response = await fetch("http://waseet.runasp.net/api/auth/UploadProfilePhoto", {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update profile");
+      }
+
+      const data = await response.json();
+
+      //! Update the user data in localStorage
+      const updatedUser = { ...storedUser, ...data };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      //! Update the user data in the Redux store
+      dispatch(setUser({ user: updatedUser }));
+      setProfileImage(data.profileImage);
+      setUsername(data.displayName);
+      setBio(data.bio);
+      setProfession(data.profession);
+
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   return (
@@ -106,6 +155,7 @@ const ProfileSp = () => {
                 onChange={(e) => setBio(e.target.value)}
                 className="w-full p-2 border rounded mb-2 resize-y min-h-12 max-h-32 focus:outline-primary bg-primary-light hover:border"
               ></textarea>
+
               <label className="block mb-2">Profession</label>
               <input
                 type="text"
@@ -113,6 +163,7 @@ const ProfileSp = () => {
                 onChange={(e) => setProfession(e.target.value)}
                 className="w-full p-2 border rounded mb-4 focus:outline-primary bg-primary-light hover:border"
               />
+
               <button
                 className="w-full bg-primary text-white p-2 rounded hover:bg-primary-dark transition-all duration-300"
                 onClick={handleSave}
