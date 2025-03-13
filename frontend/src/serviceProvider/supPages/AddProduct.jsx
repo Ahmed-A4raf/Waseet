@@ -2,7 +2,7 @@ import React from 'react'
 import HeaderSp from '../commenSp/HeaderSp'
 import { motion } from 'framer-motion'
 import StatCardSp from '../commenSp/StatCardSp'
-import { Package, TrendingUp, AlertTriangle, DollarSign } from 'lucide-react'
+import { Package, TrendingUp, Plus, DollarSign } from 'lucide-react'
 import ProductsTableSp from '../addProduct/ProductsTableSp'
 import { Link } from 'react-router-dom'
 
@@ -35,7 +35,7 @@ const AddProduct = () => {
             <Link to='/dashboard/addProduct/creat'>
                 <div className="px-4 py-5 sm:p-6">
                     <span className="flex items-center text-xl font-medium">
-                    <AlertTriangle size={20} className="mr-2" />
+                    <Plus size={20} className="mr-2" />
                     Create Product
                     </span>
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../redux/features/auth/authSlice";
 import HeaderSp from "../commenSp/HeaderSp";
@@ -80,9 +80,9 @@ const ProfileSp = () => {
   return (
     <div className="flex-1 overflow-auto relative z-10">
       <HeaderSp title="My Profile" />
-      <div className="p-4">
+      <div className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         <motion.div
-          className="bg-white p-4 rounded-lg shadow-md flex items-center my-4"
+          className="bg-white p-4 rounded-lg shadow-md flex items-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}

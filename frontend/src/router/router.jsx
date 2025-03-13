@@ -14,6 +14,11 @@ import AdminDashboard from "../admin/AdminDashboard";
 import OverviewSp from "../serviceProvider/supPages/OverviewSp";
 import ProfileSp from "../serviceProvider/supPages/ProfileSp";
 import AddProduct from "../serviceProvider/supPages/AddProduct";
+import CreatProduct from "../serviceProvider/addProduct/CreatProduct";
+import EditProduct from "../serviceProvider/addProduct/EditProduct";
+import OrdersSp from "../serviceProvider/supPages/OrdersSp";
+import PaymentsSp from "../serviceProvider/supPages/PaymentsSp";
+import ReviewSp from "../serviceProvider/supPages/ReviewSp";
 
 
 const router = createBrowserRouter([
@@ -37,11 +42,11 @@ const router = createBrowserRouter([
       {path: "/dashboard",element: <OverviewSp />},
       {path: "/dashboard/profile",element: <ProfileSp />},
       {path: "/dashboard/addProduct",element: <AddProduct />},
-      {path: "/dashboard/addProduct/creat",element: <h1>products creat</h1>},
-      {path: "/dashboard/addProduct/edit/:id",element: <h1>products edit</h1>},
-      {path: "/dashboard/orders",element: <h1>orders</h1>},
-      {path: "/dashboard/payments",element: <h1>payments</h1>},
-      {path: "/dashboard/reviews",element: <h1>reviews</h1>},
+      {path: "/dashboard/addProduct/creat",element: <CreatProduct />},
+      {path: "/dashboard/addProduct/edit/:id",element: <EditProduct />},
+      {path: "/dashboard/orders",element: <OrdersSp />},
+      {path: "/dashboard/payments",element: <PaymentsSp />},
+      {path: "/dashboard/reviews",element: <ReviewSp />},
     ],
   },
   //! Admin Routes
