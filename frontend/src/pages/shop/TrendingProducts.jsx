@@ -1,12 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductCards from "./ProductCards";
-import products from "../../data/products.json";
 
 const TrendingProducts = () => {
+  const [products, setProducts] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState(8);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://waseet.runasp.net/api/Product/ProductsCards");
+        const data = await response.json();
+        if (Array.isArray(data.products)) {
+          setProducts(data.products);
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   const loadMoreProducts = () => {
     setVisibleProducts((prevCount) => prevCount + 4);
   };
+
   return (
     <section className="section__container product__container">
       <h2 className="section__header">Trending Products</h2>

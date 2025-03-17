@@ -1,68 +1,81 @@
 import { motion } from "framer-motion";
 import { Edit, Search, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
-const PRODUCT_DATA = [
-  {
-    id: 1,
-    name: "Wireless Earbuds",
-    dscription: "Stylish leather handbag.",
-    category: "Electronics",
-    price: 59.99,
-    image:"/src/assets/handicraft1.jpg",
-  },
-  {
-    id: 2,
-    name: "Leather Wallet",
-    dscription: "Stylish leather handbag.",
-    category: "Accessories",
-    price: 39.99,
-    image:"/src/assets/handicraft1.jpg",
-  },
-  {
-    id: 3,
-    name: "Smart Watch",
-    dscription: "Stylish leather handbag.",
-    category: "Electronics",
-    price: 199.99,
-    image:"/src/assets/handicraft1.jpg",
-  },
-  {
-    id: 4,
-    name: "Yoga Mat",
-    dscription: "Stylish leather handbag.",
-    category: "Fitness",
-    price: 29.99,
-    image:"/src/assets/handicraft1.jpg",
-  },
-  {
-    id: 5,
-    name: "Coffee Maker",
-    dscription: "Stylish leather handbag.",
-    category: "Home",
-    price: 79.99,
-    image:"/src/assets/handicraft1.jpg",
-  },
-];
 
 const ProductsTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState(PRODUCT_DATA);
+  const [products, setProducts] = useState([]);
 
+  const storedUser = JSON.parse(localStorage.getItem("user")) || null;
+  const token = storedUser?.token;
+
+  // ✅ Fetch products from API on component mount
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://waseet.runasp.net/api/Product/ProductsCards", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch products");
+        }
+
+        const data = await response.json();
+        console.log("Fetched products:", data); // ✅ فحص البيانات المسترجعة
+
+        // ✅ تأكد أن `data` هو مصفوفة قبل التعيين
+        if (Array.isArray(data)) {
+          setProducts(data);
+        } else {
+          console.error("Unexpected response format:", data);
+          setProducts([]); // تجنب الأخطاء بوضع مصفوفة فارغة
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setProducts([]); // تجنب الأخطاء بإرجاع مصفوفة فارغة
+      }
+    };
+
+    fetchProducts();
+  }, [token]);
+
+  // ✅ Search function
   const handleSearch = (e) => {
-    const term = e.target.value.toLowerCase();
-    setSearchTerm(term);
-    const filtered = PRODUCT_DATA.filter(
-      (product) => product.name.toLowerCase().includes(term) || product.category.toLowerCase().includes(term)
-    );
-    setFilteredProducts(filtered);
+    setSearchTerm(e.target.value.toLowerCase());
   };
 
-  const handleDelete = (id) => {
-    const updatedProducts = filteredProducts.filter((product) => product.id !== id);
-    setFilteredProducts(updatedProducts);
+  // ✅ Delete product from API
+  const handleDelete = async (id) => {
+    try {
+      const response = await fetch(`http://waseet.runasp.net/api/Product/DeleteProduct/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+      } else {
+        alert("Failed to delete product.");
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
   };
+
+  // ✅ Filter products based on search term (ensuring `products` is an array)
+  const filteredProducts = Array.isArray(products)
+    ? products.filter(
+        (product) =>
+          product.name?.toLowerCase().includes(searchTerm) || 
+          product.serviceProviderName?.toLowerCase().includes(searchTerm)
+      )
+    : [];
 
   return (
     <motion.div
@@ -88,11 +101,12 @@ const ProductsTable = () => {
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-300">
           <thead>
-            <tr >
-              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Name</th>
+            <tr>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Product</th>
               <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Description</th>
               <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Category</th>
               <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Price</th>
+              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Service Provider</th>
               <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Actions</th>
             </tr>
           </thead>
@@ -105,13 +119,32 @@ const ProductsTable = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
+                {/* ✅ Product Name + Image */}
                 <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700 flex gap-2 items-center'>
-                  <img src={product.image} alt='Product img' className='size-10 rounded-full' />
+                  <img src={product.image} alt={product.name} className='w-12 h-12 rounded-md object-cover' />
                   {product.name}
                 </td>
-                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600'>{product.dscription}</td>
+
+                {/* ✅ Description */}
+                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600'>{product.description}</td>
+
+                {/* ✅ Category */}
                 <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600'>{product.category}</td>
+
+                {/* ✅ Price */}
                 <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600'>${product.price.toFixed(2)}</td>
+
+                {/* ✅ Service Provider Name + Image */}
+                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex items-center gap-2'>
+                  <img 
+                    src={product.serviceProviderImg} 
+                    alt={product.serviceProviderName} 
+                    className='w-8 h-8 rounded-full object-cover' 
+                  />
+                  {product.serviceProviderName}
+                </td>
+
+                {/* ✅ Actions (Edit & Delete) */}
                 <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600'>
                   <button className='text-indigo-400 hover:text-indigo-300 mr-2'>
                     <Link to={`/dashboard/addProduct/edit/${product.id}`} ><Edit size={18} /></Link>

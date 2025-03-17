@@ -54,7 +54,7 @@ const Cart = ({ products, isOpen, onClose }) => {
                       {index + 1}
                     </span>
                     <img
-                      src={item.image}
+                      src={item.imageURL}
                       alt="=Item Image"
                       className="size-12 object-cover rounded-md mr-4"
                     />
