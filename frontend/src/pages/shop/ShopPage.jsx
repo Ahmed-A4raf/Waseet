@@ -3,10 +3,17 @@ import ProductCards from "./ProductCards";
 import ShopFiltring from "./ShopFiltring";
 
 const API_URL = "http://waseet.runasp.net/api/Product/ProductsCards";
-const PRODUCTS_PER_PAGE = 8;  
+const PRODUCTS_PER_PAGE = 8;
 
 const filters = {
-  Categories: ["all", "handicrafts", "food", "clothing", "automobiles", "electronics"],
+  Categories: [
+    "all",
+    "handicrafts",
+    "food",
+    "clothing",
+    "automobiles",
+    "electronics",
+  ],
   priceRanges: [
     { label: "Under $50", min: 0, max: 50 },
     { label: "$50 - $100", min: 50, max: 100 },
@@ -19,12 +26,20 @@ const ShopPage = () => {
   const [products, setProducts] = useState([]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filtersState, setFiltersState] = useState({ category: "all", priceRange: "" });
+  const [filtersState, setFiltersState] = useState({
+    category: "all",
+    priceRange: "",
+  });
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${API_URL}?pageIndex=${currentPage}&pageSize=${PRODUCTS_PER_PAGE}`);
+        const response = await fetch(
+          `${API_URL}?pageIndex=${currentPage}&pageSize=${PRODUCTS_PER_PAGE}`
+        );
         const data = await response.json();
         setProducts(data.products || []);
         setTotalProducts(data.count || 0);
@@ -33,25 +48,33 @@ const ShopPage = () => {
       }
     };
     fetchProducts();
-  }, [currentPage]); 
+  }, [currentPage]);
 
   const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
 
   return (
     <div className="pt-24">
-      <section className="section__container bg-primary-light rounded-md">
-        <h2 className="section__header capitalize">Shop Page</h2>
-        <p className="section__subheader">Browse our latest products and find the best deals.</p>
+      <section className="section__container bg-primary-light rounded-md dark:bg-zinc-800">
+        <h2 className="section__header capitalize dark:text-zinc-50">
+          Shop Page
+        </h2>
+        <p className="section__subheader dark:text-zinc-400">
+          Browse our latest products and find the best deals.
+        </p>
       </section>
 
       <section className="section__container">
-        <div className="flex flex-col md:flex-row gap-8">
-          <div className="bg-primary-light p-4 rounded-md w-1/2 md:w-1/4">
-            <ShopFiltring filters={filters} filtersState={filtersState} setFiltersState={setFiltersState} />
+        <div className="flex md:flex-row gap-8">
+          <div className="bg-primary-light p-4 rounded-md w-1/2 md:w-1/5 dark:bg-zinc-800">
+            <ShopFiltring
+              filters={filters}
+              filtersState={filtersState}
+              setFiltersState={setFiltersState}
+            />
           </div>
 
-          <div className="bg-primary-light p-4 rounded-md w-full">
-            <h3 className="text-xl font-semibold mb-5 bg-white p-1 rounded-md">
+          <div className="bg-primary-light p-4 rounded-md w-full dark:bg-zinc-800">
+            <h3 className="text-xl font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900">
               Available: <span className="text-primary">{totalProducts}</span>
             </h3>
 
@@ -60,17 +83,21 @@ const ShopPage = () => {
                 <ProductCards products={products} />
                 <div className="flex justify-center mt-6">
                   <button
-                    className={`px-4 py-2 mx-1 rounded-md ${currentPage === 1 ? 'bg-gray-300' : 'bg-primary text-white'}`}
+                    className="p-1 w-10 h-10 mx-1 rounded-full bg-gray-200 text-black dark:text-white dark:bg-zinc-900"
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(currentPage - 1)}
                   >
-                    &lt;
+                    <i className="ri-arrow-left-wide-line"></i>
                   </button>
 
                   {Array.from({ length: totalPages }, (_, index) => (
                     <button
                       key={index}
-                      className={`px-4 py-2 mx-1 rounded-md ${currentPage === index + 1 ? 'bg-primary text-white' : 'bg-white'}`}
+                      className={`p-1 w-10 h-10 mx-1 rounded-full ${
+                        currentPage === index + 1
+                          ? "bg-primary text-zinc-900"
+                          : "bg-white dark:bg-zinc-700"
+                      }`}
                       onClick={() => setCurrentPage(index + 1)}
                     >
                       {index + 1}
@@ -78,11 +105,11 @@ const ShopPage = () => {
                   ))}
 
                   <button
-                    className={`px-4 py-2 mx-1 rounded-md ${currentPage === totalPages ? 'bg-gray-300' : 'bg-primary text-white'}`}
+                    className="p-1 w-10 h-10 mx-1 rounded-full bg-gray-200 text-black dark:text-white dark:bg-zinc-900"
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(currentPage + 1)}
                   >
-                    &gt;
+                    <i className="ri-arrow-right-wide-line"></i>
                   </button>
                 </div>
               </>

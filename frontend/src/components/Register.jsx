@@ -40,14 +40,14 @@ const Register = () => {
   };
 
   return (
-    <section className="h-screen flex items-center justify-center bg-primary/5">
-      <div className="max-w-sm shadow bg-white mx-auto p-8 rounded-md">
-        <h2 className="text-3xl text-center font-bold pt-5">Create Account</h2>
+    <section className="h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900">
+      <div className="max-w-sm shadow bg-white mx-auto p-8 rounded-md dark:bg-zinc-800">
+        <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">Create Account</h2>
         <form onSubmit={handleRegister} className="space-y-4 max-w-sm mx-auto pt-8">
           <input
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none"
+            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none dark:bg-zinc-900 dark:text-zinc-50"
             type="text"
             placeholder="Full Name"
             required
@@ -55,7 +55,7 @@ const Register = () => {
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none"
+            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none dark:bg-zinc-900 dark:text-zinc-50"
             type="email"
             placeholder="Email Address"
             required
@@ -63,16 +63,17 @@ const Register = () => {
           <input
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none"
+            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none dark:bg-zinc-900 dark:text-zinc-50"
             type="number"
-            placeholder="Phone Number (optional)"
+            required
+            placeholder="Phone Number"
           />
 
 
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none"
+            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none dark:bg-zinc-900 dark:text-zinc-50"
             type="password"
             placeholder="Password"
             required
@@ -80,7 +81,7 @@ const Register = () => {
           <input
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none"
+            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none dark:bg-zinc-900 dark:text-zinc-50"
             type="password"
             placeholder="Confirm Password"
             required
@@ -98,7 +99,7 @@ const Register = () => {
                   name="role"
                 />
                 <div className="w-4 h-4 border-2 rounded-full peer-checked:bg-primary transition"></div>
-                <span className="ml-1 text-sm text-gray-500 peer-checked:text-primary capitalize">
+                <span className="ml-1 text-sm text-gray-500 peer-checked:text-primary capitalize dark:text-zinc-50">
                   {roleOption}
                 </span>
               </label>
@@ -114,7 +115,7 @@ const Register = () => {
             {isLoading ? "Registering..." : "Register"}
           </button>
         </form>
-        <p className="my-5 text-sm text-center">
+        <p className="my-5 text-sm text-center dark:text-zinc-400">
           Already have an account?
           <Link to="/login" className="text-primary px-1 hover:underline">
             Sign in
@@ -139,22 +140,22 @@ const Register = () => {
         <div className="flex items-center justify-center mt-5">
           <ul className="flex items-center gap-4">
             <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
                 <i className="ri-google-fill"></i>
               </button>
             </li>
             <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
                 <i className="ri-facebook-fill"></i>
               </button>
             </li>
             <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
                 <i className="ri-instagram-fill"></i>
               </button>
             </li>
             <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
                 <i className="ri-tiktok-fill"></i>
               </button>
             </li>

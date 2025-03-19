@@ -21,9 +21,9 @@ const CategoryPage = () => {
   return (
     <div className="pt-24">
         {/* category header */}
-      <section className="section__container bg-primary-light rounded-md">
-        <h2 className="section__header capitalize">{categoryName}</h2>
-        <p className="section__subheader">
+      <section className="section__container bg-primary-light rounded-md dark:bg-zinc-800">
+        <h2 className="section__header capitalize dark:text-zinc-50">{categoryName}</h2>
+        <p className="section__subheader dark:text-zinc-400">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem natus
           inventore impedit vitae non repudiandae?
         </p>

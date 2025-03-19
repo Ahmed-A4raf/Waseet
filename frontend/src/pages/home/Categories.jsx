@@ -21,10 +21,10 @@ const Categories = () => {
           <Link
             key={category.name}
             to={`/categories/${category.path}`}
-            className="categories__card bg-white p-4 rounded-md hover:scale-105 transition-all duration-300"
+            className="categories__card bg-white dark:bg-zinc-900 p-4 rounded-md hover:scale-105 transition-all duration-300"
           >
             <div className="relative rounded-full mx-auto w-24 h-24">
-              <div className="absolute inset-0 border-8 rounded-full border-white animate-pulse"></div>
+              <div className="absolute inset-0 border-8 rounded-full border-white dark:border-zinc-800 animate-pulse"></div>
               <img
                 src={category.image}
                 alt={category.name}

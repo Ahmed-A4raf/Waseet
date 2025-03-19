@@ -5,7 +5,7 @@ const ReviewsCard = () => {
     // ! Future work
     // const reviews = productReview || [];
   return (
-    <div className='my-6 bg-white p-8'>
+    <div className='my-6 bg-white p-8 dark:bg-zinc-800'>
       <div>
         {/* future work */}
         {/* reviews.length > 0 ? (<div></div>) : <p>No Reviews Yet</p> */}

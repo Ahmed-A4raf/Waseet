@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
   return (
     <>
-      <footer className="bg-primary-light rounded-t-3xl mt-12">
+      <footer className="bg-primary-light rounded-t-3xl mt-12 dark:bg-zinc-800">
         <div className="mx-auto max-w-[1400px] px-4 py-10">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
             <div>
@@ -11,7 +11,7 @@ const Footer = () => {
                 Waseet <span className="text-primary">.</span>
               </div>
 
-              <p className="mt-6 text-center leading-relaxed text-gray-700 sm:max-w-xs sm:text-left">
+              <p className="mt-6 text-center leading-relaxed text-gray-700 sm:max-w-xs sm:text-left dark:text-zinc-400">
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                 Incidunt consequuntur amet culpa cum itaque neque.
               </p>
@@ -22,7 +22,7 @@ const Footer = () => {
                     href="#"
                     rel="noreferrer"
                     target="_blank"
-                    className="text-primary bg-gray-200 rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300"
+                    className="text-primary bg-gray-200 rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900"
                   >
                     <i className="ri-facebook-circle-line"></i>
                   </a>
@@ -33,7 +33,7 @@ const Footer = () => {
                     href="#"
                     rel="noreferrer"
                     target="_blank"
-                    className="text-primary bg-gray-200 rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300"
+                    className="text-primary bg-gray-200 rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900"
                   >
                     <i className="ri-twitter-x-fill"></i>
                   </a>
@@ -44,7 +44,7 @@ const Footer = () => {
                     href="#"
                     rel="noreferrer"
                     target="_blank"
-                    className="text-primary bg-gray-200 rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300"
+                    className="text-primary bg-gray-200 rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900"
                   >
                     <i className="ri-instagram-line"></i>
                   </a>
@@ -55,7 +55,7 @@ const Footer = () => {
                     href="#"
                     rel="noreferrer"
                     target="_blank"
-                    className="text-primary bg-gray-200 rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300"
+                    className="text-primary bg-gray-200 rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900"
                   >
                     <i className="ri-linkedin-box-line"></i>
                   </a>
@@ -67,7 +67,7 @@ const Footer = () => {
               <div className="text-center sm:text-left">
                 <p className="text-lg font-medium">Quick Links</p>
 
-                <ul className="mt-8 space-y-4 text-sm text-gray-700">
+                <ul className="mt-8 space-y-4 text-sm text-gray-700 dark:text-zinc-400">
                   <li>
                     <a className="transition hover:text-primary" href="/">
                       Home
@@ -100,7 +100,7 @@ const Footer = () => {
               <div className="text-center sm:text-left">
                 <p className="text-lg font-medium">Our Services</p>
 
-                <ul className="mt-8 space-y-4 text-sm text-gray-700">
+                <ul className="mt-8 space-y-4 text-sm text-gray-700 dark:text-zinc-400">
                   <li>
                     <a className="transition hover:text-primary" href="#">
                       Web Development
@@ -133,7 +133,7 @@ const Footer = () => {
               <div className="text-center sm:text-left">
                 <p className="text-lg font-medium">Helpful Links</p>
 
-                <ul className="mt-8 space-y-4 text-sm text-gray-700">
+                <ul className="mt-8 space-y-4 text-sm text-gray-700 dark:text-zinc-400">
                   <li>
                     <a className="transition hover:text-primary" href="#">
                       {" "}
@@ -173,7 +173,7 @@ const Footer = () => {
                       href="#"
                     >
                       <i className="ri-mail-line text-lg text-primary"></i>
-                      <span className="flex-1 text-gray-700">john@doe.com</span>
+                      <span className="flex-1 text-gray-700 dark:text-zinc-400">john@doe.com</span>
                     </a>
                   </li>
 
@@ -184,14 +184,14 @@ const Footer = () => {
                     >
                       <i className="ri-phone-line text-lg text-primary"></i>
 
-                      <span className="flex-1 text-gray-700">0123456789</span>
+                      <span className="flex-1 text-gray-700 dark:text-zinc-400">0123456789</span>
                     </a>
                   </li>
 
                   <li className="flex items-start justify-center gap-1.5 ltr:sm:justify-start rtl:sm:justify-end">
                     <i className="ri-map-pin-line text-lg text-primary"></i>
 
-                    <address className="-mt-0.5 flex-1 text-gray-700 not-italic">
+                    <address className="-mt-0.5 flex-1 text-gray-700 not-italic dark:text-zinc-400">
                       213 Lane, London, United Kingdom
                     </address>
                   </li>
@@ -203,7 +203,7 @@ const Footer = () => {
           <div className="mt-12 border-t border-gray-300 pt-6">
             <div className="text-center sm:flex sm:justify-between sm:text-left">
               <p className="text-sm text-gray-700">
-                <span className="block sm:inline">All rights reserved.</span>
+                <span className="block sm:inline dark:text-zinc-400">All rights reserved.</span>
 
                 <a
                   className="inline-block text-primary underline transition hover:text-primary/75"
@@ -222,7 +222,7 @@ const Footer = () => {
                 </a>
               </p>
 
-              <p className="mt-4 text-sm text-gray-700 sm:order-first sm:mt-0">
+              <p className="mt-4 text-sm text-gray-700 sm:order-first sm:mt-0 dark:text-zinc-400">
                 &copy; 2025 Waseet Team
               </p>
             </div>

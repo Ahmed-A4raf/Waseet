@@ -49,12 +49,12 @@ const Login = () => {
   };
 
   return (
-    <section className="h-screen flex items-center justify-center bg-primary/5">
-      <div className="max-w-sm shadow bg-white mx-auto p-8 rounded-md">
-        <h2 className="text-3xl text-center font-bold pt-5">Sign in</h2>
+    <section className="h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900">
+      <div className="max-w-sm shadow bg-white mx-auto p-8 rounded-md dark:bg-zinc-800">
+        <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">Sign in</h2>
         <form onSubmit={handleLogin} className="space-y-4 max-w-sm mx-auto pt-8">
           <input
-            className="w-full bg-primary-light focus:outline-none px-5 py-3 rounded-md"
+            className="w-full bg-primary-light focus:outline-none px-5 py-3 rounded-md dark:bg-zinc-900 dark:text-zinc-50"
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Email Address"
@@ -64,7 +64,7 @@ const Login = () => {
             required
           />
           <input
-            className="w-full bg-primary-light focus:outline-none px-5 py-3 rounded-md"
+            className="w-full bg-primary-light focus:outline-none px-5 py-3 rounded-md dark:bg-zinc-900 dark:text-zinc-50"
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
@@ -81,9 +81,9 @@ const Login = () => {
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
               />
-              <label htmlFor="remember">Remember Me</label>
+              <label htmlFor="remember" className="dark:text-zinc-50">Remember Me</label>
             </div>
-            <Link to="/forgetpass" className="hover:text-primary hover:underline">
+            <Link to="/forgetpass" className="hover:text-primary hover:underline dark:text-zinc-50">
               Forget Password?
             </Link>
           </div>
@@ -98,7 +98,7 @@ const Login = () => {
             Login
           </button>
         </form>
-        <p className="my-5 text-sm text-center">
+        <p className="my-5 text-sm text-center dark:text-zinc-400">
           Don't have an account?
           <Link to="/register" className="text-primary px-1 hover:underline">
             Sign Up
@@ -121,22 +121,22 @@ const Login = () => {
         <div className="flex items-center justify-center mt-5">
           <ul className="flex items-center gap-4">
             <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
                 <i className="ri-google-fill"></i>
               </button>
             </li>
             <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
                 <i className="ri-facebook-fill"></i>
               </button>
             </li>
             <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
                 <i className="ri-instagram-fill"></i>
               </button>
             </li>
             <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300">
+              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
                 <i className="ri-tiktok-fill"></i>
               </button>
             </li>

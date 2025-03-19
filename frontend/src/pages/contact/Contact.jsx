@@ -7,10 +7,10 @@ const Contact = () => {
   return (
     <div className="pt-24">
       {/* Contact banner */}
-      <section className="section__container bg-primary-light rounded-md">
-        <h2 className="section__header capitalize">Contact Us</h2>
+      <section className="section__container bg-primary-light rounded-md dark:bg-zinc-800">
+        <h2 className="section__header capitalize dark:text-zinc-50">Contact Us</h2>
         <div className="section__subheader space-x-2">
-          <p>We're Always Eager To Hear From You</p>
+          <p className="dark:text-zinc-400">We're Always Eager To Hear From You</p>
         </div>
       </section>
 
@@ -22,7 +22,7 @@ const Contact = () => {
           <h3 className="text-lg font-medium tracking-wider text-primary text-center">
             Get in touch with Contact us
           </h3>
-          <h2 className="text-3xl font-semibold text-text-dark text-center">
+          <h2 className="text-3xl font-semibold text-text-dark text-center dark:text-zinc-50">
             Fill The Form Below So We Can Get To Know You And Your Needs Better.
           </h2>
         </div>
@@ -32,25 +32,25 @@ const Contact = () => {
           <div className="md:w-1/2 lg:w-1/3 w-full rounded-md">
             <div>
               <ul className="space-y-4 rounded-md">
-                <li className="flex gap-4 items-center rounded-md border border-primary-light shadow-sm p-2">
+                <li className="flex gap-4 items-center rounded-md border border-primary-light shadow-sm p-2 dark:border-zinc-800">
                   <i className="ri-map-pin-line text-3xl text-primary"></i>
                   <span>
                     <h3 className="text-xl font-semibold">Office Address</h3>
-                    <p className="text-gray-700">R2vH9@example.com</p>
+                    <p className="text-gray-700 dark:text-zinc-400">R2vH9@example.com</p>
                   </span>
                 </li>
-                <li className="flex gap-4 items-center rounded-md border border-primary-light shadow-sm p-2">
+                <li className="flex gap-4 items-center rounded-md border border-primary-light shadow-sm p-2 dark:border-zinc-800">
                   <i className="ri-phone-line text-3xl text-primary"></i>
                   <span>
                     <h3 className="text-xl font-semibold">Phone</h3>
-                    <p className="text-gray-700">+1 234 567 890</p>
+                    <p className="text-gray-700 dark:text-zinc-400">+1 234 567 890</p>
                   </span>
                 </li>
-                <li className="flex gap-4 items-center rounded-md border border-primary-light shadow-sm p-2">
+                <li className="flex gap-4 items-center rounded-md border border-primary-light shadow-sm p-2 dark:border-zinc-800">
                   <i className="ri-global-line text-3xl text-primary"></i>
                   <span>
                     <h3 className="text-xl font-semibold">Website</h3>
-                    <p className="text-gray-700">www.waseet.com</p>
+                    <p className="text-gray-700 dark:text-zinc-400">www.waseet.com</p>
                   </span>
                 </li>
               </ul>
@@ -67,7 +67,7 @@ const Contact = () => {
           <div className="md:w-1/2 lg:w-1/3 w-full rounded-md">
             <form action="https://getform.io/f/bwnqwoja" method="post" className="space-y-4">
               <input
-                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md"
+                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
                 type="text"
                 placeholder="Name"
                 name="name"
@@ -76,7 +76,7 @@ const Contact = () => {
                 required
               />
               <input
-                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md"
+                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
                 type="email"
                 placeholder="Email"
                 name="email"
@@ -85,7 +85,7 @@ const Contact = () => {
                 required
               />
               <input
-                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md"
+                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
                 type="number"
                 placeholder="Phone Number"
                 name="phone"
@@ -94,7 +94,7 @@ const Contact = () => {
                 required
               />
               <textarea
-                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 resize-y min-h-36 max-h-80 rounded-md"
+                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 resize-y min-h-36 max-h-80 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
                 placeholder="Message"
                 name="message"
                 id="message"

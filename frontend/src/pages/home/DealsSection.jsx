@@ -59,7 +59,7 @@ const DealsSection = () => {
   }, [startCounting]); // Runs when `startCounting` becomes true
 
   return (
-    <section ref={sectionRef} className="section__container deals__container">
+    <section ref={sectionRef} className="section__container deals__container dark:bg-zinc-800">
       {/* Deals Image */}
       <div className="deals__image relative">
         <img src={dealImg} alt="Deals" className="w-full absolute inset-0" />
@@ -68,15 +68,15 @@ const DealsSection = () => {
       {/* Deals Content */}
       <div className="deals__content">
         <h5>Your one From Thousand of Products</h5>
-        <h4>Deals of the Month</h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+        <h4 className="dark:text-zinc-50">Deals of the Month</h4>
+        <p className="dark:text-zinc-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
 
         {/* Countdown Timer */}
         <div className="deals__countdown flex-wrap">
           {Object.entries(counts).map(([key, value]) => (
-            <div key={key} className="deals__countdown__card">
-              <h4>{value}</h4>
-              <p>{key.charAt(0).toUpperCase() + key.slice(1)}</p>
+            <div key={key} className="deals__countdown__card dark:bg-zinc-900">
+              <h4 className="dark:text-zinc-50">{value}</h4>
+              <p className="dark:text-zinc-400">{key.charAt(0).toUpperCase() + key.slice(1)}</p>
             </div>
           ))}
         </div>

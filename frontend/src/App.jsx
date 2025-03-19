@@ -5,9 +5,11 @@ import "./App.css";
 function App() {
   return (
     <>
+    <div className="dark:bg-zinc-900 dark:text-zinc-50">
       <Navbar />
       <Outlet />
       <Footer />
+    </div>
     </>
   );
 }

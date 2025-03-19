@@ -16,7 +16,7 @@ const ProductCards = ({ products }) => {
       {products.map((product, index) => (
         <div
           key={index}
-          className="product__card rounded-md overflow-hidden shadow-md hover:scale-105 transition-scale duration-300"
+          className="product__card rounded-md overflow-hidden shadow-md hover:scale-105 transition-scale duration-300 dark:bg-zinc-800 dark:shadow-zinc-900"
         >
           <div className="relative">
             <Link to={`/shop/${product.id}`}>
@@ -27,7 +27,7 @@ const ProductCards = ({ products }) => {
               />
             </Link>
             <div className="hover:block absolute top-3 right-3">
-              <button 
+              <button
                 onClick={(e) => {
                   e.stopPropagation();
                   handleAddToCart(product);
@@ -37,7 +37,7 @@ const ProductCards = ({ products }) => {
                 <i className="ri-shopping-cart-2-line bg-primary p-1.5 text-white hover:bg-primary-dark rounded-md"></i>
               </button>
             </div>
-            <div className="flex items-center bg-white text-transparent hover:text-black group rounded-2xl p-0.5 absolute top-3 left-3">
+            <div className="flex items-center bg-white text-transparent hover:text-black group rounded-2xl p-0.5 absolute top-3 left-3 dark:bg-zinc-800 dark:text-zinc-50">
               <div>
                 <img
                   src={product.serviceProviderImage}
@@ -56,7 +56,7 @@ const ProductCards = ({ products }) => {
           {/* product description */}
           <div className="product__card__content rounded-lg">
             <h4>{product.name}</h4>
-            <p>
+            <p className="dark:text-zinc-50">
               ${product.price}
               {product.oldPrice ? <s>${product.oldPrice}</s> : null}
             </p>

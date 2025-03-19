@@ -26,8 +26,8 @@ const TrendingProducts = () => {
 
   return (
     <section className="section__container product__container">
-      <h2 className="section__header">Trending Products</h2>
-      <p className="section__subheader">
+      <h2 className="section__header dark:text-zinc-50">Trending Products</h2>
+      <p className="section__subheader dark:text-zinc-400">
         Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt at
         ex, voluptate nemo corporis nobis..
       </p>

@@ -15,13 +15,13 @@ const OrderSummary = () => {
   };
 
   return (
-    <div className="bg-primary-light mt-8 rounded-md text-base">
+    <div className="bg-primary-light mt-8 rounded-md text-base dark:bg-zinc-800">
       <div className="px-6 py-4 space-y-5">
-        <h2 className="text-2xl font-semibold text-text-dark text-center bg-white p-1 rounded-md">
+        <h2 className="text-2xl font-semibold text-text-dark text-center bg-white p-1 rounded-md dark:bg-zinc-900 dark:text-zinc-50">
           Order Summary
         </h2>
 
-          <p className="text-text-dark mt-2">
+          <p className="text-text-dark mt-2 dark:text-zinc-50">
             <span className="text-lg font-medium">Selected Items:</span>
             {selectedItems}
           </p>
@@ -38,8 +38,7 @@ const OrderSummary = () => {
               </span>
               : ${tax.toFixed(2)}
             </p>
-
-            <h3 className="bg-white p-1.5 rounded-md w-fit text-lg font-bold text-center">
+            <h3 className="bg-white p-1.5 rounded-md w-fit text-lg font-bold text-center dark:bg-zinc-900">
               GrandTotal: ${grandTotal.toFixed(2)}
             </h3>
           </div>

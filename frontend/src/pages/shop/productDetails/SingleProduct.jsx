@@ -36,18 +36,18 @@ const SingleProduct = () => {
   return (
     <div className="pt-24">
       {/* shop header */}
-      <section className="section__container bg-primary-light rounded-md">
-        <h2 className="section__header capitalize">Single Product Page</h2>
+      <section className="section__container bg-primary-light rounded-md dark:bg-zinc-800">
+        <h2 className="section__header capitalize dark:text-zinc-50">Single Product Page</h2>
         <div className="section__subheader space-x-2">
-          <span className="hover:text-primary">
+          <span className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
             <Link to="/">Home</Link>
           </span>
           <i className="ri-arrow-right-s-line"></i>
-          <span className="hover:text-primary">
+          <span className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
             <Link to="/shop">Shop</Link>
           </span>
           <i className="ri-arrow-right-s-line"></i>
-          <span className="hover:text-primary">{product.name}</span>
+          <span className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">{product.name}</span>
         </div>
       </section>
 
@@ -77,7 +77,7 @@ const SingleProduct = () => {
             <p className="text-xl text-primary mb-4">
               ${product.price} {product.oldPrice ? <s>${product.oldPrice}</s> : null}
             </p>
-            <p className="text-gray-700 mb-4">{product.description}</p>
+            <p className="text-gray-700 mb-4 dark:text-zinc-400">{product.description}</p>
             <hr />
             {/* additional info */}
             <div className="mt-4">

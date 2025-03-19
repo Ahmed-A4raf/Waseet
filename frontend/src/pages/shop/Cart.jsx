@@ -22,7 +22,7 @@ const Cart = ({ products, isOpen, onClose }) => {
       ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
     >
       <div
-        className={`fixed right-0 top-0 md:w-1/3 w-full bg-white h-full overflow-y-auto
+        className={`fixed right-0 top-0 md:w-1/3 w-full bg-white h-full overflow-y-auto dark:bg-zinc-900
         ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="p-4 mt-4">
@@ -35,18 +35,17 @@ const Cart = ({ products, isOpen, onClose }) => {
               <i className="ri-xrp-line bg-primary p-1 text-white rounded-md"></i>
             </button>
           </div>
-
           {/* Cart details */}
           <div className="mt-8">
             {products.length === 0 ? (
-              <div className="bg-primary-light p-5 font-semibold text-xl mt-8 rounded-md shadow-sm text-center">
+              <div className="bg-primary-light p-5 font-semibold text-xl mt-8 rounded-md shadow-sm text-center dark:text-zinc-50 dark:bg-zinc-800">
                 Your Cart is <span className="text-primary">Empty</span> <br />
                  <i className="ri-emotion-sad-line text-primary text-4xl"></i>
               </div>
             ) : (
               products.map((item, index) => (
                 <div
-                  className="flex flex-col md:flex-row md:items-center md:justify-between shadow-sm bg-primary-light rounded-md md:p-5 p-2 mb-2"
+                  className="flex flex-col md:flex-row md:items-center md:justify-between shadow-sm bg-primary-light rounded-md md:p-5 p-2 mb-2 dark:bg-zinc-800"
                   key={index}
                 >
                   <div className="flex items-center">
@@ -60,7 +59,7 @@ const Cart = ({ products, isOpen, onClose }) => {
                     />
                     <div className="">
                       <h5 className="text-lg font-medium">{item.name}</h5>
-                      <p className="text-gray-600 text-sm">
+                      <p className="text-gray-600 text-sm dark:text-zinc-400">
                         ${Number(item.price).toFixed(2)}
                       </p>
                     </div>

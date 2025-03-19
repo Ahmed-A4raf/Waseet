@@ -17,8 +17,23 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null); 
+  const dropdownRef = useRef(null);
 
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem("theme") === "dark";
+  });
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [isDarkMode]);
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+  };
   const handleToggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
@@ -71,7 +86,9 @@ const Navbar = () => {
     { label: "Profile", path: "/dashboard/profile" },
   ];
 
-  const customerDropdown = () => [{ label: "Profile", path: "/profileCustomer" }];
+  const customerDropdown = () => [
+    { label: "Profile", path: "/profileCustomer" },
+  ];
 
   const dropDownMenus =
     user?.role === "admin"
@@ -81,22 +98,40 @@ const Navbar = () => {
       : customerDropdown();
 
   return (
-    <header className="fixed-nav-bar w-nav shadow-sm z-50 fixed w-full bg-[#fffffff9]">
+    <header className="fixed-nav-bar w-nav shadow-sm z-50 fixed w-full bg-[#fffffff9] dark:bg-zinc-800">
       <nav className="max-w-screen-2xl mx-auto flex px-4 justify-between items-center">
         {/* nav links */}
         <ul className="nav__links">
           <li>
-            <NavLink to="/" onClick={handleCloseMenu} className={({ isActive }) => (isActive ? "text-primary transition-all duration-300" : "")}>
+            <NavLink
+              to="/"
+              onClick={handleCloseMenu}
+              className={({ isActive }) =>
+                isActive ? "text-primary transition-all duration-300" : ""
+              }
+            >
               Home
             </NavLink>
           </li>
           <li>
-            <NavLink to="/shop" onClick={handleCloseMenu} className={({ isActive }) => (isActive ? "text-primary transition-all duration-300" : "")}>
+            <NavLink
+              to="/shop"
+              onClick={handleCloseMenu}
+              className={({ isActive }) =>
+                isActive ? "text-primary transition-all duration-300" : ""
+              }
+            >
               Shop
             </NavLink>
           </li>
           <li>
-            <NavLink to="/contact" onClick={handleCloseMenu} className={({ isActive }) => (isActive ? "text-primary transition-all duration-300" : "")}>
+            <NavLink
+              to="/contact"
+              onClick={handleCloseMenu}
+              className={({ isActive }) =>
+                isActive ? "text-primary transition-all duration-300" : ""
+              }
+            >
               Contact
             </NavLink>
           </li>
@@ -104,7 +139,9 @@ const Navbar = () => {
 
         {/* logo */}
         <div className="nav__logo">
-          <Link to="/">Waseet <span>.</span></Link>
+          <Link to="/" className="dark:text-zinc-50">
+            Waseet <span>.</span>
+          </Link>
         </div>
 
         {/* nav icons */}
@@ -119,22 +156,36 @@ const Navbar = () => {
             </sup>
           </button>
           <span ref={dropdownRef} className="relative">
-            <span onClick={handleDropdownToggle} className="cursor-pointer hover:text-primary">
+            <span
+              onClick={handleDropdownToggle}
+              className="cursor-pointer hover:text-primary"
+            >
               {user ? (
                 <>
-                  <img src={user?.profileImage || avatarImg} alt="profile" className="size-6 rounded-full cursor-pointer" />
+                  <img
+                    src={user?.profileImage || avatarImg}
+                    alt="profile"
+                    className="size-6 rounded-full cursor-pointer"
+                  />
                   {isDropdownOpen && (
-                    <div className="absolute right-0 mt-3 p-4 w-48 border border-gray-200 bg-white rounded-lg shadow-lg z-50">
+                    <div className="absolute right-0 mt-3 p-4 w-48 border border-gray-200 bg-white rounded-lg shadow-lg z-50 dark:bg-zinc-800 dark:border-zinc-600">
                       <ul className="font-medium space-y-4 p-2">
                         {dropDownMenus.map((menu, index) => (
                           <li key={index}>
-                            <Link onClick={() => setIsDropdownOpen(false)} className="dropdown-items" to={menu.path}>
+                            <Link
+                              onClick={() => setIsDropdownOpen(false)}
+                              className="dropdown-items dark:text-zinc-50"
+                              to={menu.path}
+                            >
                               {menu.label}
                             </Link>
                           </li>
                         ))}
                         <li>
-                          <Link onClick={handleLogout} className="dropdown-items">
+                          <Link
+                            onClick={handleLogout}
+                            className="dropdown-items dark:text-zinc-50"
+                          >
                             Logout
                           </Link>
                         </li>
@@ -144,33 +195,67 @@ const Navbar = () => {
                 </>
               ) : (
                 <Link to="/login">
-                  <i className="ri-user-line bg-primary-light py-1 px-6 rounded-full hover:bg-gray-100"></i>
+                  <i className="ri-user-line bg-primary-light py-1 px-6 rounded-full hover:bg-gray-100 dark:bg-zinc-900 dark:text-zinc-50 dark:hover:text-primary"></i>
                 </Link>
               )}
             </span>
           </span>
+
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input
+              className="sr-only peer"
+              value=""
+              type="checkbox"
+              checked={isDarkMode}
+              onChange={toggleDarkMode}
+            />
+            <div className="w-12 h-6 rounded-full ring-0 peer duration-500 outline-none bg-gray-200 overflow-hidden before:flex before:items-center before:justify-center after:flex after:items-center after:justify-center before:content-['☀️'] before:absolute before:h-5 before:w-5 before:top-1/2 before:bg-white before:rounded-full before:left-1 before:-translate-y-1/2 before:transition-all before:duration-700 peer-checked:before:opacity-0 peer-checked:before:rotate-90 peer-checked:before:-translate-y-full shadow-lg shadow-gray-400 peer-checked:shadow-lg peer-checked:shadow-gray-700 peer-checked:bg-[#383838] after:content-['🌑'] after:absolute after:bg-[#1d1d1d] after:rounded-full after:top-[4px] after:right-1 after:translate-y-full after:w-5 after:h-5 after:opacity-0 after:transition-all after:duration-700 peer-checked:after:opacity-100 peer-checked:after:rotate-180 peer-checked:after:translate-y-0"></div>
+          </label>
         </div>
 
         {/* menu button */}
         <div className="block sm:hidden md:hidden lg:hidden xl:hidden ml-7 text-xl">
-          <button onClick={handleToggle} className={`focus:outline-none text-primary ${isOpen ? "ri-close-line" : "ri-menu-line"}`}></button>
+          <button
+            onClick={handleToggle}
+            className={`focus:outline-none text-primary ${
+              isOpen ? "ri-close-line" : "ri-menu-line"
+            }`}
+          ></button>
         </div>
       </nav>
 
-      {isCartOpen && <Cart products={products} isOpen={isCartOpen} onClose={handleToggleCart} />}
+      {isCartOpen && (
+        <Cart
+          products={products}
+          isOpen={isCartOpen}
+          onClose={handleToggleCart}
+        />
+      )}
 
       {/* mobile menu */}
       {isOpen && (
         <nav className="md:hidden">
-          <ul className="flex flex-col p-4 space-y-3 w-full bg-primary-light">
+          <ul className="flex flex-col p-4 space-y-3 w-full bg-primary-light dark:bg-zinc-900 dark:border-white">
             <li className="link w-full p-2 mx-auto rounded-md cursor-pointer hover:translate-x-1 transition-all duration-75">
-              <Link to="/" onClick={handleCloseMenu}>Home</Link>
+              <Link to="/" onClick={handleCloseMenu}
+              className="dark:text-zinc-50"
+              >
+                Home
+              </Link>
             </li>
             <li className="link w-full p-2 mx-auto rounded-md cursor-pointer hover:translate-x-1 transition-all duration-75">
-              <Link to="/shop" onClick={handleCloseMenu}>Shop</Link>
+              <Link to="/shop" onClick={handleCloseMenu}
+              className="dark:text-zinc-50"
+              >
+                Shop
+              </Link>
             </li>
             <li className="link w-full p-2 mx-auto rounded-md cursor-pointer hover:translate-x-1 transition-all duration-75">
-              <Link to="/contact" onClick={handleCloseMenu}>Contact</Link>
+              <Link to="/contact" onClick={handleCloseMenu}
+              className="dark:text-zinc-50"
+              >
+                Contact
+              </Link>
             </li>
           </ul>
         </nav>

@@ -12,12 +12,12 @@ const Forgetpass = () => {
     // console.log(data);
   };
   return (
-    <section className="h-screen flex items-center justify-center bg-primary/5">
-      <div className="max-w-sm shadow bg-white mx-auto p-8 rounded-md">
-        <h2 className="text-3xl text-center font-bold pt-5">
+    <section className="h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900">
+      <div className="max-w-sm shadow bg-white mx-auto p-8 rounded-md dark:bg-zinc-800">
+        <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">
           Reset your password
         </h2>
-        <p className="text-center text-gray-700 my-2">
+        <p className="text-center text-gray-700 my-2 dark:text-zinc-400">
           If the account exist, we will email you instructions to reset the
           password.
         </p>
@@ -27,7 +27,7 @@ const Forgetpass = () => {
           className="space-y-4 max-w-sm mx-auto pt-8"
         >
           <input
-            className="w-full bg-primary-light focus:outline-none px-5 py-3 rounded-md"
+            className="w-full bg-primary-light focus:outline-none px-5 py-3 rounded-md dark:bg-zinc-900 dark:text-zinc-50"
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Email Address"
