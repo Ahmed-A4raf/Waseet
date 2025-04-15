@@ -55,16 +55,16 @@ const SingleProduct = () => {
       <section className="section__container mt-8">
         <div className="flex flex-col md:flex-row gap-8 p-4 rounded-md">
           {/* Single product image */}
-          <div className="md:w-3/2 lg:w-1/2 w-full">
+          <div className="md:w-3/2 lg:w-1/2 w-full h-full">
             <img
               src={product.imageURL}
               alt={product.name}
-              className="w-full h-full rounded-md object-cover"
+              className="w-full h-96 rounded-md object-cover"
             />
           </div>
 
           {/* Single product details */}
-          <div className="md:w-3/2 lg:w-1/2 w-full rounded-md p-2">
+          <div className="md:w-3/2 lg:w-1/2 w-full rounded-md px-2 py-6">
             <div className="flex items-center gap-2 mb-4">
               <img
                 src={product.serviceProviderImage}
@@ -73,9 +73,9 @@ const SingleProduct = () => {
               />
               <p>{product.serviceProviderName}</p>
             </div>
-            <h3 className="text-3xl font-semibold mb-4">{product.name}</h3>
-            <p className="text-xl text-primary mb-4">
-              ${product.price} {product.oldPrice ? <s>${product.oldPrice}</s> : null}
+            <h3 className="text-3xl font-semibold mb-4 dark:text-zinc-50">{product.name}</h3>
+            <p className="text-xl mb-4 dark:text-zinc-50">
+              ${product.price} {product.oldPrice ? <s className=" text-primary">${product.oldPrice}</s> : null}
             </p>
             <p className="text-gray-700 mb-4 dark:text-zinc-400">{product.description}</p>
             <hr />
@@ -85,7 +85,7 @@ const SingleProduct = () => {
                 <strong>Category: </strong>{product.category}
               </p>
               <div className="flex gap-1">
-                <div>
+                <div className="dark:text-zinc-50">
                   <strong>Rating: </strong>
                 </div>
                 <div className="pt-1">

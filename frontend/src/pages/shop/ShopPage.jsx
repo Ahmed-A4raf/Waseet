@@ -7,12 +7,12 @@ const PRODUCTS_PER_PAGE = 8;
 
 const filters = {
   Categories: [
-    "all",
-    "handicrafts",
-    "food",
-    "clothing",
-    "automobiles",
-    "electronics",
+    { id: 0, name: "All" },
+    { id: 1, name: "Handicrafts" },
+    { id: 2, name: "Food" },
+    { id: 3, name: "Clothing" },
+    { id: 4, name: "Automobiles" },
+    { id: 5, name: "Electronics" },
   ],
   priceRanges: [
     { label: "Under $50", min: 0, max: 50 },
@@ -27,37 +27,54 @@ const ShopPage = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [filtersState, setFiltersState] = useState({
-    category: "all",
-    priceRange: "",
+    categoryId: 0, // Default to "All"
+    min: null, // Default to no minimum price
+    max: null, // Default to no maximum price
   });
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       try {
-        const response = await fetch(
-          `${API_URL}?pageIndex=${currentPage}&pageSize=${PRODUCTS_PER_PAGE}`
-        );
+        let url = `${API_URL}?pageIndex=${currentPage}&pageSize=${PRODUCTS_PER_PAGE}`;
+        if (filtersState.categoryId !== 0) {
+          url += `&categoryId=${filtersState.categoryId}`;
+        }
+        if (filtersState.min !== null) {
+          url += `&min=${filtersState.min}`;
+        }
+        if (filtersState.max !== null) {
+          url += `&max=${filtersState.max}`;
+        }
+
+        const response = await fetch(url);
         const data = await response.json();
         setProducts(data.products || []);
         setTotalProducts(data.count || 0);
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProducts();
-  }, [currentPage]);
+  }, [currentPage, filtersState]);
+
+  const clearFilters = () => {
+    setFiltersState({ categoryId: 0, min: null, max: null });
+  };
 
   const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
 
   return (
     <div className="pt-24">
       <section className="section__container bg-primary-light rounded-md dark:bg-zinc-800">
-        <h2 className="section__header capitalize dark:text-zinc-50">
-          Shop Page
-        </h2>
+        <h2 className="section__header capitalize dark:text-zinc-50">Shop Page</h2>
         <p className="section__subheader dark:text-zinc-400">
           Browse our latest products and find the best deals.
         </p>
@@ -70,6 +87,7 @@ const ShopPage = () => {
               filters={filters}
               filtersState={filtersState}
               setFiltersState={setFiltersState}
+              clearFilters={clearFilters}
             />
           </div>
 
@@ -78,7 +96,11 @@ const ShopPage = () => {
               Available: <span className="text-primary">{totalProducts}</span>
             </h3>
 
-            {products.length > 0 ? (
+            {loading ? (
+              <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900">
+                <span className="text-orange-500">Loading...</span>
+              </h4>
+            ) : products.length > 0 ? (
               <>
                 <ProductCards products={products} />
                 <div className="flex justify-center mt-6">
@@ -114,7 +136,7 @@ const ShopPage = () => {
                 </div>
               </>
             ) : (
-              <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md">
+              <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900 dark:text-zinc-50">
                 <span className="text-primary">No</span> products found <br />
                 <i className="ri-emotion-sad-line text-primary text-2xl"></i>
               </h4>

@@ -67,7 +67,7 @@ const Cart = ({ products, isOpen, onClose }) => {
                     <div className="flex flex-row md:justify-start justify-end items-center">
                       <button
                         onClick={() => handelQuantity("decrement", item.id)}
-                        className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 text-gray-700 hover:bg-primary hover:text-white ml-8"
+                        className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 text-gray-700 hover:bg-primary hover:text-white ml-8 dark:bg-zinc-900 dark:text-zinc-50"
                       >
                         -
                       </button>
@@ -76,13 +76,13 @@ const Cart = ({ products, isOpen, onClose }) => {
                       </span>
                       <button
                         onClick={() => handelQuantity("increment", item.id)}
-                        className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 text-gray-700 hover:bg-primary hover:text-white"
+                        className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 text-gray-700 hover:bg-primary hover:text-white dark:bg-zinc-900 dark:text-zinc-50"
                       >
                         +
                       </button>
 
                       <div className="ml-2">
-                      <button onClick={(e) => handleRemoveFromCart(e, item.id)} className="size-6 flex items-center justify-center px-1.5 text-lg rounded-full bg-gray-200 text-primary hover:bg-primary hover:text-white ml-8">
+                      <button onClick={(e) => handleRemoveFromCart(e, item.id)} className="size-6 flex items-center justify-center px-1.5 text-lg rounded-full bg-gray-200 text-primary hover:bg-primary hover:text-white ml-8 dark:bg-zinc-900">
                         <i className="ri-delete-bin-line"></i>
                       </button>
                     </div>
