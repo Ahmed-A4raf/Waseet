@@ -19,6 +19,7 @@ import EditProduct from "../serviceProvider/addProduct/EditProduct";
 import OrdersSp from "../serviceProvider/supPages/OrdersSp";
 import PaymentsSp from "../serviceProvider/supPages/PaymentsSp";
 import ReviewSp from "../serviceProvider/supPages/ReviewSp";
+import ProfileCustomer from "../customer/ProfileCustomer";
 
 
 const router = createBrowserRouter([
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
       {path: "/shop",element:<ShopPage />},
       {path: "/shop/:id",element:<SingleProduct />},
       {path: "/contact",element:<Contact />},
+      {path: "/ProfileCustomer",element:<ProfileCustomer />},
     ],
   },
   //!  Service Provider Routes
@@ -49,6 +51,11 @@ const router = createBrowserRouter([
       {path: "/dashboard/reviews",element: <ReviewSp />},
     ],
   },
+  //! Customer Routes
+  // {
+  //   path: "/profileCustomer",
+  //   element: <ProfileCustomer />
+  // },
   //! Admin Routes
   {
     path: "/admin",
