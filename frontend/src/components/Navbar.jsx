@@ -78,7 +78,6 @@ const Navbar = () => {
 
   const adminDropdown = () => [
     { label: "Dashboard", path: "/admin" },
-    { label: "Payments", path: "/admin/payments" },
   ];
 
   const serviceProviderDropdown = () => [
