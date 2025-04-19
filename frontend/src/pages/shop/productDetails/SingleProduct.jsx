@@ -108,8 +108,8 @@ const SingleProduct = () => {
       </section>
 
       {/* Display reviews */}
-      <section className="section__container mt-4">
-        <ReviewsCard />
+      <section className="section__container">
+        <ReviewsCard productId={id} /> {/* Pass the product ID to ReviewsCard */}
       </section>
     </div>
   );
