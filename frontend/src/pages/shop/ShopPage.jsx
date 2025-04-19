@@ -27,16 +27,23 @@ const ShopPage = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [filtersState, setFiltersState] = useState({
-    categoryId: 0, // Default to "All"
-    min: null, // Default to no minimum price
-    max: null, // Default to no maximum price
+    categoryId: 0,
+    min: null,
+    max: null,
   });
   const [loading, setLoading] = useState(true);
 
+  // Reset scroll on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
+  // Reset current page to 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filtersState]);
+
+  // Fetch products on filter or page change
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -103,7 +110,7 @@ const ShopPage = () => {
             ) : products.length > 0 ? (
               <>
                 <ProductCards products={products} />
-                <div className="flex justify-center mt-6">
+                <div className="flex justify-center mt-6 flex-wrap">
                   <button
                     className="p-1 w-10 h-10 mx-1 rounded-full bg-gray-200 text-black dark:text-white dark:bg-zinc-900"
                     disabled={currentPage === 1}
