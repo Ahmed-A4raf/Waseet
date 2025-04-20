@@ -11,14 +11,20 @@ export default function ReviewsCard({ productId }) {
   const reviewsPerPage = 3;
   const API_BASE_URL = "http://waseet.runasp.net/api/Review";
 
+  // Load user once on mount
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
       setUser(storedUser);
     }
+  }, []);
 
-    fetchReviews();
-  }, [productId]);
+  // Fetch reviews only after user and productId are available
+  useEffect(() => {
+    if (user && productId) {
+      fetchReviews();
+    }
+  }, [user, productId]);
 
   const fetchReviews = async () => {
     try {
@@ -75,6 +81,7 @@ export default function ReviewsCard({ productId }) {
 
   const handleDelete = async (id) => {
     const token = user?.token;
+    // console.log("Deleting with token:", token); // Debug
 
     try {
       const res = await fetch(`${API_BASE_URL}/delete/${id}`, {
@@ -102,13 +109,13 @@ export default function ReviewsCard({ productId }) {
   );
 
   return (
-    <div className=" mx-auto p-6 bg-white shadow-md rounded-2xl relative dark:bg-zinc-800">
+    <div className="mx-auto p-6 bg-white shadow-md rounded-2xl relative dark:bg-zinc-800">
       <h2 className="text-2xl font-semibold mb-6 text-center dark:text-zinc-50">
         Product Feedback
       </h2>
 
       <div className="flex flex-col md:flex-row gap-8">
-        {/* Reviews Section (Left) */}
+        {/* Reviews Section */}
         <div className="md:w-1/2">
           <h3 className="text-xl font-semibold mb-4 dark:text-zinc-50">
             Product Reviews
@@ -200,7 +207,7 @@ export default function ReviewsCard({ productId }) {
           )}
         </div>
 
-        {/* Add Review Section (Right) */}
+        {/* Add Review Section */}
         <div className="md:w-1/2">
           <h3 className="text-xl font-semibold mb-4 dark:text-zinc-50">
             Your Rating
@@ -234,6 +241,7 @@ export default function ReviewsCard({ productId }) {
         </div>
       </div>
 
+      {/* Toast Message */}
       {showToast.show && (
         <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg transition-opacity duration-300 z-50">
           {showToast.message}

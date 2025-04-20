@@ -6,60 +6,65 @@ import { Link } from "react-router-dom";
 const ProductsTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const itemsPerPage = 10;
 
   const storedUser = JSON.parse(localStorage.getItem("user")) || null;
   const token = storedUser?.token;
 
-  // ✅ Fetch products from API on component mount
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("http://waseet.runasp.net/api/Product/ProductsCards", {
+  const fetchProducts = async (page) => {
+    try {
+      const response = await fetch(
+        `http://waseet.runasp.net/api/Product/ProductsCards?pageIndex=${page}&pageSize=${itemsPerPage}`,
+        {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
         }
+      );
 
-        const data = await response.json();
-        console.log("Fetched products:", data); // ✅ فحص البيانات المسترجعة
+      if (!response.ok) throw new Error("Failed to fetch products");
 
-        // ✅ تأكد أن `data` هو مصفوفة قبل التعيين
-        if (Array.isArray(data)) {
-          setProducts(data);
-        } else {
-          console.error("Unexpected response format:", data);
-          setProducts([]); // تجنب الأخطاء بوضع مصفوفة فارغة
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setProducts([]); // تجنب الأخطاء بإرجاع مصفوفة فارغة
+      const result = await response.json();
+      console.log("Fetched products:", result);
+
+      if (Array.isArray(result.products)) {
+        setProducts(result.products);
+        setTotalCount(result.count || 0);
+      } else {
+        setProducts([]);
+        setTotalCount(0);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setProducts([]);
+      setTotalCount(0);
+    }
+  };
 
-    fetchProducts();
-  }, [token]);
+  useEffect(() => {
+    fetchProducts(currentPage);
+  }, [token, currentPage]);
 
-  // ✅ Search function
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
   };
 
-  // ✅ Delete product from API
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://waseet.runasp.net/api/Product/DeleteProduct/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `http://waseet.runasp.net/api/Product/DeleteProduct/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
-        setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+        fetchProducts(currentPage); // تحديث الصفحة بعد الحذف
       } else {
         alert("Failed to delete product.");
       }
@@ -68,14 +73,13 @@ const ProductsTable = () => {
     }
   };
 
-  // ✅ Filter products based on search term (ensuring `products` is an array)
-  const filteredProducts = Array.isArray(products)
-    ? products.filter(
-        (product) =>
-          product.name?.toLowerCase().includes(searchTerm) || 
-          product.serviceProviderName?.toLowerCase().includes(searchTerm)
-      )
-    : [];
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name?.toLowerCase().includes(searchTerm) ||
+      product.serviceProviderName?.toLowerCase().includes(searchTerm)
+  );
+
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   return (
     <motion.div
@@ -94,7 +98,7 @@ const ProductsTable = () => {
             onChange={handleSearch}
             value={searchTerm}
           />
-          <Search className='absolute left-3 top-2.5 text-gray-400' size={18} />
+          <Search className="absolute left-3 top-2.5 text-gray-400" size={18} />
         </div>
       </div>
 
@@ -102,16 +106,27 @@ const ProductsTable = () => {
         <table className="min-w-full divide-y divide-gray-300">
           <thead>
             <tr>
-              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Product</th>
-              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Description</th>
-              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Category</th>
-              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Price</th>
-              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Service Provider</th>
-              <th className='px-6 py-3 text-left text-xs font-medium uppercase tracking-wider'>Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Product
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Description
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Category
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Price
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Service Provider
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
+                Actions
+              </th>
             </tr>
           </thead>
-
-          <tbody className='divide-y divide-gray-300'>
+          <tbody className="divide-y divide-gray-300">
             {filteredProducts.map((product) => (
               <motion.tr
                 key={product.id}
@@ -119,38 +134,34 @@ const ProductsTable = () => {
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
               >
-                {/* ✅ Product Name + Image */}
-                <td className='px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700 flex gap-2 items-center'>
-                  <img src={product.image} alt={product.name} className='w-12 h-12 rounded-md object-cover' />
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700 flex gap-2 items-center">
+                  <img
+                    src={product.imageURL}
+                    alt={product.name}
+                    className="w-12 h-12 rounded-md object-cover"
+                  />
                   {product.name}
                 </td>
-
-                {/* ✅ Description */}
-                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600'>{product.description}</td>
-
-                {/* ✅ Category */}
-                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600'>{product.category}</td>
-
-                {/* ✅ Price */}
-                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600'>${product.price.toFixed(2)}</td>
-
-                {/* ✅ Service Provider Name + Image */}
-                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex items-center gap-2'>
-                  <img 
-                    src={product.serviceProviderImg} 
-                    alt={product.serviceProviderName} 
-                    className='w-8 h-8 rounded-full object-cover' 
-                  />
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  {product.description}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  {product.category}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  ${product.price?.toFixed(2)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex items-center gap-2">
                   {product.serviceProviderName}
                 </td>
-
-                {/* ✅ Actions (Edit & Delete) */}
-                <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-600'>
-                  <button className='text-indigo-400 hover:text-indigo-300 mr-2'>
-                    <Link to={`/dashboard/addProduct/edit/${product.id}`} ><Edit size={18} /></Link>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <button className="text-indigo-400 hover:text-indigo-300 mr-2">
+                    <Link to={`/dashboard/addProduct/edit/${product.id}`}>
+                      <Edit size={18} />
+                    </Link>
                   </button>
                   <button
-                    className='text-red-400 hover:text-red-300'
+                    className="text-red-400 hover:text-red-300"
                     onClick={() => handleDelete(product.id)}
                   >
                     <Trash2 size={18} />
@@ -160,6 +171,23 @@ const ProductsTable = () => {
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* ✅ Pagination Controls */}
+      <div className="flex justify-center mt-6 space-x-2">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentPage(index + 1)}
+            className={`px-3 py-1 rounded-md text-sm border ${
+              currentPage === index + 1
+                ? "bg-primary text-white border-primary"
+                : "bg-white text-gray-700 border-gray-300"
+            } hover:bg-primary hover:text-white transition`}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
     </motion.div>
   );
