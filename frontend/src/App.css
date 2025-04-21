@@ -68,20 +68,6 @@ html {
   text-align: center;
 }
 
-@keyframes marquee {
-  0% {
-      transform: translateX(420%);
-  }
-  100% {
-      transform: translateX(-420%);
-  }
-}
-
-.animate-marquee {
-  display: flex;
-  animation: marquee 17s linear infinite;
-}
-
 .btn {
   padding: 0.75rem 1.5rem;
   outline: none;
@@ -238,47 +224,6 @@ nav {
   font-size: 1.2rem;
   font-weight: 600;
   font-family: var(--header-font);
-}
-
-.hero__container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1rem;
-}
-
-.hero__card {
-  position: relative;
-  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.1);
-}
-
-.hero__content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-15%, -50%);
-}
-
-.hero__content p {
-  font-size: 0.9rem;
-  font-weight: 500;
-  color: var(--primary-color);
-}
-
-.hero__content h4 {
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
-  font-weight: 800;
-  font-family: var(--header-font);
-  color: var(--text-dark);
-}
-
-.hero__content a {
-  color: var(--text-dark);
-  text-decoration: underline;
-}
-
-.hero__card img {
-  border-radius: 5px;
 }
 
 .product__grid {

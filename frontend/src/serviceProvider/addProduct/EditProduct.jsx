@@ -3,32 +3,18 @@ import { useParams, useNavigate } from "react-router-dom";
 import HeaderSp from "../commenSp/HeaderSp";
 import { motion } from "framer-motion";
 
-// Mock product data (Replace with API call later)
-const PRODUCT_DATA = [
-  {
-    id: 1,
-    name: "Wireless Earbuds",
-    description: "High-quality earbuds with noise cancellation.",
-    category: "electronics",
-    price: 59.99,
-    oldPrice: 79.99,
-    image: "/src/assets/handicraft1.jpg",
-  },
-  {
-    id: 2,
-    name: "Leather Wallet",
-    description: "Stylish and durable leather wallet.",
-    category: "accessories",
-    price: 39.99,
-    oldPrice: 49.99,
-    image: "/src/assets/handicraft1.jpg",
-  },
+const categories = [
+  { id: 1, name: "Handicrafts" },
+  { id: 2, name: "Food" },
+  { id: 3, name: "Clothing" },
+  { id: 4, name: "Automobiles" },
+  { id: 5, name: "Electronics" },
 ];
 
 const EditProduct = () => {
-  const { id } = useParams(); // Get product ID from URL
+  const { id } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState(null);
+
   const [updatedProduct, setUpdatedProduct] = useState({
     name: "",
     description: "",
@@ -37,75 +23,108 @@ const EditProduct = () => {
     category: "",
     image: null,
   });
-
-  const token = storedUser?.token; //! get token from localStorage
-
   const [imagePreview, setImagePreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
+  const [error, setError] = useState(null);
+  const [initialPrice, setInitialPrice] = useState(""); // 🧠 حفظ السعر الأولي
 
+  const storedUser = JSON.parse(localStorage.getItem("user")) || null;
+  const token = storedUser?.token;
+
+  // Fetch existing product data
   useEffect(() => {
-    const foundProduct = PRODUCT_DATA.find((p) => p.id === parseInt(id));
-    if (foundProduct) {
-      setProduct(foundProduct);
-      setUpdatedProduct({
-        name: foundProduct.name,
-        description: foundProduct.description,
-        price: foundProduct.price,
-        oldPrice: foundProduct.oldPrice || "", // Ensure oldPrice is handled
-        category: foundProduct.category,
-        image: foundProduct.image,
-      });
-      setImagePreview(foundProduct.image);
-    }
-  }, [id]);
+    const fetchProduct = async () => {
+      try {
+        const response = await fetch(
+          `http://waseet.runasp.net/api/Product/GetProductById/${id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (!response.ok) throw new Error("Failed to fetch product");
+
+        const data = await response.json();
+        setUpdatedProduct({
+          name: data.name || "",
+          description: data.description || "",
+          price: data.price ?? "",
+          oldPrice: data.price ?? "", // بداية السعر القديم بنفس قيمة السعر
+          category: String(data.category) || "",
+          image: null,
+        });
+        setImagePreview(data.imageURL || null);
+        setInitialPrice(data.price ?? ""); // 🧠 تخزين السعر الأولي
+      } catch (err) {
+        console.error(err);
+        setError("Error loading product.");
+      } finally {
+        setFetching(false);
+      }
+    };
+    fetchProduct();
+  }, [id, token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedProduct({ ...updatedProduct, [name]: value });
+    setUpdatedProduct((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setUpdatedProduct({ ...updatedProduct, image: file });
+      setUpdatedProduct((prev) => ({ ...prev, image: file }));
       setImagePreview(URL.createObjectURL(file));
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
+    // 🧠 السعر القديم هو السعر الأولي، مش السعر الحالي
     const formData = new FormData();
+    formData.append("id", id);
     formData.append("name", updatedProduct.name);
     formData.append("description", updatedProduct.description);
-    formData.append("price", updatedProduct.price);
-    formData.append("oldPrice", updatedProduct.oldPrice);
-    formData.append("category", updatedProduct.category);
+    formData.append("price", String(updatedProduct.price)); // السعر الجديد
+    formData.append("oldPrice", String(initialPrice)); // السعر القديم الفعلي
+    formData.append("category", String(updatedProduct.category));
     if (updatedProduct.image) {
       formData.append("image", updatedProduct.image);
     }
 
     try {
-      const response = await fetch(`http://waseet.runasp.net/api/Product/AddProduct/${id}`, {
-        method: "PUT",
-        headers: {
+      const response = await fetch(
+        `http://waseet.runasp.net/api/Product/UpdateProduct`,
+        {
+          method: "PUT",
+          headers: {
             Authorization: `Bearer ${token}`,
           },
-        body: formData,
-      });
+          body: formData,
+        }
+      );
 
-      if (response.ok) {
-        alert("Product updated successfully!");
-        navigate("/dashboard");
-      } else {
-        alert("Failed to update product.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred.");
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || "Update failed");
+
+      alert("Product updated successfully!");
+
+      // 🧠 بعد التحديث، نحدث السعر الأولي ليكون هو السعر الجديد
+      setInitialPrice(updatedProduct.price);
+
+      navigate("/dashboard/addProduct");
+    } catch (err) {
+      console.error("Update Error:", err);
+      alert("Failed to update product.");
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (!product) return <p>Loading...</p>;
+  if (fetching) return <p>Loading...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
@@ -116,7 +135,6 @@ const EditProduct = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        {/* Left Side: Form */}
         <form onSubmit={handleSubmit} className="w-1/2 space-y-4">
           <div>
             <label className="block font-semibold">Product Name</label>
@@ -125,8 +143,9 @@ const EditProduct = () => {
               name="name"
               value={updatedProduct.name}
               onChange={handleChange}
-              className="w-full text-gray-700 placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent"
               required
+              disabled={loading}
+              className="w-full rounded-lg pl-4 pr-4 py-2"
             />
           </div>
 
@@ -136,21 +155,23 @@ const EditProduct = () => {
               name="description"
               value={updatedProduct.description}
               onChange={handleChange}
-              className="w-full text-gray-700 placeholder-gray-400 resize-y min-h-16 max-h-32 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent"
               required
+              disabled={loading}
+              className="w-full resize-y min-h-16 max-h-32 rounded-lg pl-4 pr-4 py-2"
             />
           </div>
 
           <div className="flex space-x-4">
             <div className="w-1/2">
-              <label className="block font-semibold">Current Price</label>
+              <label className="block font-semibold">Price</label>
               <input
                 type="number"
                 name="price"
                 value={updatedProduct.price}
                 onChange={handleChange}
-                className="w-full text-gray-700 placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent"
                 required
+                disabled={loading}
+                className="w-full rounded-lg pl-4 pr-4 py-2"
               />
             </div>
 
@@ -159,9 +180,9 @@ const EditProduct = () => {
               <input
                 type="number"
                 name="oldPrice"
-                value={updatedProduct.oldPrice}
-                onChange={handleChange}
-                className="w-full text-gray-700 placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent"
+                value={initialPrice} // ⬅️ استخدام السعر الأولي هنا
+                disabled
+                className="w-full bg-gray-100 rounded-lg pl-4 pr-4 py-2"
               />
             </div>
           </div>
@@ -172,7 +193,8 @@ const EditProduct = () => {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="w-full bg-white text-gray-700 placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent"
+              disabled={loading}
+              className="w-full bg-white rounded-lg pl-4 pr-4 py-2"
             />
           </div>
 
@@ -182,27 +204,30 @@ const EditProduct = () => {
               name="category"
               value={updatedProduct.category}
               onChange={handleChange}
-              className="w-full text-gray-700 placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent"
               required
+              disabled={loading}
+              className="w-full rounded-lg pl-4 pr-4 py-2"
             >
               <option value="">-- Select Category --</option>
-              <option value="handicrafts">Handicrafts</option>
-              <option value="food">Food</option>
-              <option value="clothing">Clothing</option>
-              <option value="automobiles">Automobiles</option>
-              <option value="electronics">Electronics</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
             </select>
           </div>
 
           <button
             type="submit"
-            className="bg-primary text-white px-8 py-2 hover:bg-primary-dark transition-all duration-300 ease-in-out rounded-md"
+            disabled={loading}
+            className={`bg-primary text-white px-8 py-2 rounded-md ${
+              loading ? "opacity-50 cursor-not-allowed" : "hover:bg-primary-dark"
+            }`}
           >
-            Update
+            {loading ? "Updating..." : "Update"}
           </button>
         </form>
 
-        {/* Right Side: Image Preview */}
         <div className="w-1/2 flex items-center justify-center rounded-md p-4">
           {imagePreview ? (
             <img
@@ -222,3 +247,4 @@ const EditProduct = () => {
 };
 
 export default EditProduct;
+

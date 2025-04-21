@@ -79,10 +79,10 @@ export default function ReviewsCard({ productId }) {
     }
   };
 
+  // ! Delete Review
   const handleDelete = async (id) => {
     const token = user?.token;
-    // console.log("Deleting with token:", token); // Debug
-
+  
     try {
       const res = await fetch(`${API_BASE_URL}/delete/${id}`, {
         method: "DELETE",
@@ -90,17 +90,21 @@ export default function ReviewsCard({ productId }) {
           Authorization: `Bearer ${token}`,
         },
       });
-
+  
       if (!res.ok) throw new Error("Failed to delete review");
-
+  
+      // Remove the review from the local state
+      setReviews((prev) => prev.filter((rev) => rev.id !== id));
+  
       setShowToast({ show: true, message: "Review deleted!" });
-      fetchReviews();
-
+  
       setTimeout(() => setShowToast({ ...showToast, show: false }), 2000);
     } catch (err) {
       console.error(err);
     }
   };
+  
+  
 
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
   const paginatedReviews = reviews.slice(

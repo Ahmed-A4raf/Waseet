@@ -8,7 +8,7 @@ const ProductsTable = () => {
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
 
   const storedUser = JSON.parse(localStorage.getItem("user")) || null;
   const token = storedUser?.token;
@@ -151,7 +151,7 @@ const ProductsTable = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   ${product.price?.toFixed(2)}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 flex items-center gap-2">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                   {product.serviceProviderName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">

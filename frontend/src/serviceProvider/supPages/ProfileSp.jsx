@@ -90,7 +90,8 @@ const ProfileSp = () => {
           <img
             src={profileImage || avatarImg}
             alt="Profile"
-            className="w-24 h-24 rounded-full mr-4"
+  
+            className="w-28 h-28 md:w-32 md:h-32 rounded-full border-2 border-primary mr-4 object-cover"
           />
           <div className="w-1/3 overflow-hidden">
             <p className="font-bold">Username: {username}</p>
