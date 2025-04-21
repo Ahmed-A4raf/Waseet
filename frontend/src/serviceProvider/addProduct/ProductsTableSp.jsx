@@ -5,18 +5,17 @@ import { Link } from "react-router-dom";
 
 const ProductsTable = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]); // ✅ كل المنتجات
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
   const itemsPerPage = 5;
 
   const storedUser = JSON.parse(localStorage.getItem("user")) || null;
   const token = storedUser?.token;
 
-  const fetchProducts = async (page) => {
+  const fetchAllProducts = async () => {
     try {
       const response = await fetch(
-        `http://waseet.runasp.net/api/Product/ProductsCards?pageIndex=${page}&pageSize=${itemsPerPage}`,
+        `http://waseet.runasp.net/api/Product/ProductsCards?pageIndex=1&pageSize=10000`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -27,28 +26,26 @@ const ProductsTable = () => {
       if (!response.ok) throw new Error("Failed to fetch products");
 
       const result = await response.json();
-      console.log("Fetched products:", result);
+      console.log("Fetched all products:", result);
 
       if (Array.isArray(result.products)) {
-        setProducts(result.products);
-        setTotalCount(result.count || 0);
+        setAllProducts(result.products);
       } else {
-        setProducts([]);
-        setTotalCount(0);
+        setAllProducts([]);
       }
     } catch (error) {
       console.error("Error fetching products:", error);
-      setProducts([]);
-      setTotalCount(0);
+      setAllProducts([]);
     }
   };
 
   useEffect(() => {
-    fetchProducts(currentPage);
-  }, [token, currentPage]);
+    fetchAllProducts();
+  }, [token]);
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
+    setCurrentPage(1); // ✅ نرجع لأول صفحة لما نبحث
   };
 
   const handleDelete = async (id) => {
@@ -64,7 +61,7 @@ const ProductsTable = () => {
       );
 
       if (response.ok) {
-        fetchProducts(currentPage); // تحديث الصفحة بعد الحذف
+        fetchAllProducts(); // ✅ تحديث بعد الحذف
       } else {
         alert("Failed to delete product.");
       }
@@ -73,13 +70,23 @@ const ProductsTable = () => {
     }
   };
 
-  const filteredProducts = products.filter(
-    (product) =>
-      product.name?.toLowerCase().includes(searchTerm) ||
-      product.serviceProviderName?.toLowerCase().includes(searchTerm)
-  );
+  const filteredProducts = allProducts.filter((product) => {
+    const search = searchTerm.toLowerCase();
+    return (
+      product.name?.toLowerCase().includes(search) ||
+      product.description?.toLowerCase().includes(search) ||
+      product.category?.toLowerCase().includes(search) ||
+      product.serviceProviderName?.toLowerCase().includes(search) ||
+      product.price?.toString().toLowerCase().includes(search)
+    );
+  });
 
-  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  // ✅ Pagination
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <motion.div
@@ -127,7 +134,7 @@ const ProductsTable = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-300">
-            {filteredProducts.map((product) => (
+            {paginatedProducts.map((product) => (
               <motion.tr
                 key={product.id}
                 initial={{ opacity: 0 }}
@@ -169,6 +176,14 @@ const ProductsTable = () => {
                 </td>
               </motion.tr>
             ))}
+
+            {paginatedProducts.length === 0 && (
+              <tr>
+                <td colSpan="6" className="text-center py-6 text-gray-600 font-medium">
+                  No products found.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

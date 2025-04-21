@@ -6,6 +6,7 @@ import {
   Home,
   Users,
   ChartBarStacked,
+  ShoppingBag,
 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
@@ -15,7 +16,18 @@ import { useDispatch } from "react-redux";
 
 const SIDEBAR_ITEMS = [
   { name: "Overview", icon: BarChart2, color: "#6366f1", href: "/admin" },
-  { name: "Categories", icon: ChartBarStacked, color: "#6EE7B7", href: "/admin/categories" },
+  {
+    name: "Categories",
+    icon: ChartBarStacked,
+    color: "#6EE7B7",
+    href: "/admin/categories",
+  },
+  {
+    name: "Products",
+    icon: ShoppingBag,
+    color: "#EC4899",
+    href: "/admin/AllProducts",
+  },
   {
     name: "Users",
     icon: Users,

@@ -54,7 +54,7 @@ const CategoryPage = () => {
 
       {/* product cards */}
       <div className="section__container">
-        <h3 className="text-xl font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900">
+        <h3 className="w-fit text-xl font-semibold mb-5 bg-white p-2 rounded-md dark:bg-zinc-800">
           Available:{" "}
           <span className="text-primary">{products.length}</span>
         </h3>

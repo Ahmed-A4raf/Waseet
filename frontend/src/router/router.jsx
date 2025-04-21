@@ -23,6 +23,7 @@ import OverViewAdmin from "../admin/supPagesAdmin/OverViewAdmin";
 import CategoriesAmin from "../admin/supPagesAdmin/CategoriesAmin";
 import UsersAdmin from "../admin/supPagesAdmin/UsersAdmin";
 import OrdersAdmin from "../admin/supPagesAdmin/OrdersAdmin";
+import AllProductsAdmin from "../admin/supPagesAdmin/AllProductsAdmin";
 
 
 const router = createBrowserRouter([
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       {path: "/shop",element:<ShopPage />},
       {path: "/shop/:id",element:<SingleProduct />},
       {path: "/contact",element:<Contact />},
+        //! Customer Routes
       {path: "/ProfileCustomer",element:<ProfileCustomer />},
     ],
   },
@@ -53,11 +55,6 @@ const router = createBrowserRouter([
       {path: "/dashboard/reviews",element: <ReviewSp />},
     ],
   },
-  //! Customer Routes
-  // {
-  //   path: "/profileCustomer",
-  //   element: <ProfileCustomer />
-  // },
   //! Admin Routes
   {
     path: "/admin",
@@ -68,7 +65,7 @@ const router = createBrowserRouter([
       {path: "/admin/categories/create",element: <h1>categories create</h1> },
       {path: "/admin/categories/edit/:id",element: <h1>categories edit</h1> },
       {path: "/admin/categories/delete/:id",element: <h1>categories delete</h1> },
-      {path: "/admin/AllProducts",element: <h1>AllProducts</h1> },
+      {path: "/admin/AllProducts",element: <AllProductsAdmin />},
       {path: "/admin/users",element: <UsersAdmin />},
       {path: "/admin/orders",element: <OrdersAdmin />},
       {path: "/admin/orders/details",element: <h1>orders</h1>},
