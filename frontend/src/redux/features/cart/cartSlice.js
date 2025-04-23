@@ -14,73 +14,62 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const isExist = state.products.find(
-        (products) => products.id === action.payload.id
-      );
-
+      const isExist = state.products.find((p) => p.id === action.payload.id);
       if (!isExist) {
         state.products.push({ ...action.payload, quantity: 1 });
       } else {
-        console.log("already exist");
+        isExist.quantity += 1;
       }
-
-      state.selectedItems = setSelectedItems(state);
-      state.totalPrice = setTotalPrice(state);
-      state.tax = setTax(state);
-      state.grandTotal = setGrandTotal(state);
+      recalculate(state);
     },
     updateQuantity: (state, action) => {
-      const products = state.products.map((product) => {
+      state.products = state.products.map((product) => {
         if (product.id === action.payload.id) {
           if (action.payload.type === "increment") {
             product.quantity += 1;
-          } else if (action.payload.type === "decrement") {
-            if (product.quantity > 1) {
-              product.quantity -= 1;
-            }
+          } else if (action.payload.type === "decrement" && product.quantity > 1) {
+            product.quantity -= 1;
           }
         }
         return product;
       });
-
-      state.selectedItems = setSelectedItems(state);
-      state.totalPrice = setTotalPrice(state);
-      state.tax = setTax(state);
-      state.grandTotal = setGrandTotal(state);
+      recalculate(state);
     },
     removeFromCart: (state, action) => {
       state.products = state.products.filter((product) => product.id !== action.payload.id);
-      state.selectedItems = setSelectedItems(state);
-      state.totalPrice = setTotalPrice(state);
-      state.tax = setTax(state);
-      state.grandTotal = setGrandTotal(state);
+      recalculate(state);
     },
     clearCart: (state) => {
-      state.products = []
-      state.selectedItems = 0;
-      state.totalPrice = 0;
-      state.tax = 0;
-      state.grandTotal = 0;
+      state.products = [];
+      recalculate(state);
+    },
+    syncCartWithServer: (state, action) => {
+      state.products = action.payload.map((item) => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        imageURL: item.imageUrl,
+        quantity: item.quantity,
+      }));
+      recalculate(state);
     },
   },
 });
 
-// utility functions
-export const setSelectedItems = (state) =>
-  state.products.reduce((total, product) => {
-    return Number(total + product.quantity);
-  }, 0);
-
-export const setTotalPrice = (state) =>
-  state.products.reduce((total, product) => {
-    return Number(total + product.quantity * product.price);
-  }, 0);
-
-export const setTax = (state) => setTotalPrice(state) * state.taxRate;
-
-export const setGrandTotal = (state) => {
-  return setTotalPrice(state) + setTotalPrice(state) * state.taxRate;
+// إعادة حساب كل القيم
+const recalculate = (state) => {
+  state.selectedItems = state.products.reduce((total, p) => total + p.quantity, 0);
+  state.totalPrice = state.products.reduce((total, p) => total + p.quantity * p.price, 0);
+  state.tax = state.totalPrice * state.taxRate;
+  state.grandTotal = state.totalPrice + state.tax;
 };
 
-export const { addToCart, updateQuantity, removeFromCart, clearCart } = cartSlice.actions;
+export const {
+  addToCart,
+  updateQuantity,
+  removeFromCart,
+  clearCart,
+  syncCartWithServer,
+} = cartSlice.actions;
+
 export default cartSlice.reducer;

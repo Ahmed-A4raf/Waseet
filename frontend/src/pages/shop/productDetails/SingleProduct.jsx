@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import RatingStars from "../../../components/RatingStars";
 import ReviewsCard from "../reviews/ReviewsCard";
-import { addToCart } from "../../../redux/features/cart/cartSlice";
-import { useDispatch } from "react-redux";
+import { syncCartWithServer } from "../../../redux/features/cart/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const SingleProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const dispatch = useDispatch(); 
+  const cartItems = useSelector((state) => state.cart.products);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -25,8 +26,42 @@ const SingleProduct = () => {
     fetchProduct();
   }, [id]);
 
-  const handleAddToCart = (product) => {
-    dispatch(addToCart(product));
+  const handleAddToCart = async (product) => {
+    const existingItem = cartItems.find((item) => item.id === product.id);
+    if (existingItem) return;
+
+    const user = JSON.parse(localStorage.getItem("user"));
+    const token = user?.token;
+    if (!token) return;
+
+    const basketItems = [
+      ...cartItems.map((item) => ({
+        productId: item.id,
+        quantity: item.quantity,
+      })),
+      {
+        productId: product.id,
+        quantity: 1,
+      },
+    ];
+
+    try {
+      const res = await fetch("http://waseet.runasp.net/api/Cart/basket", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(basketItems),
+      });
+
+      if (!res.ok) return;
+
+      const data = await res.json();
+      dispatch(syncCartWithServer(data));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   if (!product) {

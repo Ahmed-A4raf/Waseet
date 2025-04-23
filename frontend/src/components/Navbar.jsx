@@ -2,6 +2,9 @@ import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import Cart from "../pages/shop/Cart";
+import { syncCartWithServer } from "../redux/features/cart/cartSlice";
+import { clearCart } from "../redux/features/cart/cartSlice";
+
 
 import avatarImg from "../assets/avatar.png";
 import { useLogoutUserMutation } from "../redux/features/auth/authApi";
@@ -54,11 +57,44 @@ const Navbar = () => {
     try {
       await logoutUser().unwrap();
       dispatch(logout());
+      dispatch(clearCart()); // 🧹 تفريغ الكارت عند تسجيل الخروج
       navigate("/");
     } catch (error) {
       console.error("Failed to logout:", error);
     }
   };
+  
+  useEffect(() => {
+    const fetchCart = async () => {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      const token = userData?.token;
+  
+      if (!token) return;
+  
+      try {
+        const res = await fetch("http://waseet.runasp.net/api/Cart/basket", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        if (!res.ok) {
+          console.error("Failed to fetch cart");
+          return;
+        }
+  
+        const data = await res.json();
+        dispatch(syncCartWithServer(data));
+      } catch (err) {
+        console.error("Error fetching cart:", err);
+      }
+    };
+  
+    if (user) {
+      fetchCart();
+    }
+  }, [user, dispatch]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
