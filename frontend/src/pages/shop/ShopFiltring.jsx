@@ -37,7 +37,7 @@ const ShopFiltring = ({ filters, filtersState, setFiltersState, clearFilters }) 
             />
             <div className="w-4 h-4 bg-transparent border-2 rounded-full peer-checked:bg-primary peer-hover:shadow-lg peer-hover:shadow-primary/50 peer-checked:shadow-lg peer-checked:shadow-primary/50 transition duration-300 ease-in-out"></div>
             <span className="ml-1 hover:text-primary transition-all duration-200 peer-checked:text-primary">
-              {category.name}
+              {category.categoryName}
             </span>
           </label>
         ))}

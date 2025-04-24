@@ -2,30 +2,41 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductCards from "../shop/ProductCards";
 
-const API_URL = "http://waseet.runasp.net/api/Product/ProductsCards";
-
-const categoriesMap = {
-  all: 0,
-  handicrafts: 1,
-  food: 2,
-  clothing: 3,
-  automobiles: 4,
-  electronics: 5,
-};
+const PRODUCTS_API = "http://waseet.runasp.net/api/Product/ProductsCards";
+const CATEGORIES_API = "http://waseet.runasp.net/api/Category/Categories";
 
 const CategoryPage = () => {
   const { categoryName } = useParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    // fetch all categories
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(CATEGORIES_API);
+        const data = await res.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const lowerCaseCategory = categoryName.toLowerCase();
-        const id = categoriesMap[lowerCaseCategory] ?? 0;
+        const matchedCategory = categories.find(
+          (cat) => cat.categoryName.toLowerCase() === categoryName.toLowerCase()
+        );
+        const categoryId = matchedCategory?.id;
 
-        let url = id !== 0 ? `${API_URL}?categoryId=${id}` : `${API_URL}`;
+        const url = categoryId ? `${PRODUCTS_API}?categoryId=${categoryId}` : PRODUCTS_API;
+
         const response = await fetch(url);
         const data = await response.json();
         setProducts(data.products || []);
@@ -36,9 +47,11 @@ const CategoryPage = () => {
       }
     };
 
-    fetchProducts();
+    if (categories.length > 0) {
+      fetchProducts();
+    }
     window.scrollTo(0, 0);
-  }, [categoryName]);
+  }, [categoryName, categories]);
 
   return (
     <div className="pt-24">
@@ -55,8 +68,7 @@ const CategoryPage = () => {
       {/* product cards */}
       <div className="section__container">
         <h3 className="w-fit text-xl font-semibold mb-5 bg-white p-2 rounded-md dark:bg-zinc-800">
-          Available:{" "}
-          <span className="text-primary">{products.length}</span>
+          Available: <span className="text-primary">{products.length}</span>
         </h3>
 
         {loading ? (

@@ -3,27 +3,19 @@ import ProductCards from "./ProductCards";
 import ShopFiltring from "./ShopFiltring";
 
 const API_URL = "http://waseet.runasp.net/api/Product/ProductsCards";
+const CATEGORY_API = "http://waseet.runasp.net/api/Category/Categories";
 const PRODUCTS_PER_PAGE = 8;
 
-const filters = {
-  Categories: [
-    { id: 0, name: "All" },
-    { id: 1, name: "Handicrafts" },
-    { id: 2, name: "Food" },
-    { id: 3, name: "Clothing" },
-    { id: 4, name: "Automobiles" },
-    { id: 5, name: "Electronics" },
-  ],
-  priceRanges: [
-    { label: "Under $50", min: 0, max: 50 },
-    { label: "$50 - $100", min: 50, max: 100 },
-    { label: "$100 - $200", min: 100, max: 200 },
-    { label: "$200 and above", min: 200, max: Infinity },
-  ],
-};
+const priceRanges = [
+  { label: "Under $50", min: 0, max: 50 },
+  { label: "$50 - $100", min: 50, max: 100 },
+  { label: "$100 - $200", min: 100, max: 200 },
+  { label: "$200 and above", min: 200, max: Infinity },
+];
 
 const ShopPage = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([{ id: 0, categoryName: "All" }]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [filtersState, setFiltersState] = useState({
@@ -33,17 +25,29 @@ const ShopPage = () => {
   });
   const [loading, setLoading] = useState(true);
 
-  // Reset scroll on mount
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  // Reset current page to 1 when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [filtersState]);
 
-  // Fetch products on filter or page change
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch(CATEGORY_API);
+        const data = await res.json();
+        const allCategory = { id: 0, categoryName: "All" };
+        setCategories([allCategory, ...data]);
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
@@ -55,7 +59,7 @@ const ShopPage = () => {
         if (filtersState.min !== null) {
           url += `&min=${filtersState.min}`;
         }
-        if (filtersState.max !== null) {
+        if (filtersState.max !== null && filtersState.max !== Infinity) {
           url += `&max=${filtersState.max}`;
         }
 
@@ -69,6 +73,7 @@ const ShopPage = () => {
         setLoading(false);
       }
     };
+
     fetchProducts();
   }, [currentPage, filtersState]);
 
@@ -91,7 +96,7 @@ const ShopPage = () => {
         <div className="flex md:flex-row gap-8">
           <div className="bg-primary-light p-4 rounded-md w-1/2 md:w-1/5 dark:bg-zinc-800">
             <ShopFiltring
-              filters={filters}
+              filters={{ Categories: categories, priceRanges }}
               filtersState={filtersState}
               setFiltersState={setFiltersState}
               clearFilters={clearFilters}
