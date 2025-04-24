@@ -24,6 +24,8 @@ import CategoriesAmin from "../admin/supPagesAdmin/CategoriesAmin";
 import UsersAdmin from "../admin/supPagesAdmin/UsersAdmin";
 import OrdersAdmin from "../admin/supPagesAdmin/OrdersAdmin";
 import AllProductsAdmin from "../admin/supPagesAdmin/AllProductsAdmin";
+import CreateCategoriesAdmin from "../admin/categories/CreateCategoriesAdmin";
+import EditCategoriesAdmin from "../admin/categories/EditCategoriesAdmin";
 
 
 const router = createBrowserRouter([
@@ -62,9 +64,8 @@ const router = createBrowserRouter([
     children: [
       {path: "/admin",element: <OverViewAdmin />},
       {path: "/admin/categories",element: <CategoriesAmin />},
-      {path: "/admin/categories/create",element: <h1>categories create</h1> },
-      {path: "/admin/categories/edit/:id",element: <h1>categories edit</h1> },
-      {path: "/admin/categories/delete/:id",element: <h1>categories delete</h1> },
+      {path: "/admin/categories/create",element: <CreateCategoriesAdmin />},
+      {path: "/admin/categories/edit/:id",element: <EditCategoriesAdmin />},
       {path: "/admin/AllProducts",element: <AllProductsAdmin />},
       {path: "/admin/users",element: <UsersAdmin />},
       {path: "/admin/orders",element: <OrdersAdmin />},
