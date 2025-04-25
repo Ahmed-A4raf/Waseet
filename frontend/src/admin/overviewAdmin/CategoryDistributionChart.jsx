@@ -7,6 +7,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { useState, useEffect } from "react";
 
 const categoryData = [
   { name: "Handicrafts", value: 4500 },
@@ -19,9 +20,28 @@ const categoryData = [
 const COLORS = ["#6366F1", "#8B5CF6", "#EC4899", "#10B981", "#F59E0B"];
 
 const CategoryDistributionChart = () => {
+  
+ const [isDark, setIsDark] = useState(false);
+
+ useEffect(() => {
+   const observer = new MutationObserver(() => {
+     setIsDark(document.documentElement.classList.contains("dark"));
+   });
+
+   observer.observe(document.documentElement, {
+     attributes: true,
+     attributeFilter: ["class"],
+   });
+
+   // Initial check
+   setIsDark(document.documentElement.classList.contains("dark"));
+
+   return () => observer.disconnect();
+ }, []);
+
   return (
     <motion.div
-      className="bg-white bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-300"
+      className="bg-white bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-300 dark:bg-zinc-900 dark:border-zinc-600 dark:text-zinc-50"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
@@ -53,10 +73,10 @@ const CategoryDistributionChart = () => {
             </Pie>
             <Tooltip
               contentStyle={{
-                backgroundColor: "#f7f8fc",
+                backgroundColor: isDark ? "#18181b" : "#f7f8fc",
                 borderColor: "#ddd",
               }}
-              itemStyle={{ color: "#111111" }}
+              itemStyle={{ color: isDark ? "#fff" : "#111" }}
             />
             <Legend />
           </PieChart>

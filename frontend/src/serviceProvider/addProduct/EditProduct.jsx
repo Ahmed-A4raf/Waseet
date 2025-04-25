@@ -3,14 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import HeaderSp from "../commenSp/HeaderSp";
 import { motion } from "framer-motion";
 
-const categories = [
-  { id: 1, name: "Handicrafts" },
-  { id: 2, name: "Food" },
-  { id: 3, name: "Clothing" },
-  { id: 4, name: "Automobiles" },
-  { id: 5, name: "Electronics" },
-];
-
 const EditProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -23,14 +15,34 @@ const EditProduct = () => {
     category: "",
     image: null,
   });
+  const [categories, setCategories] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState(null);
-  const [initialPrice, setInitialPrice] = useState(""); // 🧠 حفظ السعر الأولي
+  const [initialPrice, setInitialPrice] = useState("");
 
   const storedUser = JSON.parse(localStorage.getItem("user")) || null;
   const token = storedUser?.token;
+
+  // Fetch categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch("http://waseet.runasp.net/api/Category/Categories", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch categories");
+        const data = await response.json();
+        setCategories(data);
+      } catch (err) {
+        console.error("Category fetch error:", err);
+      }
+    };
+
+    fetchCategories();
+  }, [token]);
 
   // Fetch existing product data
   useEffect(() => {
@@ -49,12 +61,12 @@ const EditProduct = () => {
           name: data.name || "",
           description: data.description || "",
           price: data.price ?? "",
-          oldPrice: data.price ?? "", // بداية السعر القديم بنفس قيمة السعر
+          oldPrice: data.price ?? "",
           category: String(data.category) || "",
           image: null,
         });
         setImagePreview(data.imageURL || null);
-        setInitialPrice(data.price ?? ""); // 🧠 تخزين السعر الأولي
+        setInitialPrice(data.price ?? "");
       } catch (err) {
         console.error(err);
         setError("Error loading product.");
@@ -82,13 +94,12 @@ const EditProduct = () => {
     e.preventDefault();
     setLoading(true);
 
-    // 🧠 السعر القديم هو السعر الأولي، مش السعر الحالي
     const formData = new FormData();
     formData.append("id", id);
     formData.append("name", updatedProduct.name);
     formData.append("description", updatedProduct.description);
-    formData.append("price", String(updatedProduct.price)); // السعر الجديد
-    formData.append("oldPrice", String(initialPrice)); // السعر القديم الفعلي
+    formData.append("price", String(updatedProduct.price));
+    formData.append("oldPrice", String(initialPrice));
     formData.append("category", String(updatedProduct.category));
     if (updatedProduct.image) {
       formData.append("image", updatedProduct.image);
@@ -110,10 +121,7 @@ const EditProduct = () => {
       if (!response.ok) throw new Error(result.message || "Update failed");
 
       alert("Product updated successfully!");
-
-      // 🧠 بعد التحديث، نحدث السعر الأولي ليكون هو السعر الجديد
       setInitialPrice(updatedProduct.price);
-
       navigate("/dashboard/addProduct");
     } catch (err) {
       console.error("Update Error:", err);
@@ -130,7 +138,7 @@ const EditProduct = () => {
     <div className="flex-1 overflow-auto relative z-10">
       <HeaderSp title="Edit Product" />
       <motion.main
-        className="flex items-start space-x-8 max-w-7xl mx-auto py-6 px-4 lg:px-8"
+        className="flex items-start space-x-8 max-w-7xl mx-auto py-6 px-4 lg:px-8 dark:text-zinc-50"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
@@ -145,7 +153,7 @@ const EditProduct = () => {
               onChange={handleChange}
               required
               disabled={loading}
-              className="w-full rounded-lg pl-4 pr-4 py-2"
+              className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
             />
           </div>
 
@@ -157,7 +165,7 @@ const EditProduct = () => {
               onChange={handleChange}
               required
               disabled={loading}
-              className="w-full resize-y min-h-16 max-h-32 rounded-lg pl-4 pr-4 py-2"
+              className="w-full resize-y min-h-16 max-h-32  pl-4 pr-4 focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
             />
           </div>
 
@@ -171,7 +179,7 @@ const EditProduct = () => {
                 onChange={handleChange}
                 required
                 disabled={loading}
-                className="w-full rounded-lg pl-4 pr-4 py-2"
+                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
               />
             </div>
 
@@ -180,9 +188,9 @@ const EditProduct = () => {
               <input
                 type="number"
                 name="oldPrice"
-                value={initialPrice} // ⬅️ استخدام السعر الأولي هنا
+                value={initialPrice}
                 disabled
-                className="w-full bg-gray-100 rounded-lg pl-4 pr-4 py-2"
+                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
               />
             </div>
           </div>
@@ -194,7 +202,7 @@ const EditProduct = () => {
               accept="image/*"
               onChange={handleImageChange}
               disabled={loading}
-              className="w-full bg-white rounded-lg pl-4 pr-4 py-2"
+              className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
             />
           </div>
 
@@ -206,12 +214,12 @@ const EditProduct = () => {
               onChange={handleChange}
               required
               disabled={loading}
-              className="w-full rounded-lg pl-4 pr-4 py-2"
+              className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
             >
               <option value="">-- Select Category --</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
-                  {cat.name}
+                  {cat.categoryName}
                 </option>
               ))}
             </select>
@@ -236,7 +244,7 @@ const EditProduct = () => {
               className="w-80 h-80 object-cover border rounded-md shadow-lg"
             />
           ) : (
-            <div className="w-80 h-80 flex items-center justify-center border rounded-md bg-gray-100 text-gray-500">
+            <div className="w-80 h-80 flex items-center justify-center border rounded-md bg-gray-100 text-gray-500 dark:bg-zinc-800 dark:text-zinc-50">
               Image Preview
             </div>
           )}
@@ -247,4 +255,3 @@ const EditProduct = () => {
 };
 
 export default EditProduct;
-

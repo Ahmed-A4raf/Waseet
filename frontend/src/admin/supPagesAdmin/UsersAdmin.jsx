@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HeaderSp from "../../serviceProvider/commenSp/HeaderSp";
 import { Trash2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const roleColors = {
   admin: "bg-red-100 text-red-700",
@@ -63,21 +64,24 @@ const UsersAdmin = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const token = storedUser?.token;
 
-    fetch(`http://waseet.runasp.net/api/auth/ChangeUserRole`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ userId, role: newRole }),
-    })
+    fetch(
+      `http://waseet.runasp.net/api/auth/UpdateUserRole?userId=${userId}&newRoleName=${newRole}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ userId }),
+      }
+    )
       .then((res) => {
         if (!res.ok) throw new Error("Failed to update role");
         return res.json();
       })
       .then(() => {
-        fetchUsers();
-        setEditingUserId(null);
+        fetchUsers(); // Reload users to reflect updated role
+        setEditingUserId(null); // Exit editing mode
       })
       .catch((err) => console.error("Role update failed:", err));
   };
@@ -104,11 +108,16 @@ const UsersAdmin = () => {
       <HeaderSp title="Total Users" />
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         {/* Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mt-6 mb-4">
+        <motion.div
+          className="flex flex-col md:flex-row gap-4 mt-6 mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
           <input
             type="text"
             placeholder="Search by name or email..."
-            className="w-full md:w-1/2 p-2 border border-gray-300 rounded-md shadow-sm"
+            className="w-full md:w-1/2 focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -121,19 +130,24 @@ const UsersAdmin = () => {
               setRoleFilter(e.target.value);
               setCurrentPage(1);
             }}
-            className="w-full md:w-1/4 p-2 border border-gray-300 rounded-md shadow-sm"
+            className="w-full md:w-1/4 ml-auto focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
           >
             <option value="all">All Roles</option>
             <option value="admin">Admin</option>
             <option value="serviceProvider">Service Provider</option>
             <option value="customer">Customer</option>
           </select>
-        </div>
+        </motion.div>
 
         {/* Table */}
-        <div className="overflow-x-auto bg-white rounded-lg shadow-md">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-100 text-gray-700">
+        <motion.div
+          className="overflow-x-auto rounded-lg shadow-md"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <table className="min-w-full divide-y divide-gray-300">
+            <thead className="bg-gray-100 text-gray-700 dark:bg-zinc-800 dark:border-zinc-600 dark:text-zinc-50">
               <tr>
                 <th className="py-3 px-6 text-left text-sm font-semibold">
                   Image
@@ -152,9 +166,9 @@ const UsersAdmin = () => {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-gray-200 dark:bg-zinc-900 dark:border-zinc-600 dark:text-zinc-50">
               {currentUsers.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50">
+                <tr key={user.id}>
                   <td className="py-3 px-6">
                     {user.profileImage ? (
                       <img
@@ -174,28 +188,54 @@ const UsersAdmin = () => {
                   </td>
                   <td className="py-3 px-6">{user.displayName}</td>
                   <td className="py-3 px-6">{user.email}</td>
-                  <td className="py-3 px-6 capitalize">
+                  <td className="py-3 px-6 capitalize relative">
                     {editingUserId === user.id ? (
-                      <select
-                        value={user.role}
-                        onChange={(e) =>
-                          handleRoleChange(user.id, e.target.value)
-                        }
-                        className="text-sm p-1 rounded-md border border-gray-300"
-                      >
-                        <option value="admin">Admin</option>
-                        <option value="customer">Customer</option>
-                        <option value="serviceProvider">Service Provider</option>
-                      </select>
+                      <div className="relative inline-block text-left">
+                        <div className="absolute z-10 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                          <div className="py-1">
+                            {["admin", "customer", "serviceProvider"].map(
+                              (roleOption) => (
+                                <div
+                                  key={roleOption}
+                                  className={`cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 ${
+                                    roleOption === user.role
+                                      ? "font-bold text-primary"
+                                      : ""
+                                  }`}
+                                  onClick={() => {
+                                    if (roleOption !== user.role) {
+                                      const confirmChange = window.confirm(
+                                        `Are you sure you want to change the role to "${roleOption}"?`
+                                      );
+                                      if (confirmChange) {
+                                        handleRoleChange(user.id, roleOption);
+                                      } else {
+                                        setEditingUserId(null);
+                                      }
+                                    } else {
+                                      setEditingUserId(null);
+                                    }
+                                  }}
+                                >
+                                  {roleOption}
+                                </div>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     ) : (
                       <span
-                        className={`inline-block px-3 py-1 rounded-full text-xs font-medium cursor-pointer ${roleColors[user.role]}`}
+                        className={`inline-block px-3 py-1 rounded-full text-xs font-medium cursor-pointer ${
+                          roleColors[user.role]
+                        }`}
                         onClick={() => setEditingUserId(user.id)}
                       >
                         {user.role}
                       </span>
                     )}
                   </td>
+
                   <td className="py-3 px-6">
                     <button
                       onClick={() => handleDelete(user.id)}
@@ -210,11 +250,11 @@ const UsersAdmin = () => {
           </table>
 
           {filteredUsers.length === 0 && (
-            <div className="text-center font-semibold text-lg py-6">
+            <div className="text-center font-semibold text-lg py-6 dark:text-zinc-50">
               <span className="text-primary">No </span>users found.
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Pagination */}
         <div className="mt-4 flex justify-center items-center space-x-2">

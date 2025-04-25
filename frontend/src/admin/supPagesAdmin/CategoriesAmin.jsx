@@ -60,7 +60,7 @@ const CategoriesAmin = () => {
 
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         <motion.div
-          className="bg-white bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-300 mb-1"
+          className="bg-white bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-300 mb-1 dark:bg-zinc-900 dark:border-zinc-600 dark:text-zinc-50"
           whileHover={{
             y: -5,
             boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.2)",
@@ -80,14 +80,14 @@ const CategoriesAmin = () => {
         </motion.div>
 
         <motion.div
-          className="bg-white bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-300"
+          className="bg-white bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-300 dark:bg-zinc-900 dark:border-zinc-600 dark:text-zinc-50"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-100 text-gray-700">
+              <thead className="bg-gray-100 text-gray-700 dark:bg-zinc-800 dark:text-zinc-50">
                 <tr>
                   <th className="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">
                     ID
@@ -110,15 +110,14 @@ const CategoriesAmin = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.3 }}
-                    className="hover:bg-gray-50"
                   >
-                    <td className="py-3 px-4 text-sm text-gray-700">
+                    <td className="py-3 px-4 text-sm text-gray-700 dark:text-zinc-50">
                       {category.id}
                     </td>
-                    <td className="py-3 px-4 text-sm text-gray-700">
+                    <td className="py-3 px-4 text-sm text-gray-700 dark:text-zinc-50">
                       {category.categoryName}
                     </td>
-                    <td className="py-3 px-4 text-sm text-gray-700">
+                    <td className="py-3 px-4 text-sm text-gray-700 dark:text-zinc-50">
                       <img
                         src={category.imageUrl}
                         alt={category.categoryName}

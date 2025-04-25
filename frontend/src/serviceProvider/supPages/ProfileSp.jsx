@@ -82,7 +82,7 @@ const ProfileSp = () => {
       <HeaderSp title="My Profile" />
       <div className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         <motion.div
-          className="bg-white p-4 rounded-lg shadow-md flex items-center"
+          className="bg-white p-4 rounded-lg shadow-md flex items-center dark:bg-zinc-900 dark:text-zinc-50"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
@@ -93,13 +93,13 @@ const ProfileSp = () => {
   
             className="w-28 h-28 md:w-32 md:h-32 rounded-full border-2 border-primary mr-4 object-cover"
           />
-          <div className="w-1/3 overflow-hidden">
-            <p className="font-bold">Username: {username}</p>
-            <p className="text-gray-600">User Bio: {bio}</p>
-            <p className="text-gray-600">Profession: {profession}</p>
+          <div className="w-1/3 overflow-hidden dark:text-zinc-50">
+            <p className="font-bold dark:text-zinc-50">Username: {username}</p>
+            <p className="text-gray-600 dark:text-zinc-50">User Bio: {bio}</p>
+            <p className="text-gray-600 dark:text-zinc-50">Profession: {profession}</p>
           </div>
           <button
-            className="ml-auto px-2 py-1 bg-primary-light text-2xl text-primary rounded hover:bg-gray-100"
+            className="ml-auto px-2 py-1 bg-primary-light text-2xl text-primary rounded hover:bg-gray-100 dark:bg-zinc-800"
             onClick={() => setIsEditing(true)}
           >
             <i className="ri-edit-line"></i>
@@ -108,19 +108,19 @@ const ProfileSp = () => {
 
         {isEditing && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96 dark:bg-zinc-900 dark:text-zinc-50">
               <h2 className="text-lg font-bold mb-4">Edit Profile</h2>
               <label className="block mb-2">Username</label>
               <input
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full p-2 border rounded mb-2 focus:outline-primary bg-primary-light hover:border"
+                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
               />
 
               <label className="block mb-2">Select Image Source</label>
               <select
-                className="w-full p-2 border rounded mb-2 focus:outline-primary bg-primary-light hover:border"
+                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
                 value={imageSource}
                 onChange={(e) => setImageSource(e.target.value)}
               >
@@ -135,7 +135,7 @@ const ProfileSp = () => {
                     type="text"
                     value={imageURL}
                     onChange={(e) => setImageURL(e.target.value)}
-                    className="w-full p-2 border rounded mb-2 focus:outline-primary bg-primary-light hover:border"
+                    className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900 "
                   />
                 </>
               ) : (
@@ -145,7 +145,7 @@ const ProfileSp = () => {
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="w-full p-2 border rounded mb-2 focus:outline-primary bg-primary-light hover:border"
+                    className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
                   />
                 </>
               )}
@@ -154,7 +154,7 @@ const ProfileSp = () => {
               <textarea
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                className="w-full p-2 border rounded mb-2 resize-y min-h-12 max-h-32 focus:outline-primary bg-primary-light hover:border"
+                className="w-full p-2 border mb-2 resize-y min-h-12 max-h-32 bg-primary-light hover:border  focus:outline-primary px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
               ></textarea>
 
               <label className="block mb-2">Profession</label>
@@ -162,7 +162,7 @@ const ProfileSp = () => {
                 type="text"
                 value={profession}
                 onChange={(e) => setProfession(e.target.value)}
-                className="w-full p-2 border rounded mb-4 focus:outline-primary bg-primary-light hover:border"
+                className="w-full p-2 border mb-4  bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
               />
 
               <button

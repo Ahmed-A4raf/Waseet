@@ -26,7 +26,7 @@ const AddProduct = () => {
 
         {/* Create Product */}
         <motion.div
-          className="bg-white bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-300 mb-1"
+          className="bg-white bg-opacity-50 backdrop-blur-md overflow-hidden shadow-lg rounded-xl border border-gray-300 mb-1 dark:bg-zinc-900 dark:border-zinc-600 dark:text-zinc-50"
           whileHover={{ y: -5, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.2)" }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

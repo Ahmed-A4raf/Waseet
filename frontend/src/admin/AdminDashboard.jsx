@@ -8,7 +8,7 @@ const AdminDashboard = () => {
       <div className="flex h-screen overflow-hidden">
         {/* Baground */}
         <div className="fixed inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary-light/95 via-primary-light to-primary-light/95 opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-light/ via-primary-light to-primary-light/95 opacity-80 dark:from-zinc-800 dark:via-zinc-900 dark:to-zinc-800 dark:opacity-100" />
           <div className="absolute inset-0 backdrop-blur-sm" />
         </div>
 

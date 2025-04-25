@@ -66,7 +66,7 @@ const SidebarSp = () => {
       }`}
       animate={{ width: isSidebarOpen ? 256 : 80 }}
     >
-      <div className="h-full bg-white bg-opacity-50 backdrop-blur-md p-4 flex flex-col border-r border-gray-300">
+      <div className="h-full bg-white bg-opacity-50 backdrop-blur-md p-4 flex flex-col border-r border-gray-300 dark:bg-zinc-900 dark:border-zinc-600 dark:text-zinc-50">
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -80,7 +80,7 @@ const SidebarSp = () => {
         <div className="mt-8 flex-grow">
           {SIDEBAR_ITEMS.map((item) => (
             <Link key={item.href} to={item.href}>
-              <motion.div className="flex items-center p-4 text-sm font-medium rounded-lg hover:bg-primary-light transition-colors mb-2">
+              <motion.div className="flex items-center p-4 text-sm font-medium rounded-lg hover:bg-primary-light transition-colors mb-2 dark:hover:bg-zinc-800">
                 <item.icon
                   size={20}
                   style={{ color: item.color, minWidth: "20px" }}

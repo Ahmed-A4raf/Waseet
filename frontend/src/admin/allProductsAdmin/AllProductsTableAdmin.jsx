@@ -97,7 +97,7 @@ const AllProductsTableAdmin = () => {
 
   return (
     <motion.div
-      className="bg-white bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-300"
+      className="bg-white bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-300 dark:bg-zinc-900 dark:border-zinc-600 dark:text-zinc-50"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
@@ -108,7 +108,7 @@ const AllProductsTableAdmin = () => {
           <input
             type="text"
             placeholder="Search products..."
-            className="bg-primary-light text-gray-700 placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent"
+            className="bg-primary-light text-gray-700 placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary focus:border-transparent dark:bg-zinc-800 dark:text-zinc-50"
             onChange={handleSearch}
             value={searchTerm}
           />
@@ -149,7 +149,7 @@ const AllProductsTableAdmin = () => {
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700 flex gap-2 items-center">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-700 flex gap-2 items-center dark:text-zinc-50">
                     <img
                       src={product.imageURL}
                       alt={product.name}
@@ -157,16 +157,16 @@ const AllProductsTableAdmin = () => {
                     />
                     {product.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-zinc-50">
                     {product.description}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-zinc-50">
                     {product.category}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-zinc-50">
                     ${product.price?.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-zinc-50">
                     {product.serviceProviderName}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 text-center">
@@ -181,7 +181,7 @@ const AllProductsTableAdmin = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="text-center font-semibold text-lg py-6">
+                <td colSpan="6" className="text-center font-semibold text-lg py-6 dark:text-zinc-50">
                   <span className="text-primary">No</span> data found
                 </td>
               </tr>
