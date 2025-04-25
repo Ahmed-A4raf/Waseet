@@ -86,8 +86,8 @@ const CategoriesAmin = () => {
           transition={{ delay: 0.3 }}
         >
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-300">
-              <thead className="bg-gray-100">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-100 text-gray-700">
                 <tr>
                   <th className="py-3 px-4 text-left text-xs font-medium uppercase tracking-wider">
                     ID
@@ -145,9 +145,10 @@ const CategoriesAmin = () => {
                   <tr>
                     <td
                       colSpan="4"
-                      className="text-center py-6 text-gray-600 font-medium"
+                      className="text-center font-semibold text-lg py-6"
                     >
-                      No categories found.
+                      <span className="text-primary">No </span>
+                      categories found.
                     </td>
                   </tr>
                 )}

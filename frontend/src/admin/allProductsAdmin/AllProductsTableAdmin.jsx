@@ -11,7 +11,6 @@ const AllProductsTableAdmin = () => {
   const storedUser = JSON.parse(localStorage.getItem("user")) || null;
   const token = storedUser?.token;
 
-  // ✅ جلب كل المنتجات من كل الصفحات
   const fetchAllPages = async () => {
     let page = 1;
     let allProducts = [];
@@ -62,7 +61,7 @@ const AllProductsTableAdmin = () => {
       );
 
       if (response.ok) {
-        fetchAllPages(); // ✅ تحديث المنتجات بعد الحذف
+        fetchAllPages(); 
       } else {
         alert("Failed to delete product.");
       }
@@ -77,7 +76,7 @@ const AllProductsTableAdmin = () => {
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
-    setCurrentPage(1); // رجع لأول صفحة بعد السيرش
+    setCurrentPage(1); 
   };
 
   const filteredProducts = products.filter(

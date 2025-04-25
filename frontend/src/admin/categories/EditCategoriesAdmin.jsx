@@ -15,7 +15,7 @@ const EditCategoriesAdmin = () => {
   const [preview, setPreview] = useState(null);
 
   useEffect(() => {
-    fetch(`http://waseet.runasp.net/api/Category/CategoryById/${id}`)
+    fetch(`http://waseet.runasp.net/api/Category/UpdateCategory/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCategory({
@@ -44,15 +44,18 @@ const EditCategoriesAdmin = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append("categoryName", category.categoryName);
-    if (category.image) formData.append("image", category.image);
+    formData.append("Id", id); 
+    formData.append("CategoryName", category.categoryName);
+    if (category.image) {
+      formData.append("ImageUrl", category.image); 
+    }
 
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user?.token;
 
     try {
       const res = await fetch(
-        `http://waseet.runasp.net/api/Category/UpdateCategory/${id}`,
+        `http://waseet.runasp.net/api/Category/UpdateCategory`,
         {
           method: "PUT",
           headers: {
@@ -66,7 +69,8 @@ const EditCategoriesAdmin = () => {
         alert("Category updated successfully.");
         navigate("/admin/categories");
       } else {
-        alert("Failed to update category.");
+        const errorData = await res.json();
+        alert(`Failed to update category: ${errorData.message || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error updating category:", error);
