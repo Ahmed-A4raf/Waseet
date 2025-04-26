@@ -17,7 +17,6 @@ import AddProduct from "../serviceProvider/supPages/AddProduct";
 import CreatProduct from "../serviceProvider/addProduct/CreatProduct";
 import EditProduct from "../serviceProvider/addProduct/EditProduct";
 import OrdersSp from "../serviceProvider/supPages/OrdersSp";
-import ReviewSp from "../serviceProvider/supPages/ReviewSp";
 import ProfileCustomer from "../customer/ProfileCustomer";
 import OverViewAdmin from "../admin/supPagesAdmin/OverViewAdmin";
 import CategoriesAmin from "../admin/supPagesAdmin/CategoriesAmin";
@@ -26,6 +25,7 @@ import OrdersAdmin from "../admin/supPagesAdmin/OrdersAdmin";
 import AllProductsAdmin from "../admin/supPagesAdmin/AllProductsAdmin";
 import CreateCategoriesAdmin from "../admin/categories/CreateCategoriesAdmin";
 import EditCategoriesAdmin from "../admin/categories/EditCategoriesAdmin";
+import OrderDetails from "../pages/shop/OrderDetails";
 
 
 const router = createBrowserRouter([
@@ -41,6 +41,7 @@ const router = createBrowserRouter([
       {path: "/contact",element:<Contact />},
         //! Customer Routes
       {path: "/ProfileCustomer",element:<ProfileCustomer />},
+      { path: "/order-details", element: <OrderDetails /> },
     ],
   },
   //!  Service Provider Routes
@@ -54,7 +55,6 @@ const router = createBrowserRouter([
       {path: "/dashboard/addProduct/creat",element: <CreatProduct />},
       {path: "/dashboard/addProduct/edit/:id",element: <EditProduct />},
       {path: "/dashboard/orders",element: <OrdersSp />},
-      {path: "/dashboard/reviews",element: <ReviewSp />},
     ],
   },
   //! Admin Routes

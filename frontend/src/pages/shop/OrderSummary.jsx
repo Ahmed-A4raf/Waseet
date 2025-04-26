@@ -1,9 +1,12 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { clearCart } from "../../redux/features/cart/cartSlice";
 
 const OrderSummary = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const products = useSelector((store) => store.cart.products);
   const { tax, taxRate, totalPrice, grandTotal, selectedItems } = useSelector(
     (store) => store.cart
@@ -29,6 +32,15 @@ const OrderSummary = () => {
     } catch (err) {
       console.error("Error clearing cart:", err);
     }
+  };
+
+  const handleCheckout = () => {
+    if (products.length === 0) {
+      alert("Your cart is empty.");
+      return;
+    }
+
+    navigate("/order-details");
   };
 
   return (
@@ -70,7 +82,10 @@ const OrderSummary = () => {
           >
             Clear Cart
           </button>
-          <button className="bg-black text-white py-1.5 px-3 mt-2 rounded-md mb-4 hover:bg-black/90">
+          <button
+            onClick={handleCheckout}
+            className="bg-black text-white py-1.5 px-3 mt-2 rounded-md mb-4 hover:bg-black/90"
+          >
             Checkout
           </button>
         </div>

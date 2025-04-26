@@ -4,7 +4,6 @@ import {
   User,
   ShoppingBag,
   ShoppingCart,
-  Star,
   Menu,
   Home,
 } from "lucide-react";
@@ -29,7 +28,6 @@ const SIDEBAR_ITEMS = [
     color: "#F59E0B",
     href: "/dashboard/orders",
   },
-  { name: "Reviews", icon: Star, color: "#3B82F6", href: "/dashboard/reviews" },
   { name: "Home", icon: Home, color: "#3d3d3d", href: "/" },
 ];
 
