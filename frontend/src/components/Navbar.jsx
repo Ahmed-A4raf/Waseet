@@ -5,7 +5,6 @@ import Cart from "../pages/shop/Cart";
 import { syncCartWithServer } from "../redux/features/cart/cartSlice";
 import { clearCart } from "../redux/features/cart/cartSlice";
 
-
 import avatarImg from "../assets/avatar.png";
 import { useLogoutUserMutation } from "../redux/features/auth/authApi";
 import { logout } from "../redux/features/auth/authSlice";
@@ -63,14 +62,14 @@ const Navbar = () => {
       console.error("Failed to logout:", error);
     }
   };
-  
+
   useEffect(() => {
     const fetchCart = async () => {
       const userData = JSON.parse(localStorage.getItem("user"));
       const token = userData?.token;
-  
+
       if (!token) return;
-  
+
       try {
         const res = await fetch("http://waseet.runasp.net/api/Cart/basket", {
           method: "GET",
@@ -78,19 +77,19 @@ const Navbar = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-  
+
         if (!res.ok) {
           console.error("Failed to fetch cart");
           return;
         }
-  
+
         const data = await res.json();
         dispatch(syncCartWithServer(data));
       } catch (err) {
         console.error("Error fetching cart:", err);
       }
     };
-  
+
     if (user) {
       fetchCart();
     }
@@ -112,9 +111,7 @@ const Navbar = () => {
     };
   }, [isDropdownOpen]);
 
-  const adminDropdown = () => [
-    { label: "Dashboard", path: "/admin" },
-  ];
+  const adminDropdown = () => [{ label: "Dashboard", path: "/admin" }];
 
   const serviceProviderDropdown = () => [
     { label: "Dashboard", path: "/dashboard" },
@@ -259,35 +256,39 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {isCartOpen && (
-        <Cart
-          products={products}
-          isOpen={isCartOpen}
-          onClose={handleToggleCart}
-        />
-      )}
+      <Cart
+        products={products}
+        isOpen={isCartOpen}
+        onClose={handleToggleCart}
+      />
 
       {/* mobile menu */}
       {isOpen && (
         <nav className="md:hidden">
           <ul className="flex flex-col p-4 space-y-3 w-full bg-primary-light dark:bg-zinc-900 dark:border-white">
             <li className="link w-full p-2 mx-auto rounded-md cursor-pointer hover:translate-x-1 transition-all duration-75">
-              <Link to="/" onClick={handleCloseMenu}
-              className="dark:text-zinc-50"
+              <Link
+                to="/"
+                onClick={handleCloseMenu}
+                className="dark:text-zinc-50"
               >
                 Home
               </Link>
             </li>
             <li className="link w-full p-2 mx-auto rounded-md cursor-pointer hover:translate-x-1 transition-all duration-75">
-              <Link to="/shop" onClick={handleCloseMenu}
-              className="dark:text-zinc-50"
+              <Link
+                to="/shop"
+                onClick={handleCloseMenu}
+                className="dark:text-zinc-50"
               >
                 Shop
               </Link>
             </li>
             <li className="link w-full p-2 mx-auto rounded-md cursor-pointer hover:translate-x-1 transition-all duration-75">
-              <Link to="/contact" onClick={handleCloseMenu}
-              className="dark:text-zinc-50"
+              <Link
+                to="/contact"
+                onClick={handleCloseMenu}
+                className="dark:text-zinc-50"
               >
                 Contact
               </Link>

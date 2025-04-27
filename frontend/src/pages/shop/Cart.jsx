@@ -57,21 +57,22 @@ const Cart = ({ products, isOpen, onClose }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-[1000] bg-black bg-opacity-80
-      ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+      className={`fixed inset-0 z-[1000] bg-black transition-all duration-300 ease-in-out
+        ${isOpen ? "bg-opacity-80 pointer-events-auto" : "bg-opacity-0 pointer-events-none"}`}
     >
       <div
         className={`fixed right-0 top-0 md:w-1/3 w-full bg-white h-full overflow-y-auto dark:bg-zinc-900
-        ${isOpen ? "translate-x-0" : "translate-x-full"}`}
+          transform transition-transform duration-300 ease-in-out
+          ${isOpen ? "translate-x-0" : "translate-x-full"}`}
       >
         <div className="p-4 mt-4">
           <div className="flex items-center justify-between mb-4">
             <h4 className="text-3xl font-semibold">Your Cart</h4>
             <button
-              onClick={() => onClose()}
+              onClick={onClose}
               className="text-gray-600 hover:text-gray-900"
             >
-              <i className="ri-xrp-line bg-primary p-1 text-white rounded-md"></i>
+              <i className="ri-close-line bg-primary p-1 text-white rounded-md"></i>
             </button>
           </div>
 
@@ -132,7 +133,10 @@ const Cart = ({ products, isOpen, onClose }) => {
               ))
             )}
           </div>
-          {products.length > 0 && <OrderSummary products={products} />}
+
+          {products.length > 0 && (
+            <OrderSummary products={products} onClose={onClose} />
+          )}
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../../redux/features/cart/cartSlice";
 
-const OrderSummary = () => {
+const OrderSummary = ({ onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -40,7 +40,8 @@ const OrderSummary = () => {
       return;
     }
 
-    navigate("/order-details");
+    onClose(); // قفل الكارت
+    navigate("/order-details"); // بعدين ينتقل لصفحة الطلب
   };
 
   return (

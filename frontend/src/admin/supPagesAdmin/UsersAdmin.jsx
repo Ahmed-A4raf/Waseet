@@ -60,19 +60,18 @@ const UsersAdmin = () => {
       .catch((err) => console.error("Error deleting user:", err));
   };
 
+
   const handleRoleChange = (userId, newRole) => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const token = storedUser?.token;
-
+  
     fetch(
-      `http://waseet.runasp.net/api/auth/UpdateUserRole?userId=${userId}&newRoleName=${newRole}`,
+      `http://waseet.runasp.net/api/auth/UpdateUserRole?newRoleName=${newRole}&id=${userId}`,
       {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ userId }),
       }
     )
       .then((res) => {
@@ -80,11 +79,12 @@ const UsersAdmin = () => {
         return res.json();
       })
       .then(() => {
-        fetchUsers(); // Reload users to reflect updated role
-        setEditingUserId(null); // Exit editing mode
+        fetchUsers(); // ريفرش للبيانات عشان يظهر التغيير
+        setEditingUserId(null); // قفل اختيار الرول
       })
       .catch((err) => console.error("Role update failed:", err));
   };
+  
 
   const filteredUsers = users.filter((user) => {
     const matchSearch =
@@ -191,13 +191,13 @@ const UsersAdmin = () => {
                   <td className="py-3 px-6 capitalize relative">
                     {editingUserId === user.id ? (
                       <div className="relative inline-block text-left">
-                        <div className="absolute z-10 mt-2 w-40 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                          <div className="py-1">
+                        <div className="absolute z-10 mt-2 w-40 rounded-md shadow-lg ring-1 bg-white ring-black ring-opacity-5 dark:bg-zinc-800">
+                          <div className="rounded-md">
                             {["admin", "customer", "serviceProvider"].map(
                               (roleOption) => (
                                 <div
                                   key={roleOption}
-                                  className={`cursor-pointer px-4 py-2 text-sm hover:bg-gray-100 ${
+                                  className={`cursor-pointer rounded-md px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-zinc-700 ${
                                     roleOption === user.role
                                       ? "font-bold text-primary"
                                       : ""
