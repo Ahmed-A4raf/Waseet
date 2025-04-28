@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom"; // ضفت useNavigate هنا
 import RatingStars from "../../../components/RatingStars";
 import ReviewsCard from "../reviews/ReviewsCard";
 import { syncCartWithServer } from "../../../redux/features/cart/cartSlice";
@@ -8,8 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 const SingleProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.products);
+  const navigate = useNavigate(); // تعريف النفيجيشن
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -23,6 +24,7 @@ const SingleProduct = () => {
         console.error("Error fetching product:", error);
       }
     };
+
     fetchProduct();
   }, [id]);
 
@@ -32,7 +34,10 @@ const SingleProduct = () => {
 
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user?.token;
-    if (!token) return;
+    if (!token) {
+      navigate("/login"); // نفيجيشن لو مفيش توكن
+      return;
+    }
 
     const basketItems = [
       ...cartItems.map((item) => ({
@@ -110,7 +115,7 @@ const SingleProduct = () => {
             </div>
             <h3 className="text-3xl font-semibold mb-4 dark:text-zinc-50">{product.name}</h3>
             <p className="text-xl mb-4 dark:text-zinc-50">
-              ${product.price} {product.oldPrice ? <s className=" text-primary">${product.oldPrice}</s> : null}
+              ${product.price} {product.oldPrice ? <s className="text-primary">${product.oldPrice}</s> : null}
             </p>
             <p className="text-gray-700 mb-4 dark:text-zinc-400">{product.description}</p>
             <hr />
@@ -134,7 +139,8 @@ const SingleProduct = () => {
                 e.stopPropagation();
                 handleAddToCart(product);
               }}
-              className="w-full mt-6 px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-md transition-all duration-200">
+              className="w-full mt-6 px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-md transition-all duration-200"
+            >
               Add to cart
               <i className="ri-shopping-cart-line pl-1"></i>
             </button>

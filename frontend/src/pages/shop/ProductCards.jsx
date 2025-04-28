@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // <-- ضفت useNavigate هنا
 import RatingStars from "../../components/RatingStars";
 import { useDispatch, useSelector } from "react-redux";
 import { syncCartWithServer } from "../../redux/features/cart/cartSlice";
@@ -7,6 +7,7 @@ import { syncCartWithServer } from "../../redux/features/cart/cartSlice";
 const ProductCards = ({ products }) => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.products);
+  const navigate = useNavigate(); // <-- استخدمته هنا
 
   const handleAddToCart = async (product) => {
     const existingItem = cartItems.find((item) => item.id === product.id);
@@ -14,7 +15,10 @@ const ProductCards = ({ products }) => {
 
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user?.token;
-    if (!token) return;
+    if (!token) {
+      navigate("/login"); // <-- هنا هينفيجيت للوجين
+      return;
+    }
 
     const basketItems = [
       ...cartItems.map((item) => ({
@@ -46,6 +50,7 @@ const ProductCards = ({ products }) => {
     }
   };
 
+  // الباقي زي ما هو
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       {products.map((product, index) => (

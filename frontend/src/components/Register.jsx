@@ -10,6 +10,8 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("customer");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [registerUser, { isLoading }] = useRegisterUserMutation();
   const navigate = useNavigate();
@@ -69,23 +71,51 @@ const Register = () => {
             placeholder="Phone Number"
           />
 
+          {/* Password Field with Show/Hide */}
+          <div className="relative">
+            <input
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full bg-primary-light px-5 py-3 rounded-md outline-none dark:bg-zinc-900 dark:text-zinc-50"
+              type={showPassword ? "text" : "password"}
+              placeholder="Password"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-zinc-400"
+            >
+              {showPassword ? (
+                <i className="ri-eye-off-line"></i>
+              ) : (
+                <i className="ri-eye-line"></i>
+              )}
+            </button>
+          </div>
 
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none dark:bg-zinc-900 dark:text-zinc-50"
-            type="password"
-            placeholder="Password"
-            required
-          />
-          <input
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full bg-primary-light px-5 py-3 rounded-md outline-none dark:bg-zinc-900 dark:text-zinc-50"
-            type="password"
-            placeholder="Confirm Password"
-            required
-          />
+          {/* Confirm Password Field with Show/Hide */}
+          <div className="relative">
+            <input
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full bg-primary-light px-5 py-3 rounded-md outline-none dark:bg-zinc-900 dark:text-zinc-50"
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm Password"
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-zinc-400"
+            >
+              {showConfirmPassword ? (
+                <i className="ri-eye-off-line"></i>
+              ) : (
+                <i className="ri-eye-line"></i>
+              )}
+            </button>
+          </div>
 
           {/* Role Selection */}
           <div className="flex justify-between gap-2 p-1">
@@ -122,8 +152,8 @@ const Register = () => {
           </Link>
         </p>
 
-         {/* or */}
-         <div className="flex items-center justify-center">
+        {/* or */}
+        <div className="flex items-center justify-center">
           <div className="relative flex items-center justify-center">
             <span className="relative z-10 p-1 text-sm text-white font-bold">
               OR

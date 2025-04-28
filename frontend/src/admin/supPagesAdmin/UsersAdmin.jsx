@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import HeaderSp from "../../serviceProvider/commenSp/HeaderSp";
 import { Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
@@ -16,6 +16,8 @@ const UsersAdmin = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [editingUserId, setEditingUserId] = useState(null);
   const usersPerPage = 6;
+
+  const dropdownRef = useRef(null); // ✨ إضافة ref للدروب داون
 
   const fetchUsers = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -38,33 +40,65 @@ const UsersAdmin = () => {
     fetchUsers();
   }, []);
 
+  // ✨ إغلاق الدروب داون لما اضغط بره
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setEditingUserId(null);
+      }
+    };
+
+    if (editingUserId !== null) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [editingUserId]);
+
   const handleDelete = (userId) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
+  if (!window.confirm("Are you sure you want to delete this user?")) return;
 
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    const token = storedUser?.token;
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  const token = storedUser?.token;
 
-    fetch(`http://waseet.runasp.net/api/auth/DeleteUser/${userId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+  fetch(`http://waseet.runasp.net/api/auth/DeleteUser/${userId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (res.ok) {
+        // بعد حذف اليوزر نحذف منتجاته
+        fetch(`http://waseet.runasp.net/api/Product/DeleteProductsByUser/${userId}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((productRes) => {
+          if (!productRes.ok) throw new Error("Failed to delete user's products");
+        })
+        .catch((err) => console.error("Error deleting user's products:", err));
+
+        // حذف اليوزر من الواجهة
+        setUsers((prev) => prev.filter((u) => u.id !== userId));
+      } else {
+        throw new Error("Failed to delete user");
+      }
     })
-      .then((res) => {
-        if (res.ok) {
-          setUsers((prev) => prev.filter((u) => u.id !== userId));
-        } else {
-          throw new Error("Failed to delete user");
-        }
-      })
-      .catch((err) => console.error("Error deleting user:", err));
-  };
+    .catch((err) => console.error("Error deleting user:", err));
+};
 
 
   const handleRoleChange = (userId, newRole) => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const token = storedUser?.token;
-  
+
     fetch(
       `http://waseet.runasp.net/api/auth/UpdateUserRole?newRoleName=${newRole}&id=${userId}`,
       {
@@ -79,12 +113,11 @@ const UsersAdmin = () => {
         return res.json();
       })
       .then(() => {
-        fetchUsers(); // ريفرش للبيانات عشان يظهر التغيير
-        setEditingUserId(null); // قفل اختيار الرول
+        fetchUsers();
+        setEditingUserId(null);
       })
       .catch((err) => console.error("Role update failed:", err));
   };
-  
 
   const filteredUsers = users.filter((user) => {
     const matchSearch =
@@ -141,7 +174,7 @@ const UsersAdmin = () => {
 
         {/* Table */}
         <motion.div
-          className="overflow-x-auto rounded-lg shadow-md"
+          className="overflow-x-auto rounded-lg shadow-md min-h-[400px]"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -190,7 +223,7 @@ const UsersAdmin = () => {
                   <td className="py-3 px-6">{user.email}</td>
                   <td className="py-3 px-6 capitalize relative">
                     {editingUserId === user.id ? (
-                      <div className="relative inline-block text-left">
+                      <div className="relative inline-block text-left" ref={dropdownRef}>
                         <div className="absolute z-10 mt-2 w-40 rounded-md shadow-lg ring-1 bg-white ring-black ring-opacity-5 dark:bg-zinc-800">
                           <div className="rounded-md">
                             {["admin", "customer", "serviceProvider"].map(
@@ -235,7 +268,6 @@ const UsersAdmin = () => {
                       </span>
                     )}
                   </td>
-
                   <td className="py-3 px-6">
                     <button
                       onClick={() => handleDelete(user.id)}

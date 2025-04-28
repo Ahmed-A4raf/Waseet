@@ -32,7 +32,6 @@ const EditProduct = () => {
         const response = await fetch("http://waseet.runasp.net/api/Category/Categories", {
           headers: { Authorization: `Bearer ${token}` },
         });
-
         if (!response.ok) throw new Error("Failed to fetch categories");
         const data = await response.json();
         setCategories(data);
@@ -99,8 +98,13 @@ const EditProduct = () => {
     formData.append("name", updatedProduct.name);
     formData.append("description", updatedProduct.description);
     formData.append("price", String(updatedProduct.price));
-    formData.append("oldPrice", String(initialPrice));
     formData.append("category", String(updatedProduct.category));
+
+    // أهم تعديل هنا 👇
+    if (updatedProduct.price !== initialPrice) {
+      formData.append("oldPrice", String(initialPrice));
+    }
+
     if (updatedProduct.image) {
       formData.append("image", updatedProduct.image);
     }
@@ -121,7 +125,7 @@ const EditProduct = () => {
       if (!response.ok) throw new Error(result.message || "Update failed");
 
       alert("Product updated successfully!");
-      setInitialPrice(updatedProduct.price);
+      setInitialPrice(updatedProduct.price); // بعد التحديث خزن السعر الجديد
       navigate("/dashboard/addProduct");
     } catch (err) {
       console.error("Update Error:", err);
