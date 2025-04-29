@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import ProductCards from "./ProductCards";
 import ShopFiltring from "./ShopFiltring";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../../utils/animationVariants";
+
 const API_URL = "http://waseet.runasp.net/api/Product/ProductsCards";
 const CATEGORY_API = "http://waseet.runasp.net/api/Category/Categories";
 const PRODUCTS_PER_PAGE = 8;
@@ -15,7 +18,9 @@ const priceRanges = [
 
 const ShopPage = () => {
   const [products, setProducts] = useState([]);
-  const [categories, setCategories] = useState([{ id: 0, categoryName: "All" }]);
+  const [categories, setCategories] = useState([
+    { id: 0, categoryName: "All" },
+  ]);
   const [totalProducts, setTotalProducts] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [filtersState, setFiltersState] = useState({
@@ -85,47 +90,81 @@ const ShopPage = () => {
 
   return (
     <div className="pt-24">
-      <section className="section__container bg-primary-light rounded-md dark:bg-zinc-800">
-        <h2 className="section__header capitalize dark:text-zinc-50">Shop Page</h2>
+      <motion.section
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="section__container bg-primary-light rounded-md dark:bg-zinc-800"
+      >
+        <h2 className="section__header capitalize dark:text-zinc-50">
+          Shop Page
+        </h2>
         <p className="section__subheader dark:text-zinc-400">
           Browse our latest products and find the best deals.
         </p>
-      </section>
+      </motion.section>
 
       <section className="section__container">
         <div className="flex md:flex-row gap-8">
-          <div className="bg-primary-light p-4 rounded-md w-1/2 md:w-1/5 dark:bg-zinc-800">
+          <motion.div
+            variants={fadeIn("right", 0.2)}
+            initial="hidden"
+            whileInView={"show"}
+            viewport={{ once: true, amount: "some"}}
+            className="bg-primary-light p-4 rounded-md w-1/2 md:w-1/5 dark:bg-zinc-800"
+          >
             <ShopFiltring
               filters={{ Categories: categories, priceRanges }}
               filtersState={filtersState}
               setFiltersState={setFiltersState}
               clearFilters={clearFilters}
             />
-          </div>
+          </motion.div>
 
-          <div className="bg-primary-light p-4 rounded-md w-full dark:bg-zinc-800">
-            <h3 className="text-xl font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900">
+          <motion.div
+            variants={fadeIn("left", 0.2)}
+            initial="hidden"
+            whileInView={"show"}
+            viewport={{ once: true, amount: "some" }}
+            className="bg-primary-light p-4 rounded-md w-full dark:bg-zinc-800"
+          >
+            <motion.h3
+              variants={fadeIn("left", 0.2)}
+              initial="hidden"
+              whileInView={"show"}
+              viewport={{ once: true, amount: 0.7 }}
+              className="text-xl font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900"
+            >
               Available: <span className="text-primary">{totalProducts}</span>
-            </h3>
+            </motion.h3>
 
             {loading ? (
               <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900">
                 <span className="text-orange-500">Loading...</span>
               </h4>
             ) : products.length > 0 ? (
-              <>
+              <div>
                 <ProductCards products={products} />
                 <div className="flex justify-center mt-6 flex-wrap">
-                  <button
+                  <motion.button
+                    variants={fadeIn("right", 0.2)}
+                    initial="hidden"
+                    whileInView={"show"}
+                    viewport={{ once: true, amount: 0.7 }}
                     className="p-1 w-10 h-10 mx-1 rounded-full bg-gray-200 text-black dark:text-white dark:bg-zinc-900"
                     disabled={currentPage === 1}
                     onClick={() => setCurrentPage(currentPage - 1)}
                   >
                     <i className="ri-arrow-left-wide-line"></i>
-                  </button>
+                  </motion.button>
 
                   {Array.from({ length: totalPages }, (_, index) => (
-                    <button
+                    <motion.button
+                      variants={fadeIn("up", 0.2)}
+                      initial="hidden"
+                      whileInView={"show"}
+                      viewport={{ once: true, amount: 0.5 }}
                       key={index}
                       className={`p-1 w-10 h-10 mx-1 rounded-full ${
                         currentPage === index + 1
@@ -135,25 +174,29 @@ const ShopPage = () => {
                       onClick={() => setCurrentPage(index + 1)}
                     >
                       {index + 1}
-                    </button>
+                    </motion.button>
                   ))}
 
-                  <button
+                  <motion.button
+                    variants={fadeIn("left", 0.2)}
+                    initial="hidden"
+                    whileInView={"show"}
+                    viewport={{ once: true, amount: 0.7 }}
                     className="p-1 w-10 h-10 mx-1 rounded-full bg-gray-200 text-black dark:text-white dark:bg-zinc-900"
                     disabled={currentPage === totalPages}
                     onClick={() => setCurrentPage(currentPage + 1)}
                   >
                     <i className="ri-arrow-right-wide-line"></i>
-                  </button>
+                  </motion.button>
                 </div>
-              </>
+              </div>
             ) : (
               <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900 dark:text-zinc-50">
                 <span className="text-primary">No</span> products found <br />
                 <i className="ri-emotion-sad-line text-primary text-2xl"></i>
               </h4>
             )}
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

@@ -1,12 +1,20 @@
 import React from "react";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../utils/animationVariants";
+
 const Footer = () => {
   return (
     <>
       <footer className="bg-primary-light rounded-t-3xl mt-12 dark:bg-zinc-800">
         <div className="mx-auto max-w-[1400px] px-4 py-10">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-            <div>
+            <motion.div
+              variants={fadeIn("right", 0.2)}
+              initial="hidden"
+              whileInView={"show"}
+              viewport={{ once: true, amount: 0.7 }}
+            >
               <div className="flex justify-center sm:justify-start text-4xl font-bold">
                 Waseet <span className="text-primary">.</span>
               </div>
@@ -61,10 +69,16 @@ const Footer = () => {
                   </a>
                 </li>
               </ul>
-            </div>
+            </motion.div>
 
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-4 lg:col-span-2">
-              <div className="text-center sm:text-left">
+              <motion.div
+                variants={fadeIn("up", 0.2)}
+                initial="hidden"
+                whileInView={"show"}
+                viewport={{ once: true, amount: 0.7 }}
+                className="text-center sm:text-left"
+              >
                 <p className="text-lg font-medium">Quick Links</p>
 
                 <ul className="mt-8 space-y-4 text-sm text-gray-700 dark:text-zinc-400">
@@ -95,9 +109,15 @@ const Footer = () => {
                     </a>
                   </li>
                 </ul>
-              </div>
+              </motion.div>
 
-              <div className="text-center sm:text-left">
+              <motion.div
+                variants={fadeIn("down", 0.2)}
+                initial="hidden"
+                whileInView={"show"}
+                viewport={{ once: true, amount: 0.7 }}
+                className="text-center sm:text-left"
+              >
                 <p className="text-lg font-medium">Our Services</p>
 
                 <ul className="mt-8 space-y-4 text-sm text-gray-700 dark:text-zinc-400">
@@ -128,9 +148,15 @@ const Footer = () => {
                     </a>
                   </li>
                 </ul>
-              </div>
+              </motion.div>
 
-              <div className="text-center sm:text-left">
+              <motion.div
+                variants={fadeIn("up", 0.2)}
+                initial="hidden"
+                whileInView={"show"}
+                viewport={{ once: true, amount: 0.7 }}
+                className="text-center sm:text-left"
+              >
                 <p className="text-lg font-medium">Helpful Links</p>
 
                 <ul className="mt-8 space-y-4 text-sm text-gray-700 dark:text-zinc-400">
@@ -161,9 +187,15 @@ const Footer = () => {
                     </a>
                   </li>
                 </ul>
-              </div>
+              </motion.div>
 
-              <div className="text-center sm:text-left">
+              <motion.div
+                variants={fadeIn("left", 0.2)}
+                initial="hidden"
+                whileInView={"show"}
+                viewport={{ once: true, amount: 0.7 }}
+                className="text-center sm:text-left"
+              >
                 <p className="text-lg font-medium">Contact Us</p>
 
                 <ul className="mt-8 space-y-4 text-sm">
@@ -173,7 +205,9 @@ const Footer = () => {
                       href="#"
                     >
                       <i className="ri-mail-line text-lg text-primary"></i>
-                      <span className="flex-1 text-gray-700 dark:text-zinc-400">john@doe.com</span>
+                      <span className="flex-1 text-gray-700 dark:text-zinc-400">
+                        john@doe.com
+                      </span>
                     </a>
                   </li>
 
@@ -184,7 +218,9 @@ const Footer = () => {
                     >
                       <i className="ri-phone-line text-lg text-primary"></i>
 
-                      <span className="flex-1 text-gray-700 dark:text-zinc-400">0123456789</span>
+                      <span className="flex-1 text-gray-700 dark:text-zinc-400">
+                        0123456789
+                      </span>
                     </a>
                   </li>
 
@@ -196,14 +232,22 @@ const Footer = () => {
                     </address>
                   </li>
                 </ul>
-              </div>
+              </motion.div>
             </div>
           </div>
 
-          <div className="mt-12 border-t border-gray-300 pt-6">
+          <motion.div
+            variants={fadeIn("up", 0.2)}
+            initial="hidden"
+            whileInView={"show"}
+            viewport={{ once: true, amount: 0.7 }}
+            className="mt-12 border-t border-gray-300 pt-6"
+          >
             <div className="text-center sm:flex sm:justify-between sm:text-left">
               <p className="text-sm text-gray-700">
-                <span className="block sm:inline dark:text-zinc-400">All rights reserved.</span>
+                <span className="block sm:inline dark:text-zinc-400">
+                  All rights reserved.
+                </span>
 
                 <a
                   className="inline-block text-primary underline transition hover:text-primary/75"
@@ -226,7 +270,7 @@ const Footer = () => {
                 &copy; 2025 Waseet Team
               </p>
             </div>
-          </div>
+          </motion.div>
         </div>
       </footer>
     </>

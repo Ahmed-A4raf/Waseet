@@ -1,7 +1,13 @@
 import React from "react";
 import OrderSummary from "./OrderSummary";
 import { useDispatch } from "react-redux";
-import { removeFromCart, updateQuantity } from "../../redux/features/cart/cartSlice";
+import {
+  removeFromCart,
+  updateQuantity,
+} from "../../redux/features/cart/cartSlice";
+
+import { motion } from "framer-motion";
+import { fadeIn } from "../../utils/animationVariants";
 
 const Cart = ({ products, isOpen, onClose }) => {
   const dispatch = useDispatch();
@@ -41,12 +47,15 @@ const Cart = ({ products, isOpen, onClose }) => {
   const handleRemoveFromCart = async (e, id) => {
     e.preventDefault();
     try {
-      const res = await fetch(`http://waseet.runasp.net/api/Cart/basket/item/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `http://waseet.runasp.net/api/Cart/basket/item/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (res.ok) {
         dispatch(removeFromCart({ id }));
       }
@@ -58,7 +67,11 @@ const Cart = ({ products, isOpen, onClose }) => {
   return (
     <div
       className={`fixed inset-0 z-[1000] bg-black transition-all duration-300 ease-in-out
-        ${isOpen ? "bg-opacity-80 pointer-events-auto" : "bg-opacity-0 pointer-events-none"}`}
+        ${
+          isOpen
+            ? "bg-opacity-80 pointer-events-auto"
+            : "bg-opacity-0 pointer-events-none"
+        }`}
     >
       <div
         className={`fixed right-0 top-0 md:w-1/3 w-full bg-white h-full overflow-y-auto dark:bg-zinc-900
@@ -76,7 +89,13 @@ const Cart = ({ products, isOpen, onClose }) => {
             </button>
           </div>
 
-          <div className="mt-8">
+          <motion.div
+            variants={fadeIn("up", 0.2)}
+            initial="hidden"
+            whileInView={"show"}
+            viewport={{ once: true, amount: 0.7 }}
+            className="mt-8"
+          >
             {products.length === 0 ? (
               <div className="bg-primary-light p-5 font-semibold text-xl mt-8 rounded-md shadow-sm text-center dark:text-zinc-50 dark:bg-zinc-800">
                 Your Cart is <span className="text-primary">Empty</span> <br />
@@ -112,7 +131,9 @@ const Cart = ({ products, isOpen, onClose }) => {
                     >
                       -
                     </button>
-                    <span className="px-2 text-center mx-1">{item.quantity}</span>
+                    <span className="px-2 text-center mx-1">
+                      {item.quantity}
+                    </span>
                     <button
                       onClick={() => handelQuantity("increment", item.id)}
                       className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 text-gray-700 hover:bg-primary hover:text-white dark:bg-zinc-900 dark:text-zinc-50"
@@ -132,7 +153,7 @@ const Cart = ({ products, isOpen, onClose }) => {
                 </div>
               ))
             )}
-          </div>
+          </motion.div>
 
           {products.length > 0 && (
             <OrderSummary products={products} onClose={onClose} />

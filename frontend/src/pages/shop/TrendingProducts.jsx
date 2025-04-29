@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import ProductCards from "./ProductCards";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../../utils/animationVariants";
+
 const TrendingProducts = () => {
   const [products, setProducts] = useState([]);
   const [visibleProducts, setVisibleProducts] = useState(8);
@@ -8,7 +11,9 @@ const TrendingProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://waseet.runasp.net/api/Product/ProductsCards");
+        const response = await fetch(
+          "http://waseet.runasp.net/api/Product/ProductsCards"
+        );
         const data = await response.json();
         if (Array.isArray(data.products)) {
           setProducts(data.products);
@@ -26,11 +31,18 @@ const TrendingProducts = () => {
 
   return (
     <section className="section__container product__container">
-      <h2 className="section__header dark:text-zinc-50">Trending Products</h2>
-      <p className="section__subheader dark:text-zinc-400">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt at
-        ex, voluptate nemo corporis nobis..
-      </p>
+      <motion.div
+       variants={fadeIn("up", 0.2)}
+       initial="hidden"
+       whileInView={"show"}
+       viewport={{ once: true, amount: 0.7 }}
+      >
+        <h2 className="section__header dark:text-zinc-50">Trending Products</h2>
+        <p className="section__subheader dark:text-zinc-400">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt at
+          ex, voluptate nemo corporis nobis..
+        </p>
+      </motion.div>
 
       {/* products card*/}
       <div className="my-12">

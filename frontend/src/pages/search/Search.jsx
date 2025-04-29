@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import ProductCards from "../shop/ProductCards";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../../utils/animationVariants";
+
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState([]);
@@ -44,12 +47,13 @@ const Search = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       const lowerQuery = searchQuery.toLowerCase();
-      const filtered = products.filter((product) =>
-        product.name?.toLowerCase().includes(lowerQuery) ||
-        product.description?.toLowerCase().includes(lowerQuery) ||
-        product.category?.toLowerCase().includes(lowerQuery) ||
-        product.serviceProviderName?.toLowerCase().includes(lowerQuery) ||
-        product.price?.toString().includes(lowerQuery)
+      const filtered = products.filter(
+        (product) =>
+          product.name?.toLowerCase().includes(lowerQuery) ||
+          product.description?.toLowerCase().includes(lowerQuery) ||
+          product.category?.toLowerCase().includes(lowerQuery) ||
+          product.serviceProviderName?.toLowerCase().includes(lowerQuery) ||
+          product.price?.toString().includes(lowerQuery)
       );
       setFilteredProducts(filtered);
     }, 300); // Debounce
@@ -60,16 +64,36 @@ const Search = () => {
   return (
     <div className="pt-24">
       {/* search header */}
-      <section className="section__container bg-primary-light rounded-md dark:bg-zinc-800">
-        <h2 className="section__header capitalize dark:text-zinc-50">Search Page</h2>
+      <motion.section
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="section__container bg-primary-light rounded-md dark:bg-zinc-800"
+      >
+        <h2 className="section__header capitalize dark:text-zinc-50">
+          Search Page
+        </h2>
         <p className="section__subheader dark:text-zinc-400">
           Find the best products for your needs.
         </p>
-      </section>
+      </motion.section>
 
       {/* search input */}
-      <section className="section__container">
-        <div className="w-full mb-12 flex flex-col md:flex-row items-center justify-center gap-4">
+      <motion.section
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: "some" }}
+        className="section__container"
+      >
+        <motion.div
+          variants={fadeIn("right", 0.2)}
+          initial="hidden"
+          whileInView={"show"}
+          viewport={{ once: true, amount: "some" }}
+          className="w-full mb-12 flex flex-col md:flex-row items-center justify-center gap-4"
+        >
           <input
             type="text"
             value={searchQuery}
@@ -78,7 +102,7 @@ const Search = () => {
               focus:border-primary focus:bg-primary-light dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-600"
             placeholder="Search for products..."
           />
-        </div>
+        </motion.div>
 
         {loading ? (
           <p className="text-center text-2xl font-semibold text-primary">
@@ -91,7 +115,7 @@ const Search = () => {
         ) : (
           <ProductCards products={filteredProducts} />
         )}
-      </section>
+      </motion.section>
     </div>
   );
 };

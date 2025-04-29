@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../../../utils/animationVariants";
+
 export default function ReviewsCard({ productId }) {
   const [user, setUser] = useState(null);
   const [comment, setComment] = useState("");
@@ -82,7 +85,7 @@ export default function ReviewsCard({ productId }) {
   // ! Delete Review
   const handleDelete = async (id) => {
     const token = user?.token;
-  
+
     try {
       const res = await fetch(`${API_BASE_URL}/delete/${id}`, {
         method: "DELETE",
@@ -90,21 +93,19 @@ export default function ReviewsCard({ productId }) {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       if (!res.ok) throw new Error("Failed to delete review");
-  
+
       // Remove the review from the local state
       setReviews((prev) => prev.filter((rev) => rev.id !== id));
-  
+
       setShowToast({ show: true, message: "Review deleted!" });
-  
+
       setTimeout(() => setShowToast({ ...showToast, show: false }), 2000);
     } catch (err) {
       console.error(err);
     }
   };
-  
-  
 
   const totalPages = Math.ceil(reviews.length / reviewsPerPage);
   const paginatedReviews = reviews.slice(
@@ -114,13 +115,25 @@ export default function ReviewsCard({ productId }) {
 
   return (
     <div className="mx-auto p-6 bg-white shadow-md rounded-2xl relative dark:bg-zinc-800">
-      <h2 className="text-2xl font-semibold mb-6 text-center dark:text-zinc-50">
+      <motion.h2
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="text-2xl font-semibold mb-6 text-center dark:text-zinc-50"
+      >
         Product Feedback
-      </h2>
+      </motion.h2>
 
       <div className="flex flex-col md:flex-row gap-8">
         {/* Reviews Section */}
-        <div className="md:w-1/2">
+        <motion.div
+          variants={fadeIn("right", 0.2)}
+          initial="hidden"
+          whileInView={"show"}
+          viewport={{ once: true, amount: 0.7 }}
+          className="md:w-1/2"
+        >
           <h3 className="text-xl font-semibold mb-4 dark:text-zinc-50">
             Product Reviews
           </h3>
@@ -178,16 +191,24 @@ export default function ReviewsCard({ productId }) {
           {/* Pagination */}
           {totalPages > 1 && (
             <div className="flex justify-center items-center mt-4 space-x-2">
-              <button
+              <motion.button
+                variants={fadeIn("right", 0.2)}
+                initial="hidden"
+                whileInView={"show"}
+                viewport={{ once: true, amount: 0.7 }}
                 className="p-1 w-10 h-10 mx-1 rounded-full bg-gray-200 text-black dark:text-white dark:bg-zinc-900"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(currentPage - 1)}
               >
                 <i className="ri-arrow-left-wide-line"></i>
-              </button>
+              </motion.button>
 
               {[...Array(totalPages)].map((_, i) => (
-                <button
+                <motion.button
+                  variants={fadeIn("up", 0.2)}
+                  initial="hidden"
+                  whileInView={"show"}
+                  viewport={{ once: true, amount: 0.5 }}
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
                   className={`p-1 w-10 h-10 mx-1 rounded-full ${
@@ -197,22 +218,32 @@ export default function ReviewsCard({ productId }) {
                   }`}
                 >
                   {i + 1}
-                </button>
+                </motion.button>
               ))}
 
-              <button
+              <motion.button
+                variants={fadeIn("left", 0.2)}
+                initial="hidden"
+                whileInView={"show"}
+                viewport={{ once: true, amount: 0.7 }}
                 className="p-1 w-10 h-10 mx-1 rounded-full bg-gray-200 text-black dark:text-white dark:bg-zinc-900"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(currentPage + 1)}
               >
                 <i className="ri-arrow-right-wide-line"></i>
-              </button>
+              </motion.button>
             </div>
           )}
-        </div>
+        </motion.div>
 
         {/* Add Review Section */}
-        <div className="md:w-1/2">
+        <motion.div
+          variants={fadeIn("left", 0.2)}
+          initial="hidden"
+          whileInView={"show"}
+          viewport={{ once: true, amount: 0.7 }}
+          className="md:w-1/2"
+        >
           <h3 className="text-xl font-semibold mb-4 dark:text-zinc-50">
             Your Rating
           </h3>
@@ -242,7 +273,7 @@ export default function ReviewsCard({ productId }) {
           >
             Submit Review
           </button>
-        </div>
+        </motion.div>
       </div>
 
       {/* Toast Message */}

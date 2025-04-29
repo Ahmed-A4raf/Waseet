@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductCards from "../shop/ProductCards";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../../utils/animationVariants";
+
 const PRODUCTS_API = "http://waseet.runasp.net/api/Product/ProductsCards";
 const CATEGORIES_API = "http://waseet.runasp.net/api/Category/Categories";
 
@@ -35,7 +38,9 @@ const CategoryPage = () => {
         );
         const categoryId = matchedCategory?.id;
 
-        const url = categoryId ? `${PRODUCTS_API}?categoryId=${categoryId}` : PRODUCTS_API;
+        const url = categoryId
+          ? `${PRODUCTS_API}?categoryId=${categoryId}`
+          : PRODUCTS_API;
 
         const response = await fetch(url);
         const data = await response.json();
@@ -56,20 +61,38 @@ const CategoryPage = () => {
   return (
     <div className="pt-24">
       {/* category header */}
-      <section className="section__container bg-primary-light rounded-md dark:bg-zinc-800">
+      <motion.section
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="section__container bg-primary-light rounded-md dark:bg-zinc-800"
+      >
         <h2 className="section__header capitalize dark:text-zinc-50">
           {categoryName}
         </h2>
         <p className="section__subheader dark:text-zinc-400">
           Discover the best {categoryName} products available now.
         </p>
-      </section>
+      </motion.section>
 
       {/* product cards */}
-      <div className="section__container">
-        <h3 className="w-fit text-xl font-semibold mb-5 bg-white p-2 rounded-md dark:bg-zinc-800">
+      <motion.div
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="section__container"
+      >
+        <motion.h3
+          variants={fadeIn("right", 0.2)}
+          initial="hidden"
+          whileInView={"show"}
+          viewport={{ once: true, amount: 0.7 }}
+          className="w-fit text-xl font-semibold mb-5 bg-white p-2 rounded-md dark:bg-zinc-800"
+        >
           Available: <span className="text-primary">{products.length}</span>
-        </h3>
+        </motion.h3>
 
         {loading ? (
           <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900">
@@ -82,7 +105,7 @@ const CategoryPage = () => {
             <span className="text-primary">No</span> products found
           </h4>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 };

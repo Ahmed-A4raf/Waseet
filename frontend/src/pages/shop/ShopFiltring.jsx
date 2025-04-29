@@ -1,6 +1,14 @@
 import React from "react";
 
-const ShopFiltring = ({ filters, filtersState, setFiltersState, clearFilters }) => {
+import { motion } from "framer-motion";
+import { fadeIn } from "../../utils/animationVariants";
+
+const ShopFiltring = ({
+  filters,
+  filtersState,
+  setFiltersState,
+  clearFilters,
+}) => {
   const handlePriceRangeChange = (range) => {
     setFiltersState((prev) => ({
       ...prev,
@@ -18,15 +26,30 @@ const ShopFiltring = ({ filters, filtersState, setFiltersState, clearFilters }) 
 
   return (
     <div className="space-y-5 flex-shrink-0 dark:text-zinc-50">
-      <h3 className="text-xl font-semibold mb-5 bg-white p-2 rounded-md dark:bg-zinc-900">
+      <motion.h3
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="text-xl font-semibold mb-5 bg-white p-2 rounded-md dark:bg-zinc-900"
+      >
         Filters
-      </h3>
+      </motion.h3>
 
       {/* Category */}
-      <div className="flex flex-col space-y-2 bg-white p-2 rounded-md dark:bg-zinc-900">
+      <motion.div
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="flex flex-col space-y-2 bg-white p-2 rounded-md dark:bg-zinc-900"
+      >
         <h4 className="text-lg font-medium">Category</h4>
         {filters.Categories.map((category) => (
-          <label key={category.id} className="cursor-pointer capitalize relative flex items-center">
+          <label
+            key={category.id}
+            className="cursor-pointer capitalize relative flex items-center"
+          >
             <input
               className="mr-1 sr-only peer"
               type="radio"
@@ -41,13 +64,22 @@ const ShopFiltring = ({ filters, filtersState, setFiltersState, clearFilters }) 
             </span>
           </label>
         ))}
-      </div>
+      </motion.div>
 
       {/* Price Range */}
-      <div className="flex flex-col space-y-2 bg-white p-2 rounded-md dark:bg-zinc-900">
+      <motion.div
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.74 }}
+        className="flex flex-col space-y-2 bg-white p-2 rounded-md dark:bg-zinc-900"
+      >
         <h4 className="text-lg font-medium">Price Range</h4>
         {filters.priceRanges.map((range) => (
-          <label key={range.label} className="cursor-pointer capitalize relative flex items-center">
+          <label
+            key={range.label}
+            className="cursor-pointer capitalize relative flex items-center"
+          >
             <input
               className="mr-1 sr-only peer"
               type="radio"
@@ -63,16 +95,20 @@ const ShopFiltring = ({ filters, filtersState, setFiltersState, clearFilters }) 
             </span>
           </label>
         ))}
-      </div>
+      </motion.div>
 
       {/* Clear Filters */}
-      <button
+      <motion.button
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
         className="bg-primary py-1 px-4 w-full rounded-md text-white hover:bg-primary-dark"
         onClick={clearFilters}
         type="button"
       >
         Clear All Filters
-      </button>
+      </motion.button>
     </div>
   );
 };

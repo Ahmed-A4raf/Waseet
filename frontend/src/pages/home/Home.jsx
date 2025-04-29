@@ -6,8 +6,6 @@ import DealsSection from "./DealsSection";
 import PromoBanner from "./PromoBanner";
 import Blogs from "../blogs/Blogs";
 
-
-
 const Home = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -21,7 +19,7 @@ const Home = () => {
       <PromoBanner />
       <Blogs />
     </div>
- );
+  );
 };
 
 export default Home;

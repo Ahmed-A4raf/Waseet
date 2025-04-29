@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../../redux/features/cart/cartSlice";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../../utils/animationVariants";
+
 const OrderSummary = ({ onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,7 +48,13 @@ const OrderSummary = ({ onClose }) => {
   };
 
   return (
-    <div className="bg-primary-light mt-8 rounded-md text-base dark:bg-zinc-800">
+    <motion.div
+      variants={fadeIn("up", 0.5)}
+      initial="hidden"
+      whileInView={"show"}
+      viewport={{ once: true, amount: 0.7 }}
+      className="bg-primary-light mt-8 rounded-md text-base dark:bg-zinc-800"
+    >
       <div className="px-6 py-4 space-y-5">
         <h2 className="text-2xl font-semibold text-text-dark text-center bg-white p-1 rounded-md dark:bg-zinc-900 dark:text-zinc-50">
           Order Summary
@@ -91,7 +100,7 @@ const OrderSummary = ({ onClose }) => {
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

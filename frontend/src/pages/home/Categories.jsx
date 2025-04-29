@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../../utils/animationVariants";
+
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [page, setPage] = useState(0);
@@ -33,15 +36,24 @@ const Categories = () => {
   };
 
   return (
-    <div className="flex items-center justify-center space-x-4 mt-8">
+    <motion.div
+    variants={fadeIn("up", 0.2)}
+    initial="hidden"
+    whileInView={"show"}
+    viewport={{ once: true, amount: 0.7 }}
+    className="flex items-center justify-center space-x-4 mt-8">
       {/* Left Arrow */}
-      <button
+      <motion.button
+       variants={fadeIn("right", 0.2)}
+       initial="hidden"
+       whileInView={"show"}
+       viewport={{ once: true, amount: 0.7 }}
         onClick={handlePrev}
         disabled={page === 0}
         className="p-2 bg-gray-100 dark:bg-zinc-700 text-black dark:text-white rounded-full disabled:opacity-30"
       >
         <ChevronLeft size={24} />
-      </button>
+      </motion.button>
 
       {/* Categories */}
       <div className="flex gap-6">
@@ -67,14 +79,18 @@ const Categories = () => {
       </div>
 
       {/* Right Arrow */}
-      <button
+      <motion.button
+       variants={fadeIn("left", 0.2)}
+       initial="hidden"
+       whileInView={"show"}
+       viewport={{ once: true, amount: 0.7 }}
         onClick={handleNext}
         disabled={page >= totalPages - 1}
         className="p-2 bg-gray-100 dark:bg-zinc-700 text-black dark:text-white rounded-full disabled:opacity-30"
       >
         <ChevronRight size={24} />
-      </button>
-    </div>
+      </motion.button>
+    </motion.div>
   );
 };
 

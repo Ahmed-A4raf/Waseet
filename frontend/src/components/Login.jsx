@@ -4,6 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../redux/features/auth/authApi";
 import { setUser } from "../redux/features/auth/authSlice";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../utils/animationVariants";
+
 const Login = () => {
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
@@ -45,9 +48,20 @@ const Login = () => {
 
   return (
     <section className="h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900">
-      <div className="max-w-sm w-full mx-auto bg-white shadow p-8 rounded-md dark:bg-zinc-800">
-        <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">Sign in</h2>
-        <form onSubmit={handleLogin} className="space-y-4 max-w-sm mx-auto pt-8">
+      <motion.div
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="max-w-sm w-full mx-auto bg-white shadow p-8 rounded-md dark:bg-zinc-800"
+      >
+        <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">
+          Sign in
+        </h2>
+        <form
+          onSubmit={handleLogin}
+          className="space-y-4 max-w-sm mx-auto pt-8"
+        >
           {/* Email Input */}
           <input
             className="w-full bg-primary-light focus:outline-none px-5 py-3 rounded-md dark:bg-zinc-900 dark:text-zinc-50"
@@ -99,7 +113,10 @@ const Login = () => {
                 Remember Me
               </label>
             </div>
-            <Link to="/forgetpass" className="hover:text-primary hover:underline dark:text-zinc-50">
+            <Link
+              to="/forgetpass"
+              className="hover:text-primary hover:underline dark:text-zinc-50"
+            >
               Forget Password?
             </Link>
           </div>
@@ -127,7 +144,9 @@ const Login = () => {
         {/* OR Separator */}
         <div className="flex items-center justify-center">
           <div className="relative flex items-center justify-center">
-            <span className="relative z-10 p-1 text-sm text-white font-bold">OR</span>
+            <span className="relative z-10 p-1 text-sm text-white font-bold">
+              OR
+            </span>
             <span className="absolute w-1/3 h-1/3 rounded-full bg-primary animate-ping"></span>
             <span className="absolute w-1/2 h-1/2 rounded-full bg-primary animate-ping"></span>
             <span className="absolute w-3/4 h-3/4 rounded-full bg-primary animate-ping"></span>
@@ -139,7 +158,12 @@ const Login = () => {
         {/* Social Buttons */}
         <div className="flex items-center justify-center mt-5">
           <ul className="flex items-center gap-4">
-            {["google-fill", "facebook-fill", "instagram-fill", "tiktok-fill"].map((icon) => (
+            {[
+              "google-fill",
+              "facebook-fill",
+              "instagram-fill",
+              "tiktok-fill",
+            ].map((icon) => (
               <li key={icon}>
                 <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
                   <i className={`ri-${icon}`}></i>
@@ -148,7 +172,7 @@ const Login = () => {
             ))}
           </ul>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

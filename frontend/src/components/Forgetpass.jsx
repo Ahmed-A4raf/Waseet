@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../utils/animationVariants";
+
 const Forgetpass = () => {
   const [email, setEmail] = useState("");
 
@@ -13,7 +16,13 @@ const Forgetpass = () => {
   };
   return (
     <section className="h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900">
-      <div className="max-w-sm shadow bg-white mx-auto p-8 rounded-md dark:bg-zinc-800">
+      <motion.div
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="max-w-sm shadow bg-white mx-auto p-8 rounded-md dark:bg-zinc-800"
+      >
         <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">
           Reset your password
         </h2>
@@ -49,7 +58,7 @@ const Forgetpass = () => {
             </Link>
           </div>
         </form>
-      </div>
+      </motion.div>
     </section>
   );
 };

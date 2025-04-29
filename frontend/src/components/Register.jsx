@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegisterUserMutation } from "../redux/features/auth/authApi";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../utils/animationVariants";
+
 const Register = () => {
   const [message, setMessage] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState(""); 
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [role, setRole] = useState("customer");
@@ -24,12 +27,12 @@ const Register = () => {
     }
     setMessage("");
 
-    const data = { 
-      displayName, 
-      email, 
-      password, 
+    const data = {
+      displayName,
+      email,
+      password,
       role,
-      phoneNumber, 
+      phoneNumber,
     };
     console.log(data);
     try {
@@ -43,9 +46,20 @@ const Register = () => {
 
   return (
     <section className="h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900">
-      <div className="max-w-sm shadow bg-white mx-auto p-8 rounded-md dark:bg-zinc-800">
-        <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">Create Account</h2>
-        <form onSubmit={handleRegister} className="space-y-4 max-w-sm mx-auto pt-8">
+      <motion.div
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="max-w-sm shadow bg-white mx-auto p-8 rounded-md dark:bg-zinc-800"
+      >
+        <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">
+          Create Account
+        </h2>
+        <form
+          onSubmit={handleRegister}
+          className="space-y-4 max-w-sm mx-auto pt-8"
+        >
           <input
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}
@@ -120,7 +134,10 @@ const Register = () => {
           {/* Role Selection */}
           <div className="flex justify-between gap-2 p-1">
             {["admin", "serviceProvider", "customer"].map((roleOption) => (
-              <label key={roleOption} className="cursor-pointer flex items-center">
+              <label
+                key={roleOption}
+                className="cursor-pointer flex items-center"
+              >
                 <input
                   onChange={() => setRole(roleOption)}
                   value={roleOption}
@@ -191,7 +208,7 @@ const Register = () => {
             </li>
           </ul>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 };

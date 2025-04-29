@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import dealImg from "../../assets/deals.png";
 
+import { motion } from "framer-motion";
+import { fadeIn } from "../../utils/animationVariants";
+
 const DealsSection = () => {
   const targetValues = { days: 14, hours: 20, mins: 15, secs: 5 };
   const [counts, setCounts] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
@@ -36,7 +39,7 @@ const DealsSection = () => {
     const duration = 2000; // 2 seconds
     const steps = 60; // Number of steps for smooth animation
     const intervalTime = duration / steps;
-    
+
     const startAnimation = (key, target) => {
       let step = 0;
       const increment = target / steps;
@@ -55,33 +58,55 @@ const DealsSection = () => {
     Object.keys(targetValues).forEach((key) => {
       startAnimation(key, targetValues[key]);
     });
-
   }, [startCounting]); // Runs when `startCounting` becomes true
 
   return (
-    <section ref={sectionRef} className="section__container deals__container dark:bg-zinc-800">
+    <motion.section
+      variants={fadeIn("up", 0.2)}
+      initial="hidden"
+      whileInView={"show"}
+      viewport={{ once: true, amount: 0.5 }}
+      ref={sectionRef}
+      className="section__container deals__container dark:bg-zinc-800"
+    >
       {/* Deals Image */}
-      <div className="deals__image relative">
+      <motion.div
+        variants={fadeIn("right", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="deals__image relative"
+      >
         <img src={dealImg} alt="Deals" className="w-full absolute inset-0" />
-      </div>
+      </motion.div>
 
       {/* Deals Content */}
-      <div className="deals__content">
+      <motion.div
+        variants={fadeIn("up", 0.2)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.7 }}
+        className="deals__content"
+      >
         <h5>Your one From Thousand of Products</h5>
         <h4 className="dark:text-zinc-50">Deals of the Month</h4>
-        <p className="dark:text-zinc-400">Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
+        <p className="dark:text-zinc-400">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit...
+        </p>
 
         {/* Countdown Timer */}
         <div className="deals__countdown flex-wrap">
           {Object.entries(counts).map(([key, value]) => (
             <div key={key} className="deals__countdown__card dark:bg-zinc-900">
               <h4 className="dark:text-zinc-50">{value}</h4>
-              <p className="dark:text-zinc-400">{key.charAt(0).toUpperCase() + key.slice(1)}</p>
+              <p className="dark:text-zinc-400">
+                {key.charAt(0).toUpperCase() + key.slice(1)}
+              </p>
             </div>
           ))}
         </div>
-      </div>
-    </section>
+      </motion.div>
+    </motion.section>
   );
 };
 
