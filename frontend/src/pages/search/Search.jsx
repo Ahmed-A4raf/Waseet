@@ -113,7 +113,18 @@ const Search = () => {
             <span className="text-primary">No</span> results found.
           </p>
         ) : (
-          <ProductCards products={filteredProducts} />
+          <>
+            <motion.h3
+              variants={fadeIn("right", 0.2)}
+              initial="hidden"
+              whileInView={"show"}
+              viewport={{ once: true, amount: 0.7 }}
+              className="w-fit text-xl font-semibold mb-5 bg-white p-2 rounded-md dark:bg-zinc-800"
+            >
+              Available: <span className="text-primary">{products.length}</span>
+            </motion.h3>
+            <ProductCards products={filteredProducts} />
+          </>
         )}
       </motion.section>
     </div>

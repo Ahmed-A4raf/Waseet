@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom"; // ✅ أضفنا دي
 import { motion } from "framer-motion";
 import { fadeIn } from "../../../utils/animationVariants";
 
@@ -10,11 +10,11 @@ export default function ReviewsCard({ productId }) {
   const [reviews, setReviews] = useState([]);
   const [showToast, setShowToast] = useState({ show: false, message: "" });
   const [currentPage, setCurrentPage] = useState(1);
+  const navigate = useNavigate(); // ✅ أضفنا دي
 
   const reviewsPerPage = 3;
   const API_BASE_URL = "http://waseet.runasp.net/api/Review";
 
-  // Load user once on mount
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
@@ -22,7 +22,6 @@ export default function ReviewsCard({ productId }) {
     }
   }, []);
 
-  // Fetch reviews only after user and productId are available
   useEffect(() => {
     if (user && productId) {
       fetchReviews();
@@ -48,9 +47,15 @@ export default function ReviewsCard({ productId }) {
   };
 
   const handleSubmit = async () => {
+    // ✅ التحقق هنا
+    if (!user || !user.token) {
+      navigate("/login");
+      return;
+    }
+
     if (!comment.trim()) return;
 
-    const token = user?.token;
+    const token = user.token;
 
     const newReview = {
       comment,
@@ -75,31 +80,6 @@ export default function ReviewsCard({ productId }) {
       setRating(5);
       setShowToast({ show: true, message: "Review submitted!" });
       fetchReviews();
-
-      setTimeout(() => setShowToast({ ...showToast, show: false }), 2000);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // ! Delete Review
-  const handleDelete = async (id) => {
-    const token = user?.token;
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/delete/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!res.ok) throw new Error("Failed to delete review");
-
-      // Remove the review from the local state
-      setReviews((prev) => prev.filter((rev) => rev.id !== id));
-
-      setShowToast({ show: true, message: "Review deleted!" });
 
       setTimeout(() => setShowToast({ ...showToast, show: false }), 2000);
     } catch (err) {
