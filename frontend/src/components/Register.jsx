@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegisterUserMutation } from "../redux/features/auth/authApi";
-
 import { motion } from "framer-motion";
 import { fadeIn } from "../utils/animationVariants";
 
@@ -34,7 +33,6 @@ const Register = () => {
       role,
       phoneNumber,
     };
-    console.log(data);
     try {
       await registerUser(data).unwrap();
       alert("Registration successful");
@@ -45,13 +43,29 @@ const Register = () => {
   };
 
   return (
-    <section className="h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900">
+    <section className="relative h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900 overflow-hidden">
+      <motion.svg
+        variants={fadeIn("up", 0.7)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.5 }}
+        className="absolute bottom-0 left-0 w-full"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+      >
+        <path
+          fill="#fd7e14"
+          fillOpacity="0.5"
+          d="M0,64L48,58.7C96,53,192,43,288,74.7C384,107,480,181,576,224C672,267,768,277,864,272C960,267,1056,245,1152,202.7C1248,160,1344,96,1392,64L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+        ></path>
+      </motion.svg>
+
       <motion.div
         variants={fadeIn("up", 0.2)}
         initial="hidden"
         whileInView={"show"}
         viewport={{ once: true, amount: 0.7 }}
-        className="max-w-sm shadow bg-white mx-auto p-8 rounded-md dark:bg-zinc-800"
+        className="max-w-sm shadow bg-white mx-auto p-8 rounded-md z-10 dark:bg-zinc-800"
       >
         <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">
           Create Account
@@ -85,7 +99,7 @@ const Register = () => {
             placeholder="Phone Number"
           />
 
-          {/* Password Field with Show/Hide */}
+          {/* Password */}
           <div className="relative">
             <input
               value={password}
@@ -108,7 +122,7 @@ const Register = () => {
             </button>
           </div>
 
-          {/* Confirm Password Field with Show/Hide */}
+          {/* Confirm Password */}
           <div className="relative">
             <input
               value={confirmPassword}
@@ -154,6 +168,7 @@ const Register = () => {
           </div>
 
           {message && <p className="text-red-500">{message}</p>}
+
           <button
             type="submit"
             disabled={isLoading}
@@ -162,6 +177,7 @@ const Register = () => {
             {isLoading ? "Registering..." : "Register"}
           </button>
         </form>
+
         <p className="my-5 text-sm text-center dark:text-zinc-400">
           Already have an account?
           <Link to="/login" className="text-primary px-1 hover:underline">
@@ -169,7 +185,7 @@ const Register = () => {
           </Link>
         </p>
 
-        {/* or */}
+        {/* OR + Social Buttons */}
         <div className="flex items-center justify-center">
           <div className="relative flex items-center justify-center">
             <span className="relative z-10 p-1 text-sm text-white font-bold">
@@ -183,29 +199,15 @@ const Register = () => {
           </div>
         </div>
 
-        {/* social login */}
         <div className="flex items-center justify-center mt-5">
           <ul className="flex items-center gap-4">
-            <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
-                <i className="ri-google-fill"></i>
-              </button>
-            </li>
-            <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
-                <i className="ri-facebook-fill"></i>
-              </button>
-            </li>
-            <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
-                <i className="ri-instagram-fill"></i>
-              </button>
-            </li>
-            <li>
-              <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transtion-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
-                <i className="ri-tiktok-fill"></i>
-              </button>
-            </li>
+            {["google", "facebook", "instagram", "tiktok"].map((platform) => (
+              <li key={platform}>
+                <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
+                  <i className={`ri-${platform}-fill`}></i>
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
       </motion.div>

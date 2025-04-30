@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginUserMutation } from "../redux/features/auth/authApi";
 import { setUser } from "../redux/features/auth/authSlice";
-
 import { motion } from "framer-motion";
 import { fadeIn } from "../utils/animationVariants";
 
@@ -47,13 +46,30 @@ const Login = () => {
   };
 
   return (
-    <section className="h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900">
+    <section className="relative h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900 overflow-hidden">
+      {/* Background SVG Wave */}
+      <motion.svg
+        variants={fadeIn("up", 0.7)}
+        initial="hidden"
+        whileInView={"show"}
+        viewport={{ once: true, amount: 0.5 }}
+        className="absolute bottom-0 left-0 w-full"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 1440 320"
+      >
+        <path
+          fill="#fd7e14"
+          fill-opacity="0.5"
+          d="M0,64L48,58.7C96,53,192,43,288,74.7C384,107,480,181,576,224C672,267,768,277,864,272C960,267,1056,245,1152,202.7C1248,160,1344,96,1392,64L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+        ></path>
+      </motion.svg>
+
       <motion.div
         variants={fadeIn("up", 0.2)}
         initial="hidden"
         whileInView={"show"}
-        viewport={{ once: true, amount: 0.7 }}
-        className="max-w-sm w-full mx-auto bg-white shadow p-8 rounded-md dark:bg-zinc-800"
+        viewport={{ once: true, amount: "some" }}
+        className="max-w-sm w-full mx-auto bg-white shadow p-8 rounded-md dark:bg-zinc-800 z-10"
       >
         <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">
           Sign in
@@ -62,7 +78,6 @@ const Login = () => {
           onSubmit={handleLogin}
           className="space-y-4 max-w-sm mx-auto pt-8"
         >
-          {/* Email Input */}
           <input
             className="w-full bg-primary-light focus:outline-none px-5 py-3 rounded-md dark:bg-zinc-900 dark:text-zinc-50"
             onChange={(e) => setEmail(e.target.value)}
@@ -74,7 +89,6 @@ const Login = () => {
             required
           />
 
-          {/* Password Input with Toggle */}
           <div className="relative">
             <input
               className="w-full bg-primary-light focus:outline-none px-5 py-3 rounded-md pr-12 dark:bg-zinc-900 dark:text-zinc-50"
@@ -99,7 +113,6 @@ const Login = () => {
             </button>
           </div>
 
-          {/* Remember me & Forget password */}
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <input
@@ -121,10 +134,8 @@ const Login = () => {
             </Link>
           </div>
 
-          {/* Error Message */}
           {message && <p className="text-red-500">{message}</p>}
 
-          {/* Login Button */}
           <button
             type="submit"
             className="w-full mt-5 bg-primary text-white hover:bg-primary-dark hover:shadow-md hover:shadow-primary hover:-translate-y-2 py-3 font-medium rounded-md transition-all duration-200"
@@ -133,7 +144,6 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Sign Up Link */}
         <p className="my-5 text-sm text-center dark:text-zinc-400">
           Don't have an account?
           <Link to="/register" className="text-primary px-1 hover:underline">
@@ -141,7 +151,6 @@ const Login = () => {
           </Link>
         </p>
 
-        {/* OR Separator */}
         <div className="flex items-center justify-center">
           <div className="relative flex items-center justify-center">
             <span className="relative z-10 p-1 text-sm text-white font-bold">
@@ -155,7 +164,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* Social Buttons */}
         <div className="flex items-center justify-center mt-5">
           <ul className="flex items-center gap-4">
             {[
