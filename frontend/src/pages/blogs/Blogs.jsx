@@ -21,8 +21,7 @@ const Blogs = () => {
       >
         <h2 className="section__header dark:text-zinc-50">Latest From Blog</h2>
         <p className="section__subheader dark:text-zinc-400">
-          Elevate your wardrobe with our freshest style tips, trends, and
-          inspiration on our blog.
+          Stay ahead with expert guides, shopping hacks, and insider updates from the world of online shopping.
         </p>
       </motion.div>
       

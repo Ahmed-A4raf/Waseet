@@ -27,9 +27,7 @@ const Banner = () => {
           Your <span className="text-primary">Service</span>
         </h1>
         <p className="dark:text-zinc-400">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Non omnis
-          illo id deleniti dolor perferendis quasi doloribus aut, a maxime nam
-          nisi. Doloremque tempore corrupti culpa, hic accusantium libero non!
+          Discover top-quality products & services crafted to meet your daily needs. Shop the latest trends in fashion, electronics, and home essentials — all delivered with fast shipping and trusted service.
         </p>
         <button className="btn">
           <Link to="/shop">EXPLORE NOW</Link>

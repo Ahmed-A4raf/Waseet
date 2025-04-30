@@ -39,8 +39,7 @@ const TrendingProducts = () => {
       >
         <h2 className="section__header dark:text-zinc-50">Trending Products</h2>
         <p className="section__subheader dark:text-zinc-400">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Incidunt at
-          ex, voluptate nemo corporis nobis..
+        Browse our most popular items this week — handpicked by shoppers just like you. Don't miss out!
         </p>
       </motion.div>
 

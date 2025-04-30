@@ -79,7 +79,7 @@ const Contact = () => {
                 <span>
                   <h3 className="text-xl font-semibold">Office Address</h3>
                   <p className="text-gray-700 dark:text-zinc-400">
-                    R2vH9@example.com
+                  213 Lane, Shebeen El-Kom , Egypt
                   </p>
                 </span>
               </li>

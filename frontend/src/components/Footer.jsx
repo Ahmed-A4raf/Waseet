@@ -20,8 +20,8 @@ const Footer = () => {
               </div>
 
               <p className="mt-6 text-center leading-relaxed text-gray-700 sm:max-w-xs sm:text-left dark:text-zinc-400">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Incidunt consequuntur amet culpa cum itaque neque.
+                Find what you need in seconds — trusted listings, top deals, and
+                verified sellers all in one place.
               </p>
 
               <ul className="mt-8 flex justify-center gap-6 sm:justify-start md:gap-8 text-xl">
@@ -206,7 +206,7 @@ const Footer = () => {
                     >
                       <i className="ri-mail-line text-lg text-primary"></i>
                       <span className="flex-1 text-gray-700 dark:text-zinc-400">
-                        john@doe.com
+                        teamwaseet@gmail.com
                       </span>
                     </a>
                   </li>
@@ -228,7 +228,7 @@ const Footer = () => {
                     <i className="ri-map-pin-line text-lg text-primary"></i>
 
                     <address className="-mt-0.5 flex-1 text-gray-700 not-italic dark:text-zinc-400">
-                      213 Lane, London, United Kingdom
+                      213 Lane, Shebeen El-Kom , Egypt
                     </address>
                   </li>
                 </ul>

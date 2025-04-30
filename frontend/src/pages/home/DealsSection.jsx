@@ -91,7 +91,8 @@ const DealsSection = () => {
         <h5>Your one From Thousand of Products</h5>
         <h4 className="dark:text-zinc-50">Deals of the Month</h4>
         <p className="dark:text-zinc-400">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit...
+          Get exclusive limited-time offers you won't find anywhere else. Shop before they're
+          gone!
         </p>
 
         {/* Countdown Timer */}

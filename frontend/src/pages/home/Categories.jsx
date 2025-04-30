@@ -60,7 +60,7 @@ const Categories = () => {
         {currentCategories.map((category) => (
           <Link
             key={category.id}
-            to={`/categories/${category.categoryName.toLowerCase()}`}
+            to={`/categories/${category.categoryName}`}
             className="categories__card bg-white dark:bg-zinc-900 p-4 rounded-md hover:scale-105 transition-all duration-300"
           >
             <div className="relative rounded-full mx-auto w-24 h-24">
@@ -72,7 +72,7 @@ const Categories = () => {
               />
             </div>
             <h4 className="text-center mt-2 font-semibold">
-              {category.categoryName.toLowerCase()}
+              {category.categoryName}
             </h4>
           </Link>
         ))}

@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import Cart from "../pages/shop/Cart";
 import { syncCartWithServer } from "../redux/features/cart/cartSlice";
 import { clearCart } from "../redux/features/cart/cartSlice";
-
+import adminImg from "../assets/admin.png";
 import avatarImg from "../assets/avatar.png";
 import { useLogoutUserMutation } from "../redux/features/auth/authApi";
 import { logout } from "../redux/features/auth/authSlice";
@@ -195,10 +195,15 @@ const Navbar = () => {
               {user ? (
                 <>
                   <img
-                    src={user?.profileImage || avatarImg}
+                    src={
+                      user?.role === "admin"
+                        ? adminImg
+                        : user?.profileImage || avatarImg
+                    }
                     alt="profile"
                     className="size-6 rounded-full cursor-pointer"
                   />
+
                   {isDropdownOpen && (
                     <div className="absolute right-0 mt-3 p-4 w-48 border border-gray-200 bg-white rounded-lg shadow-lg z-50 dark:bg-zinc-800 dark:border-zinc-600">
                       <ul className="font-medium space-y-4 p-2">
