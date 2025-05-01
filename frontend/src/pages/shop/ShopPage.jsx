@@ -106,13 +106,13 @@ const ShopPage = () => {
       </motion.section>
 
       <section className="section__container">
-        <div className="flex md:flex-row gap-8">
+        <div className="flex sm:flex-row flex-col gap-8">
           <motion.div
             variants={fadeIn("right", 0.2)}
             initial="hidden"
             whileInView={"show"}
             viewport={{ once: true, amount: "some"}}
-            className="bg-primary-light p-4 rounded-md w-1/2 md:w-1/5 dark:bg-zinc-800"
+            className="bg-primary-light p-4 rounded-md md:w-1/5 dark:bg-zinc-800"
           >
             <ShopFiltring
               filters={{ Categories: categories, priceRanges }}

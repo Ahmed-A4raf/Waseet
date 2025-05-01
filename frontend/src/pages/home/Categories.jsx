@@ -56,7 +56,7 @@ const Categories = () => {
       </motion.button>
 
       {/* Categories */}
-      <div className="flex gap-6">
+      <div className="flex flex-wrap justify-center gap-4 px-4">
         {currentCategories.map((category) => (
           <Link
             key={category.id}

@@ -170,7 +170,7 @@ const Navbar = () => {
         </ul>
 
         {/* logo */}
-        <div className="nav__logo">
+        <div className="nav__logo hidden md:block sm:block">
           <Link to="/" className="dark:text-zinc-50">
             Waseet <span>.</span>
           </Link>
