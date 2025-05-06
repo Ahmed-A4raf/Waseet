@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLogoutUserMutation } from "../../redux/features/auth/authApi";
 import { logout } from "../../redux/features/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { clearCart } from "../../redux/features/cart/cartSlice";
 
 const SIDEBAR_ITEMS = [
   { name: "Overview", icon: BarChart2, color: "#6366f1", href: "/dashboard" },
@@ -42,6 +43,7 @@ const SidebarSp = () => {
     try {
       await logoutUser().unwrap();
       dispatch(logout());
+      dispatch(clearCart());
       navigate("/");
     } catch (error) {
       console.error("Failed to logout:", error);

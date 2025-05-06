@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../../redux/features/cart/cartSlice";
 
 const OrderDetails = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +12,8 @@ const OrderDetails = () => {
     street: "",
     deliveryMethodId: "",
   });
+
+  const dispatch = useDispatch();
 
   const [deliveryMethods, setDeliveryMethods] = useState([]);
   const [basketId, setBasketId] = useState(null);
@@ -58,6 +62,25 @@ const OrderDetails = () => {
     }
   };
 
+  const clearServerCart = async () => {
+    try {
+      const res = await fetch("http://waseet.runasp.net/api/Cart/basket", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.ok) {
+        dispatch(clearCart()); // Clear from Redux as well
+      } else {
+        console.error("Failed to clear cart from API");
+      }
+    } catch (err) {
+      console.error("Error clearing cart:", err);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -101,10 +124,6 @@ const OrderDetails = () => {
         },
       };
 
-      // console.log("🚀 Payload being sent to server:", payload);
-      console.log("🚀 Payload being sent to server:", JSON.stringify(payload, null, 2));
-
-
       const res = await fetch("http://waseet.runasp.net/api/Order", {
         method: "POST",
         headers: {
@@ -118,6 +137,9 @@ const OrderDetails = () => {
 
       const data = await res.json();
       setOrder(data);
+
+      // ✅ Clear cart after successful order
+      await clearServerCart();
     } catch (err) {
       console.error(err);
       setError("An error occurred while placing the order. Please try again.");

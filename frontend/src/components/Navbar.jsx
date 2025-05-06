@@ -56,7 +56,7 @@ const Navbar = () => {
     try {
       await logoutUser().unwrap();
       dispatch(logout());
-      dispatch(clearCart()); // 🧹 تفريغ الكارت عند تسجيل الخروج
+      dispatch(clearCart()); 
       navigate("/");
     } catch (error) {
       console.error("Failed to logout:", error);

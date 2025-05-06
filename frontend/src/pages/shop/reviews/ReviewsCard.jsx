@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ أضفنا دي
+import { useNavigate } from "react-router-dom"; 
 import { motion } from "framer-motion";
 import { fadeIn } from "../../../utils/animationVariants";
 
@@ -10,7 +10,7 @@ export default function ReviewsCard({ productId }) {
   const [reviews, setReviews] = useState([]);
   const [showToast, setShowToast] = useState({ show: false, message: "" });
   const [currentPage, setCurrentPage] = useState(1);
-  const navigate = useNavigate(); // ✅ أضفنا دي
+  const navigate = useNavigate(); 
 
   const reviewsPerPage = 3;
   const API_BASE_URL = "http://waseet.runasp.net/api/Review";
@@ -47,7 +47,6 @@ export default function ReviewsCard({ productId }) {
   };
 
   const handleSubmit = async () => {
-    // ✅ التحقق هنا
     if (!user || !user.token) {
       navigate("/login");
       return;
@@ -61,7 +60,7 @@ export default function ReviewsCard({ productId }) {
       comment,
       rating,
       date: new Date().toISOString(),
-      productId: productId,
+      productId,
     };
 
     try {
@@ -81,7 +80,34 @@ export default function ReviewsCard({ productId }) {
       setShowToast({ show: true, message: "Review submitted!" });
       fetchReviews();
 
-      setTimeout(() => setShowToast({ ...showToast, show: false }), 2000);
+      setTimeout(() => {
+        setShowToast((prev) => ({ ...prev, show: false }));
+      }, 2000);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    const token = user?.token;
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/delete/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) throw new Error("Failed to delete review");
+
+      setReviews((prev) => prev.filter((rev) => rev.id !== id));
+
+      setShowToast({ show: true, message: "Review deleted!" });
+
+      setTimeout(() => {
+        setShowToast((prev) => ({ ...prev, show: false }));
+      }, 2000);
     } catch (err) {
       console.error(err);
     }
@@ -92,6 +118,7 @@ export default function ReviewsCard({ productId }) {
     (currentPage - 1) * reviewsPerPage,
     currentPage * reviewsPerPage
   );
+
 
   return (
     <div className="mx-auto p-6 bg-white shadow-md rounded-2xl relative dark:bg-zinc-800">
