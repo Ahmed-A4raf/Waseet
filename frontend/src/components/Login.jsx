@@ -59,7 +59,7 @@ const Login = () => {
       >
         <path
           fill="#fd7e14"
-          fill-opacity="0.5"
+          fillOpacity="0.5"
           d="M0,64L48,58.7C96,53,192,43,288,74.7C384,107,480,181,576,224C672,267,768,277,864,272C960,267,1056,245,1152,202.7C1248,160,1344,96,1392,64L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
         ></path>
       </motion.svg>
@@ -74,10 +74,7 @@ const Login = () => {
         <h2 className="text-3xl text-center font-bold pt-5 dark:text-zinc-50">
           Sign in
         </h2>
-        <form
-          onSubmit={handleLogin}
-          className="space-y-4 max-w-sm mx-auto pt-8"
-        >
+        <form onSubmit={handleLogin} className="space-y-4 max-w-sm mx-auto pt-8">
           <input
             className="w-full bg-primary-light focus:outline-none px-5 py-3 rounded-md dark:bg-zinc-900 dark:text-zinc-50"
             onChange={(e) => setEmail(e.target.value)}
@@ -126,12 +123,13 @@ const Login = () => {
                 Remember Me
               </label>
             </div>
-            <Link
-              to="/forgetpass"
+            <button
+              type="button"
+              onClick={() => navigate("/forgetpass", { state: { email } })}
               className="hover:text-primary hover:underline dark:text-zinc-50"
             >
               Forget Password?
-            </Link>
+            </button>
           </div>
 
           {message && <p className="text-red-500">{message}</p>}
@@ -151,6 +149,7 @@ const Login = () => {
           </Link>
         </p>
 
+        {/* Social login OR */}
         <div className="flex items-center justify-center">
           <div className="relative flex items-center justify-center">
             <span className="relative z-10 p-1 text-sm text-white font-bold">
@@ -164,14 +163,10 @@ const Login = () => {
           </div>
         </div>
 
+        {/* Social buttons */}
         <div className="flex items-center justify-center mt-5">
           <ul className="flex items-center gap-4">
-            {[
-              "google-fill",
-              "facebook-fill",
-              "instagram-fill",
-              "tiktok-fill",
-            ].map((icon) => (
+            {["google-fill", "facebook-fill", "instagram-fill", "tiktok-fill"].map((icon) => (
               <li key={icon}>
                 <button className="text-primary bg-primary-light text-2xl rounded-full size-10 flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300 dark:bg-zinc-900 hover:dark:bg-primary hover:dark:text-zinc-900">
                   <i className={`ri-${icon}`}></i>

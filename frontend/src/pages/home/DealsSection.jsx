@@ -1,64 +1,35 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import dealImg from "../../assets/deals.png";
-
 import { motion } from "framer-motion";
 import { fadeIn } from "../../utils/animationVariants";
 
 const DealsSection = () => {
-  const targetValues = { days: 14, hours: 20, mins: 15, secs: 5 };
-  const [counts, setCounts] = useState({ days: 0, hours: 0, mins: 0, secs: 0 });
-  const [startCounting, setStartCounting] = useState(false);
-  const sectionRef = useRef(null);
+  const [timeLeft, setTimeLeft] = useState({});
+  const dealEndDate = new Date("2025-05-30T23:59:59");
 
-  // Intersection Observer to detect when the section comes into view
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setStartCounting(true);
-        }
-      },
-      { threshold: 0.5 } // Start when 50% of the section is visible
-    );
+    const updateCountdown = () => {
+      const now = new Date();
+      const diff = dealEndDate - now;
 
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
+      if (diff <= 0) {
+        setTimeLeft({ days: 0, hours: 0, mins: 0, secs: 0 });
+        return;
       }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const mins = Math.floor((diff / (1000 * 60)) % 60);
+      const secs = Math.floor((diff / 1000) % 60);
+
+      setTimeLeft({ days, hours, mins, secs });
     };
+
+    updateCountdown(); // Run immediately
+    const timer = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(timer); // Cleanup
   }, []);
-
-  // Counting animation effect
-  useEffect(() => {
-    if (!startCounting) return; // Start only when the section is in view
-
-    const duration = 2000; // 2 seconds
-    const steps = 60; // Number of steps for smooth animation
-    const intervalTime = duration / steps;
-
-    const startAnimation = (key, target) => {
-      let step = 0;
-      const increment = target / steps;
-
-      const interval = setInterval(() => {
-        step++;
-        setCounts((prev) => ({
-          ...prev,
-          [key]: Math.min(Math.round(step * increment), target),
-        }));
-
-        if (step >= steps) clearInterval(interval);
-      }, intervalTime);
-    };
-
-    Object.keys(targetValues).forEach((key) => {
-      startAnimation(key, targetValues[key]);
-    });
-  }, [startCounting]); // Runs when `startCounting` becomes true
 
   return (
     <motion.section
@@ -66,7 +37,6 @@ const DealsSection = () => {
       initial="hidden"
       whileInView={"show"}
       viewport={{ once: true, amount: 0.5 }}
-      ref={sectionRef}
       className="section__container deals__container dark:bg-zinc-800"
     >
       {/* Deals Image */}
@@ -91,17 +61,16 @@ const DealsSection = () => {
         <h5>Your one From Thousand of Products</h5>
         <h4 className="dark:text-zinc-50">Deals of the Month</h4>
         <p className="dark:text-zinc-400">
-          Get exclusive limited-time offers you won't find anywhere else. Shop before they're
-          gone!
+          Get exclusive limited-time offers you won't find anywhere else. Shop before they're gone!
         </p>
 
         {/* Countdown Timer */}
         <div className="deals__countdown flex-wrap">
-          {Object.entries(counts).map(([key, value]) => (
-            <div key={key} className="deals__countdown__card dark:bg-zinc-900">
-              <h4 className="dark:text-zinc-50">{value}</h4>
+          {["days", "hours", "mins", "secs"].map((unit) => (
+            <div key={unit} className="deals__countdown__card dark:bg-zinc-900">
+              <h4 className="dark:text-zinc-50">{timeLeft[unit] ?? "--"}</h4>
               <p className="dark:text-zinc-400">
-                {key.charAt(0).toUpperCase() + key.slice(1)}
+                {unit.charAt(0).toUpperCase() + unit.slice(1)}
               </p>
             </div>
           ))}
