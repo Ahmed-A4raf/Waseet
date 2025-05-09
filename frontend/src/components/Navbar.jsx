@@ -120,6 +120,7 @@ const Navbar = () => {
 
   const customerDropdown = () => [
     { label: "Profile", path: "/profileCustomer" },
+    { label: "My Orders", path: "/orderCustomer" },
   ];
 
   const dropDownMenus =

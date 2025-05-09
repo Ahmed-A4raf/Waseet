@@ -26,22 +26,29 @@ import AllProductsAdmin from "../admin/supPagesAdmin/AllProductsAdmin";
 import CreateCategoriesAdmin from "../admin/categories/CreateCategoriesAdmin";
 import EditCategoriesAdmin from "../admin/categories/EditCategoriesAdmin";
 import OrderDetails from "../pages/shop/OrderDetails";
-
+import OrderCustomer from "../customer/OrderCustomer";
+import DetailsCustomerOrder from "../serviceProvider/orderSp/DetailsCustomerOrder";
+import AllOrdersCustomer from "../customer/AllOrdersCustomer";
+import DetailsAllOrders from "../admin/ordersAdmin/DetailsAllOrders";
+import Payment from "../payment/Payment";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      {path: "/",element: <Home />},
-      {path: "/categories/:categoryName",element:<CategoryPage />},
-      {path: "/search",element:<Search />},
-      {path: "/shop",element:<ShopPage />},
-      {path: "/shop/:id",element:<SingleProduct />},
-      {path: "/contact",element:<Contact />},
-        //! Customer Routes
-      {path: "/ProfileCustomer",element:<ProfileCustomer />},
+      { path: "/", element: <Home /> },
+      { path: "/categories/:categoryName", element: <CategoryPage /> },
+      { path: "/search", element: <Search /> },
+      { path: "/shop", element: <ShopPage /> },
+      { path: "/shop/:id", element: <SingleProduct /> },
+      { path: "/contact", element: <Contact /> },
+      //! Customer Routes
+      { path: "/ProfileCustomer", element: <ProfileCustomer /> },
       { path: "/order-details", element: <OrderDetails /> },
+      { path: "/orderCustomer", element: <AllOrdersCustomer /> },
+      { path: "/orderCustomer/:id", element: <OrderCustomer /> },
+      { path: "/payment", element: <Payment /> },
     ],
   },
   //!  Service Provider Routes
@@ -49,12 +56,16 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <ServiceProvider />,
     children: [
-      {path: "/dashboard",element: <OverviewSp />},
-      {path: "/dashboard/profile",element: <ProfileSp />},
-      {path: "/dashboard/addProduct",element: <AddProduct />},
-      {path: "/dashboard/addProduct/creat",element: <CreatProduct />},
-      {path: "/dashboard/addProduct/edit/:id",element: <EditProduct />},
-      {path: "/dashboard/orders",element: <OrdersSp />},
+      { path: "/dashboard", element: <OverviewSp /> },
+      { path: "/dashboard/profile", element: <ProfileSp /> },
+      { path: "/dashboard/addProduct", element: <AddProduct /> },
+      { path: "/dashboard/addProduct/creat", element: <CreatProduct /> },
+      { path: "/dashboard/addProduct/edit/:id", element: <EditProduct /> },
+      { path: "/dashboard/orders", element: <OrdersSp /> },
+      {
+        path: "/dashboard/orders/detailsCustomerOrder/:orderId",
+        element: <DetailsCustomerOrder />,
+      },
     ],
   },
   //! Admin Routes
@@ -62,32 +73,32 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <AdminDashboard />,
     children: [
-      {path: "/admin",element: <OverViewAdmin />},
-      {path: "/admin/categories",element: <CategoriesAmin />},
-      {path: "/admin/categories/create",element: <CreateCategoriesAdmin />},
-      {path: "/admin/categories/edit/:id",element: <EditCategoriesAdmin />},
-      {path: "/admin/AllProducts",element: <AllProductsAdmin />},
-      {path: "/admin/users",element: <UsersAdmin />},
-      {path: "/admin/orders",element: <OrdersAdmin />},
-      {path: "/admin/orders/details",element: <h1>orders</h1>},
+      { path: "/admin", element: <OverViewAdmin /> },
+      { path: "/admin/categories", element: <CategoriesAmin /> },
+      { path: "/admin/categories/create", element: <CreateCategoriesAdmin /> },
+      { path: "/admin/categories/edit/:id", element: <EditCategoriesAdmin /> },
+      { path: "/admin/AllProducts", element: <AllProductsAdmin /> },
+      { path: "/admin/users", element: <UsersAdmin /> },
+      { path: "/admin/orders", element: <OrdersAdmin /> },
+      { path: "/admin/orders/details/:orderId", element: <DetailsAllOrders /> },
     ],
   },
   {
     path: "/login",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register />
+    element: <Register />,
   },
   {
     path: "/forgetpass",
-    element: <Forgetpass />
+    element: <Forgetpass />,
   },
-  {
-    path: "*",
-    element:<Login  />
-  }
+  // {
+  //   path: "*",
+  //   element:<Login  />
+  // }
 ]);
 
 export default router;

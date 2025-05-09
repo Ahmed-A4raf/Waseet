@@ -14,10 +14,8 @@ const ProfileSp = () => {
   const [profileImage, setProfileImage] = useState(storedUser?.profileImage || "");
   const [bio, setBio] = useState(storedUser?.bio || "N/A");
   const [profession, setProfession] = useState(storedUser?.profession || "N/A");
-  const [imageSource, setImageSource] = useState("url");
-  const [imageURL, setImageURL] = useState("");
 
-  const token = storedUser?.token; //! get token from localStorage
+  const token = storedUser?.token;
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -33,20 +31,16 @@ const ProfileSp = () => {
   const handleSave = async () => {
     try {
       const formData = new FormData();
-      
-      if (imageSource === "upload") {
-        const response = await fetch(profileImage);
-        const blob = await response.blob();
-        formData.append("profileImage", blob, "profile.jpg");
-      } else {
-        formData.append("profileImage", imageURL);
-      }
+
+      const response = await fetch(profileImage);
+      const blob = await response.blob();
+      formData.append("profileImage", blob, "profile.jpg");
 
       formData.append("displayName", username);
       formData.append("bio", bio);
       formData.append("profession", profession);
 
-      const response = await fetch("http://waseet.runasp.net/api/auth/UploadProfilePhoto", {
+      const responseApi = await fetch("http://waseet.runasp.net/api/auth/UploadProfilePhoto", {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -54,23 +48,20 @@ const ProfileSp = () => {
         body: formData,
       });
 
-      if (!response.ok) {
+      if (!responseApi.ok) {
         throw new Error("Failed to update profile");
       }
 
-      const data = await response.json();
+      const data = await responseApi.json();
 
-      //! Update the user data in localStorage
       const updatedUser = { ...storedUser, ...data };
       localStorage.setItem("user", JSON.stringify(updatedUser));
-
-      //! Update the user data in the Redux store
       dispatch(setUser({ user: updatedUser }));
+
       setProfileImage(data.profileImage);
       setUsername(data.displayName);
       setBio(data.bio);
       setProfession(data.profession);
-
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -90,13 +81,12 @@ const ProfileSp = () => {
           <img
             src={profileImage || avatarImg}
             alt="Profile"
-  
             className="w-28 h-28 md:w-32 md:h-32 rounded-full border-2 border-primary mr-4 object-cover"
           />
           <div className="w-1/3 overflow-hidden dark:text-zinc-50">
-            <p className="font-bold dark:text-zinc-50">Username: {username}</p>
-            <p className="text-gray-600 dark:text-zinc-50">User Bio: {bio}</p>
-            <p className="text-gray-600 dark:text-zinc-50">Profession: {profession}</p>
+            <p className="font-bold">Username: {username}</p>
+            <p className="text-gray-600">User Bio: {bio}</p>
+            <p className="text-gray-600">Profession: {profession}</p>
           </div>
           <button
             className="ml-auto px-2 py-1 bg-primary-light text-2xl text-primary rounded hover:bg-gray-100 dark:bg-zinc-800"
@@ -110,6 +100,7 @@ const ProfileSp = () => {
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96 dark:bg-zinc-900 dark:text-zinc-50">
               <h2 className="text-lg font-bold mb-4">Edit Profile</h2>
+
               <label className="block mb-2">Username</label>
               <input
                 type="text"
@@ -118,55 +109,31 @@ const ProfileSp = () => {
                 className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
               />
 
-              <label className="block mb-2">Select Image Source</label>
-              <select
+              <label className="block mb-2 mt-4">Upload Profile Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
                 className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
-                value={imageSource}
-                onChange={(e) => setImageSource(e.target.value)}
-              >
-                <option value="url">Image URL</option>
-                <option value="upload">Upload Image</option>
-              </select>
+              />
 
-              {imageSource === "url" ? (
-                <>
-                  <label className="block mb-2">Profile Image URL</label>
-                  <input
-                    type="text"
-                    value={imageURL}
-                    onChange={(e) => setImageURL(e.target.value)}
-                    className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900 "
-                  />
-                </>
-              ) : (
-                <>
-                  <label className="block mb-2">Upload Profile Image</label>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
-                  />
-                </>
-              )}
-
-              <label className="block mb-2">Bio</label>
+              <label className="block mb-2 mt-4">Bio</label>
               <textarea
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                className="w-full p-2 border mb-2 resize-y min-h-12 max-h-32 bg-primary-light hover:border  focus:outline-primary px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
+                className="w-full resize-y min-h-[60px] max-h-32 px-5 py-3 bg-primary-light rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
               ></textarea>
 
-              <label className="block mb-2">Profession</label>
+              <label className="block mb-2 mt-4">Profession</label>
               <input
                 type="text"
                 value={profession}
                 onChange={(e) => setProfession(e.target.value)}
-                className="w-full p-2 border mb-4  bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
+                className="w-full px-5 py-3 bg-primary-light rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
               />
 
               <button
-                className="w-full bg-primary text-white p-2 rounded hover:bg-primary-dark transition-all duration-300"
+                className="w-full mt-6 bg-primary text-white py-2 rounded hover:bg-primary-dark transition-all duration-300"
                 onClick={handleSave}
               >
                 Save Changes

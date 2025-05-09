@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../../redux/features/cart/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 const OrderDetails = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +15,7 @@ const OrderDetails = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [deliveryMethods, setDeliveryMethods] = useState([]);
   const [basketId, setBasketId] = useState(null);
@@ -138,8 +140,10 @@ const OrderDetails = () => {
       const data = await res.json();
       setOrder(data);
 
-      // ✅ Clear cart after successful order
       await clearServerCart();
+      
+      navigate(`/orderCustomer/${data.id}`);
+
     } catch (err) {
       console.error(err);
       setError("An error occurred while placing the order. Please try again.");

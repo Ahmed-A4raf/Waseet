@@ -3,10 +3,13 @@ import HeaderSp from "../../serviceProvider/commenSp/HeaderSp";
 import StatCardSp from "../../serviceProvider/commenSp/StatCardSp";
 import { Package, Clock, Truck } from "lucide-react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const OrdersAdmin = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -14,19 +17,13 @@ const OrdersAdmin = () => {
         const user = JSON.parse(localStorage.getItem("user"));
         const token = user?.token;
 
-        if (!token) {
-          throw new Error("No token found. User might not be logged in.");
-        }
+        if (!token) throw new Error("No token found.");
 
         const res = await fetch("http://waseet.runasp.net/api/order/admin-orders", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
 
         const data = await res.json();
         setOrders(data);
@@ -52,7 +49,12 @@ const OrdersAdmin = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <StatCardSp name="Total Orders" icon={Package} value={orders.length} color="#6366F1" />
+          <StatCardSp
+            name="Total Orders"
+            icon={Package}
+            value={orders.length}
+            color="#6366F1"
+          />
           <StatCardSp
             name="Unique Customers"
             icon={Truck}
@@ -69,36 +71,48 @@ const OrdersAdmin = () => {
 
         {/* TABLE */}
         {loading ? (
-          <p className="mt-4">Loading...</p>
+          <p className="text-center text-gray-500 dark:text-zinc-300 mt-4">Loading...</p>
         ) : (
-          <div className="overflow-x-auto border border-gray-200 rounded-lg">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="overflow-x-auto rounded-lg shadow-md bg-white dark:bg-zinc-800">
+            <table className="min-w-full table-auto text-sm text-gray-700 dark:text-zinc-200">
+              <thead className="bg-gray-200 dark:bg-zinc-700 dark:text-zinc-100">
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">#</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Order ID</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Buyer</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Total</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Status</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-600">Created At</th>
+                  <th className="px-6 py-3 text-left">Order ID</th>
+                  <th className="px-6 py-3 text-left">Buyer</th>
+                  <th className="px-6 py-3 text-left">Total</th>
+                  <th className="px-6 py-3 text-left">Status</th>
+                  <th className="px-6 py-3 text-left">Created At</th>
+                  <th className="px-6 py-3 text-left">Action</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {orders.map((order, index) => (
-                  <tr key={order.id}>
-                    <td className="px-6 py-4 text-sm text-gray-700">{index + 1}</td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{order.id}</td>
-                    <td className="px-6 py-4 text-sm text-gray-700">{order.buyerEmail}</td>
-                    <td className="px-6 py-4 text-sm text-gray-700">${order.total.toFixed(2)}</td>
-                    <td className="px-6 py-4 text-sm text-gray-700">{order.status || "Pending"}</td>
-                    <td className="px-6 py-4 text-sm text-gray-700">
-                      {new Date(order.orderDate).toLocaleDateString()}
+              <tbody>
+                {orders.map((order) => (
+                  <tr
+                    key={order.id}
+                    className="border-b border-gray-200 dark:border-zinc-700"
+                  >
+                    <td className="px-6 py-4 font-medium">#{order.id}</td>
+                    <td className="px-6 py-4">{order.buyerEmail}</td>
+                    <td className="px-6 py-4 font-semibold">${order.total.toFixed(2)}</td>
+                    <td className="px-6 py-4">{order.status || "Pending"}</td>
+                    <td className="px-6 py-4">{new Date(order.orderDate).toLocaleDateString()}</td>
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => navigate(`/admin/orders/details/${order.id}`)}
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Details
+                      </button>
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-          </div>
+          </motion.div>
         )}
       </main>
     </div>
