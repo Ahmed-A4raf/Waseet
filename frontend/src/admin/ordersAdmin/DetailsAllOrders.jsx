@@ -107,7 +107,7 @@ const DetailsAllOrders = () => {
 
             <div className="flex flex-wrap gap-4 pt-4">
               <button
-                onClick={() => navigate("/dashboard/orders")}
+                onClick={() => navigate("/admin/orders")}
                 className="px-4 py-2 bg-primary hover:bg-primary-dark text-white rounded transition"
               >
                 Back to Orders
