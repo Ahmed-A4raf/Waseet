@@ -8,18 +8,21 @@ import { motion } from "framer-motion";
 const ProfileSp = () => {
   const dispatch = useDispatch();
   const storedUser = useSelector((state) => state.auth.user);
-  
+
   const [isEditing, setIsEditing] = useState(false);
   const [username, setUsername] = useState(storedUser?.displayName || "");
   const [profileImage, setProfileImage] = useState(storedUser?.profileImage || "");
   const [bio, setBio] = useState(storedUser?.bio || "N/A");
   const [profession, setProfession] = useState(storedUser?.profession || "N/A");
+  const [rawFile, setRawFile] = useState(null);
+  const [popupMessage, setPopupMessage] = useState(null);
 
   const token = storedUser?.token;
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setRawFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setProfileImage(reader.result);
@@ -30,17 +33,41 @@ const ProfileSp = () => {
 
   const handleSave = async () => {
     try {
-      const formData = new FormData();
+      // Check image with AI
+      if (rawFile) {
+        const aiFormData = new FormData();
+        aiFormData.append("image", rawFile);
 
-      const response = await fetch(profileImage);
-      const blob = await response.blob();
-      formData.append("profileImage", blob, "profile.jpg");
+        try {
+          const aiResponse = await fetch("https://09ea-102-189-87-56.ngrok-free.app/predict", {
+            method: "POST",
+            body: aiFormData,
+          });
+
+          if (aiResponse.ok) {
+            const aiResult = await aiResponse.json();
+            if (aiResult.overall_status !== "accepted") {
+              setPopupMessage("❌ The image was rejected by the AI due to inappropriate content.");
+              return;
+            }
+          } else {
+            setPopupMessage("⚠️ AI server responded with error, skipping AI check...");
+          }
+        } catch (error) {
+          setPopupMessage("⚠️ AI server is not reachable, skipping AI check...");
+        }
+      }
+
+      const formData = new FormData();
+      if (rawFile) {
+        formData.append("profileImage", rawFile, "profile.jpg");
+      }
 
       formData.append("displayName", username);
       formData.append("bio", bio);
       formData.append("profession", profession);
 
-      const responseApi = await fetch("http://waseet.runasp.net/api/auth/UploadProfilePhoto", {
+      const response = await fetch("http://waseet.runasp.net/api/auth/UploadProfilePhoto", {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -48,11 +75,9 @@ const ProfileSp = () => {
         body: formData,
       });
 
-      if (!responseApi.ok) {
-        throw new Error("Failed to update profile");
-      }
+      if (!response.ok) throw new Error("Failed to update profile");
 
-      const data = await responseApi.json();
+      const data = await response.json();
 
       const updatedUser = { ...storedUser, ...data };
       localStorage.setItem("user", JSON.stringify(updatedUser));
@@ -140,6 +165,26 @@ const ProfileSp = () => {
               </button>
             </div>
           </div>
+        )}
+
+        {/* AI Popup Modal */}
+        {popupMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+          >
+            <div className="bg-white dark:bg-zinc-900 text-black dark:text-white p-6 rounded-xl shadow-lg text-center max-w-md mx-auto">
+              <p className="mb-4">{popupMessage}</p>
+              <button
+                onClick={() => setPopupMessage(null)}
+                className="mt-2 bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark transition-all"
+              >
+                OK
+              </button>
+            </div>
+          </motion.div>
         )}
       </div>
     </div>
