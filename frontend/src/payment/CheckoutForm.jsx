@@ -23,7 +23,7 @@ const CheckoutForm = ({ clientSecret }) => {
       payment_method: {
         card: cardElement,
         billing_details: {
-          name: "Customer Name", // يمكن تغييره لاحقًا بناءً على بيانات المستخدم
+          name: "Customer Name", // أو خده من localStorage
         },
       },
     });
@@ -33,8 +33,50 @@ const CheckoutForm = ({ clientSecret }) => {
       setLoading(false);
     } else {
       if (result.paymentIntent.status === "succeeded") {
-        alert("✅ Payment succeeded!");
-        navigate("/orderCustomer"); // يمكنك تغييره إلى صفحة نجاح مثل /payment-success
+        // 🟢 استرجع بيانات الشحن
+        const shippingInfo = JSON.parse(localStorage.getItem("shippingInfo"));
+        const basketId = localStorage.getItem("basketId");
+        const token = JSON.parse(localStorage.getItem("user"))?.token;
+
+        const payload = {
+          basketId,
+          deliveryMethodId: parseInt(shippingInfo.deliveryMethodId),
+          shippingToAddress: {
+            firstName: shippingInfo.firstName,
+            lastName: shippingInfo.lastName,
+            phone: shippingInfo.phone,
+            country: shippingInfo.country,
+            city: shippingInfo.city,
+            street: shippingInfo.street,
+          },
+        };
+
+        // 🟢 أنشئ الطلب الآن
+        const res = await fetch("http://waseet.runasp.net/api/Order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+
+        // 🟢 نظف السلة
+        await fetch("http://waseet.runasp.net/api/Cart/basket", {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        // 🟢 احذف من localStorage
+        localStorage.removeItem("shippingInfo");
+        localStorage.removeItem("basketId");
+
+        // 🟢 توجه لصفحة التأكيد
+        navigate(`/orderCustomer/${data.id}`);
       }
     }
   };

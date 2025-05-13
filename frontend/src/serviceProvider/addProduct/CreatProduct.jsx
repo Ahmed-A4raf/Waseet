@@ -17,6 +17,7 @@ const CreateProduct = () => {
 
   const [imagePreview, setImagePreview] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [popupMessage, setPopupMessage] = useState(null);
 
   const navigate = useNavigate();
 
@@ -51,61 +52,61 @@ const CreateProduct = () => {
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const aiFormData = new FormData();
-  aiFormData.append("image", product.image);
+    const aiFormData = new FormData();
+    aiFormData.append("image", product.image);
 
-  let aiAccepted = true;
+    let aiAccepted = true;
 
-  try {
-    const aiResponse = await fetch("https://b6bf-102-189-85-35.ngrok-free.app/predict", {
-      method: "POST",
-      body: aiFormData,
-    });
+    try {
+      const aiResponse = await fetch("https://09ea-102-189-87-56.ngrok-free.app/predict", {
+        method: "POST",
+        body: aiFormData,
+      });
 
-    if (aiResponse.ok) {
-      const aiResult = await aiResponse.json();
-      if (aiResult.overall_status !== "accepted") {
-        alert("❌ The image was rejected by the AI due to inappropriate content.");
-        return;
+      if (aiResponse.ok) {
+        const aiResult = await aiResponse.json();
+        if (aiResult.overall_status !== "accepted") {
+          setPopupMessage("❌ The image was rejected by the AI due to inappropriate content.");
+          return;
+        }
+      } else {
+        setPopupMessage("⚠️ AI server responded with error, skipping AI check...");
       }
-    } else {
-      alert("⚠️ AI server responded with error, skipping AI check...");
+    } catch (error) {
+      setPopupMessage("⚠️ AI server is not reachable, skipping AI check...");
     }
-  } catch (error) {
-    alert("⚠️ AI server is not reachable, skipping AI check...");
-  }
 
-  // Upload product normally
-  try {
-    const formData = new FormData();
-    formData.append("name", product.name);
-    formData.append("description", product.description);
-    formData.append("price", product.price);
-    formData.append("image", product.image);
-    formData.append("category", product.category);
+    // Upload product normally
+    try {
+      const formData = new FormData();
+      formData.append("name", product.name);
+      formData.append("description", product.description);
+      formData.append("price", product.price);
+      formData.append("image", product.image);
+      formData.append("category", product.category);
 
-    const response = await fetch("http://waseet.runasp.net/api/Product/AddProduct", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+      const response = await fetch("http://waseet.runasp.net/api/Product/AddProduct", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
 
-    if (response.ok) {
-      alert("✅ Product created successfully!");
-      navigate("/dashboard/addProduct");
-    } else {
-      alert("❌ Failed to create product.");
+      if (response.ok) {
+        alert("✅ Product created successfully!");
+        navigate("/dashboard/addProduct");
+      } else {
+        alert("❌ Failed to create product.");
+      }
+    } catch (error) {
+      console.error("Error submitting product:", error);
+      alert("❌ An error occurred while submitting the product.");
     }
-  } catch (error) {
-    console.error("Error submitting product:", error);
-    alert("❌ An error occurred while submitting the product.");
-  }
-};
+  };
 
   return (
     <div className="flex-1 overflow-auto relative z-10">
@@ -205,6 +206,26 @@ const handleSubmit = async (e) => {
           )}
         </div>
       </motion.main>
+
+      {/* Popup Modal */}
+      {popupMessage && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+        >
+          <div className="bg-white dark:bg-zinc-900 text-black dark:text-white p-6 rounded-xl shadow-lg text-center max-w-md mx-auto">
+            <p className="mb-4">{popupMessage}</p>
+            <button
+              onClick={() => setPopupMessage(null)}
+              className="mt-2 bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark transition-all"
+            >
+              OK
+            </button>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 };

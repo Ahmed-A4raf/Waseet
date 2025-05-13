@@ -5,6 +5,9 @@ import "./App.css";
 import { useState } from "react";
 import { MessageCircle } from "lucide-react";
 import ChatWidget from "./components/ChatWidget";
+
+import { AnimatePresence } from "framer-motion";
+
 function App() {
   const [isChatOpen, setIsChatOpen] = useState(false);
   return (
@@ -15,6 +18,7 @@ function App() {
 
         {/* Chat Icon Button */}
         <button
+          id="chat-toggle" 
           onClick={() => setIsChatOpen(!isChatOpen)}
           className="fixed bottom-5 right-5 bg-primary text-white p-4 rounded-full shadow-lg hover:bg-primary/80 transition-all z-50"
         >
@@ -22,7 +26,9 @@ function App() {
         </button>
 
         {/* Chat Window */}
-        {isChatOpen && <ChatWidget onClose={() => setIsChatOpen(false)} />}
+        <AnimatePresence>
+          {isChatOpen && <ChatWidget onClose={() => setIsChatOpen(false)} />}
+        </AnimatePresence>
 
         <Footer />
       </div>

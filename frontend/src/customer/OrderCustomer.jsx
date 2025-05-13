@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
 import { motion } from "framer-motion";
 import { fadeIn } from "../utils/animationVariants";
 
@@ -10,7 +9,6 @@ const OrderCustomer = () => {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [paymentStatus, setPaymentStatus] = useState("");
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -38,44 +36,6 @@ const OrderCustomer = () => {
     fetchOrder();
   }, [id]);
 
-  const handlePayment = async () => {
-    const basketId = localStorage.getItem("basketId");
-    const token = JSON.parse(localStorage.getItem("user"))?.token;
-
-    if (!basketId || !token) {
-      alert("Missing basket ID or token. Cannot proceed to payment.");
-      return;
-    }
-
-    try {
-      const res = await fetch(
-        `http://waseet.runasp.net/api/Payments/${basketId}`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const rawText = await res.text();
-      console.log("Raw response:", rawText);
-
-      const data = JSON.parse(rawText);
-      console.log("Parsed clientSecret:", data.clientSecret);
-
-      if (!data.clientSecret) {
-        throw new Error("Missing clientSecret in parsed data");
-      }
-
-      navigate("/payment", { state: { clientSecret: data.clientSecret } });
-    } catch (err) {
-      console.error("Error starting payment:", err);
-      alert("Could not initiate payment. Please try again.");
-    }
-  };
-
   if (loading)
     return (
       <div className="pt-24 text-center text-lg dark:text-zinc-100">
@@ -102,7 +62,7 @@ const OrderCustomer = () => {
         initial="hidden"
         whileInView={"show"}
         viewport={{ once: true, amount: 0.3 }}
-        className="text-3xl font-bold mb-4 text-gray-800 dark:text-zinc-50"
+        className="text-3xl font-bold mb-6 text-gray-800 dark:text-zinc-50"
       >
         Order #{order.id}
       </motion.h2>
@@ -112,31 +72,53 @@ const OrderCustomer = () => {
         initial="hidden"
         whileInView={"show"}
         viewport={{ once: true, amount: 0.3 }}
-        className="bg-white dark:bg-zinc-800 shadow-md rounded-lg p-6 space-y-4"
+        className="bg-white dark:bg-zinc-800 shadow-md rounded-lg p-6 space-y-6"
       >
-        <div className="text-gray-700 dark:text-zinc-200">
-          <strong className="dark:text-zinc-100">Status:</strong> {order.status}
-        </div>
-        <div className="text-gray-700 dark:text-zinc-200">
-          <strong className="dark:text-zinc-100">Order Date:</strong>{" "}
-          {new Date(order.orderDate).toLocaleString()}
-        </div>
-        <div className="text-gray-700 dark:text-zinc-200">
-          <strong className="dark:text-zinc-100">Delivery Method:</strong>{" "}
-          {order.deliveryMethod} (${order.deliveryMethodCost})
-        </div>
-        <div className="text-gray-700 dark:text-zinc-200">
-          <strong className="dark:text-zinc-100">Total:</strong> $
-          {order.total.toFixed(2)}
+        {/* Order Summary Cards */}
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Status */}
+          <div className="p-4 border border-gray-200 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-900">
+            <p className="text-sm text-gray-500 dark:text-zinc-400">Status</p>
+            <p className="text-lg font-semibold text-primary">
+              {order.status}
+            </p>
+          </div>
+
+          {/* Order Date */}
+          <div className="p-4 border border-gray-200 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-900">
+            <p className="text-sm text-gray-500 dark:text-zinc-400">Order Date</p>
+            <p className="text-lg font-semibold dark:text-white">
+              {new Date(order.orderDate).toLocaleString()}
+            </p>
+          </div>
+
+          {/* Delivery Method */}
+          <div className="p-4 border border-gray-200 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-900">
+            <p className="text-sm text-gray-500 dark:text-zinc-400">Delivery Method</p>
+            <p className="text-lg font-semibold dark:text-white">
+              {order.deliveryMethod} (${order.deliveryMethodCost})
+            </p>
+            <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
+              {order.deliveryMethodDescription}
+            </p>
+          </div>
+
+          {/* Total */}
+          <div className="p-4 border border-gray-200 dark:border-zinc-600 rounded-lg bg-gray-50 dark:bg-zinc-900">
+            <p className="text-sm text-gray-500 dark:text-zinc-400">Total</p>
+            <p className="text-lg font-semibold text-green-600 dark:text-green-400">
+              ${order.total.toFixed(2)}
+            </p>
+          </div>
         </div>
 
-        <div className="mt-6">
+        {/* Shipping Address */}
+        <div>
           <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-zinc-50">
             Shipping Address
           </h3>
-          <p className="text-gray-700 dark:text-zinc-300">
-            {order.shippingToAddress.firstName}{" "}
-            {order.shippingToAddress.lastName}
+          <p className="text-gray-700 dark:text-zinc-300 leading-relaxed">
+            {order.shippingToAddress.firstName} {order.shippingToAddress.lastName}
             <br />
             {order.shippingToAddress.street}
             <br />
@@ -144,7 +126,8 @@ const OrderCustomer = () => {
           </p>
         </div>
 
-        <div className="mt-6">
+        {/* Order Items */}
+        <div>
           <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-zinc-50">
             Order Items
           </h3>
@@ -185,6 +168,7 @@ const OrderCustomer = () => {
         </div>
       </motion.div>
 
+      {/* Back button */}
       <div className="pt-6 text-right">
         <button
           onClick={() => navigate("/orderCustomer")}
@@ -192,15 +176,6 @@ const OrderCustomer = () => {
         >
           Back to my All Orders
         </button>
-
-        {order.status === "Pending" && (
-          <button
-            onClick={handlePayment}
-            className="ml-4 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded transition-colors duration-200"
-          >
-            Check Out
-          </button>
-        )}
       </div>
     </div>
   );

@@ -1,59 +1,111 @@
 import React, { useState, useEffect, useRef } from "react";
 import { X, Send, Bot } from "lucide-react";
+import { motion } from "framer-motion";
 
 const ChatWidget = ({ onClose }) => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const scrollRef = useRef();
+  const contextRef = useRef(null);
+  const widgetRef = useRef(null);
 
-  // Start new conversation
+  const isLoggedIn = !!localStorage.getItem("token");
+
+  // ✅ Close on outside click, but ignore #chat-toggle
   useEffect(() => {
+    const handleClickOutside = (event) => {
+      const isToggleBtn = event.target.closest("#chat-toggle");
+      if (isToggleBtn) return;
+
+      if (widgetRef.current && !widgetRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
+
+  // ✅ Load messages if logged in, or start new conversation
+  useEffect(() => {
+    const savedMessages = sessionStorage.getItem("chat_messages");
+
+    if (isLoggedIn && savedMessages) {
+      setMessages(JSON.parse(savedMessages));
+      return;
+    }
+
     const startConversation = async () => {
       try {
-        const res = await fetch("https://89db-102-189-85-35.ngrok-free.app/start_conversation", {
+        const res = await fetch("https://e91d-102-189-87-56.ngrok-free.app/start_conversation", {
           method: "POST",
-        //   credentials: "include", // To keep session
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         });
         const data = await res.json();
-        setMessages([{ from: "bot", text: data.message }]);
+        const initialMsg = [{ from: "bot", text: data.message }];
+        setMessages(initialMsg);
+        if (isLoggedIn) {
+          sessionStorage.setItem("chat_messages", JSON.stringify(initialMsg));
+        }
       } catch (err) {
-        setMessages([{ from: "bot", text: "❌ Failed to connect to server." }]);
+        const failMsg = [{ from: "bot", text: "❌ Failed to connect to server." }];
+        setMessages(failMsg);
+        if (isLoggedIn) {
+          sessionStorage.setItem("chat_messages", JSON.stringify(failMsg));
+        }
       }
     };
 
     startConversation();
-  }, []);
+  }, [isLoggedIn]);
 
   const handleSend = async () => {
     if (!input.trim()) return;
 
     const userMessage = { from: "user", text: input };
-    setMessages((prev) => [...prev, userMessage]);
+    setMessages((prev) => {
+      const updated = [...prev, userMessage];
+      if (isLoggedIn) sessionStorage.setItem("chat_messages", JSON.stringify(updated));
+      return updated;
+    });
     setInput("");
     setTyping(true);
 
     try {
-      const res = await fetch("https://89db-102-189-85-35.ngrok-free.app/ask", {
+      const res = await fetch("https://e91d-102-189-87-56.ngrok-free.app/ask", {
         method: "POST",
-        // credentials: "include", // Session is needed
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ question: input }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question: input,
+          context: contextRef.current,
+        }),
       });
 
       const data = await res.json();
-      const botReply = { from: "bot", text: data.answer };
-      setMessages((prev) => [...prev, botReply]);
+      if (data.context) {
+        contextRef.current = data.context;
+      }
+
+      const botReply = {
+        from: "bot",
+        text: data.answer || data.message || "🤖 No response",
+      };
+
+      setMessages((prev) => {
+        const updated = [...prev, botReply];
+        if (isLoggedIn) sessionStorage.setItem("chat_messages", JSON.stringify(updated));
+        return updated;
+      });
     } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        { from: "bot", text: "⚠️ Server error. Please try again later." },
-      ]);
+      const errorMsg = { from: "bot", text: "⚠️ Server error. Please try again later." };
+      setMessages((prev) => {
+        const updated = [...prev, errorMsg];
+        if (isLoggedIn) sessionStorage.setItem("chat_messages", JSON.stringify(updated));
+        return updated;
+      });
     } finally {
       setTyping(false);
     }
@@ -64,7 +116,14 @@ const ChatWidget = ({ onClose }) => {
   }, [messages, typing]);
 
   return (
-    <div className="fixed bottom-20 right-5 w-80 h-96 bg-white dark:bg-zinc-800 rounded-xl shadow-lg z-50 flex flex-col overflow-hidden">
+    <motion.div
+      ref={widgetRef}
+      initial={{ opacity: 0, y: 50, scale: 0.8 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 50, scale: 0.8 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="fixed bottom-20 right-5 w-80 h-4/6 bg-white dark:bg-zinc-800 rounded-xl shadow-lg z-50 flex flex-col overflow-hidden"
+    >
       {/* Header */}
       <div className="bg-primary text-white px-4 py-2 flex justify-between items-center">
         <h2 className="text-sm font-semibold">Chatbot</h2>
@@ -124,7 +183,7 @@ const ChatWidget = ({ onClose }) => {
           <Send size={18} />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

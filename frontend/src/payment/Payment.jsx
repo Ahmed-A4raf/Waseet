@@ -1,15 +1,43 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "../payment/CheckoutForm";
 
-// ✅ ضع مفتاح النشر من Stripe Dashboard هنا
-const stripePromise = loadStripe("pk_test_51RFk3eLZYn6WqnTpq6DDHzTASPcudgYCIFU3Xljm1Q8sjTCvBeavPM7nBjMBmLktqD6fHavN4oCqiYggBzLqmrXd00EoBUIYVH"); 
+// ✅ Stripe publishable key
+const stripePromise = loadStripe("pk_test_51RFk3eLZYn6WqnTpq6DDHzTASPcudgYCIFU3Xljm1Q8sjTCvBeavPM7nBjMBmLktqD6fHavN4oCqiYggBzLqmrXd00EoBUIYVH");
 
 const Payment = () => {
-  const location = useLocation();
-  const clientSecret = location.state?.clientSecret;
+  const [clientSecret, setClientSecret] = useState(null);
+  const [error, setError] = useState(null);
+
+  const token = JSON.parse(localStorage.getItem("user"))?.token;
+  const basketId = localStorage.getItem("basketId");
+
+  useEffect(() => {
+    const fetchClientSecret = async () => {
+      try {
+        const res = await fetch(`http://waseet.runasp.net/api/Payments/${basketId}`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        const data = await res.json();
+        if (!data.clientSecret) throw new Error("Missing clientSecret");
+
+        setClientSecret(data.clientSecret);
+      } catch (err) {
+        setError("⚠️ Failed to load payment session. Try again.");
+        console.error(err);
+      }
+    };
+
+    if (basketId && token) {
+      fetchClientSecret();
+    }
+  }, [basketId, token]);
 
   const appearance = {
     theme: "stripe",
@@ -20,11 +48,18 @@ const Payment = () => {
     appearance,
   };
 
-  // ⚠️ لا تحاول تحميل Elements إذا لم يكن clientSecret متوفّر
-  if (!clientSecret) {
+  if (error) {
     return (
       <div className="pt-24 text-center text-red-500">
-        Payment information is missing.
+        {error}
+      </div>
+    );
+  }
+
+  if (!clientSecret) {
+    return (
+      <div className="pt-24 text-center text-gray-500">
+        Loading payment session...
       </div>
     );
   }

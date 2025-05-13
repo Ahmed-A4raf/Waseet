@@ -307,8 +307,8 @@ const ReviewsCard = ({ productId }) => {
       {/* Popup Message */}
       {popupMessage && (
         <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white text-center p-6 rounded-xl shadow-xl max-w-xs">
-            <p className="text-red-600 font-semibold mb-4">{popupMessage}</p>
+          <div className="bg-white text-center p-6 rounded-xl shadow-xl max-w-xs dark:bg-zinc-800">
+            <p className="text-red-600 font-semibold mb-4 dark:text-red-400">{popupMessage}</p>
             <button
               onClick={() => setPopupMessage(null)}
               className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark"

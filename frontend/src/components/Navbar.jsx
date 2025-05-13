@@ -57,6 +57,7 @@ const Navbar = () => {
       await logoutUser().unwrap();
       dispatch(logout());
       dispatch(clearCart()); 
+      sessionStorage.removeItem("chat_messages");
       navigate("/");
     } catch (error) {
       console.error("Failed to logout:", error);

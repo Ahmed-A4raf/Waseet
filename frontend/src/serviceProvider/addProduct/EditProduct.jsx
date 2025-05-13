@@ -15,17 +15,18 @@ const EditProduct = () => {
     category: "",
     image: null,
   });
+
   const [categories, setCategories] = useState([]);
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState(null);
   const [initialPrice, setInitialPrice] = useState("");
+  const [popupMessage, setPopupMessage] = useState(null); // NEW
 
   const storedUser = JSON.parse(localStorage.getItem("user")) || null;
   const token = storedUser?.token;
 
-  // Fetch categories
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -43,7 +44,6 @@ const EditProduct = () => {
     fetchCategories();
   }, [token]);
 
-  // Fetch existing product data
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -89,78 +89,73 @@ const EditProduct = () => {
     }
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setLoading(true);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
-  try {
-    // Check image using AI only if the user has uploaded a new one
-    if (updatedProduct.image) {
-      try {
-        const aiFormData = new FormData();
-        aiFormData.append("image", updatedProduct.image);
+    try {
+      if (updatedProduct.image) {
+        try {
+          const aiFormData = new FormData();
+          aiFormData.append("image", updatedProduct.image);
 
-        const aiResponse = await fetch("https://b6bf-102-189-85-35.ngrok-free.app/predict", {
-          method: "POST",
-          body: aiFormData,
-        });
+          const aiResponse = await fetch("https://09ea-102-189-87-56.ngrok-free.app/predict", {
+            method: "POST",
+            body: aiFormData,
+          });
 
-        if (aiResponse.ok) {
-          const aiResult = await aiResponse.json();
+          if (aiResponse.ok) {
+            const aiResult = await aiResponse.json();
 
-          if (aiResult.overall_status !== "accepted") {
-            alert("❌ The image was rejected by the AI due to inappropriate content.");
-            setLoading(false);
-            return;
+            if (aiResult.overall_status !== "accepted") {
+              setPopupMessage("❌ The image was rejected by the AI due to inappropriate content.");
+              setLoading(false);
+              return;
+            }
+          } else {
+            setPopupMessage("⚠️ AI server responded with error, skipping AI check...");
           }
-        } else {
-          alert("⚠️ AI server responded with error, skipping AI check...");
+        } catch (error) {
+          setPopupMessage("⚠️ AI server is not reachable, skipping AI check...");
         }
-      } catch (error) {
-        alert("⚠️ AI server is not reachable, skipping AI check...");
       }
+
+      const formData = new FormData();
+      formData.append("id", id);
+      formData.append("name", updatedProduct.name);
+      formData.append("description", updatedProduct.description);
+      formData.append("price", String(updatedProduct.price));
+      formData.append("category", String(updatedProduct.category));
+
+      if (updatedProduct.price !== initialPrice) {
+        formData.append("oldPrice", String(initialPrice));
+      }
+
+      if (updatedProduct.image) {
+        formData.append("image", updatedProduct.image);
+      }
+
+      const response = await fetch(`http://waseet.runasp.net/api/Product/UpdateProduct`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || "Update failed");
+
+      alert("✅ Product updated successfully!");
+      setInitialPrice(updatedProduct.price);
+      navigate("/dashboard/addProduct");
+    } catch (err) {
+      console.error("Update Error:", err);
+      alert("❌ Failed to update product.");
+    } finally {
+      setLoading(false);
     }
-
-    // Build form data for update
-    const formData = new FormData();
-    formData.append("id", id);
-    formData.append("name", updatedProduct.name);
-    formData.append("description", updatedProduct.description);
-    formData.append("price", String(updatedProduct.price));
-    formData.append("category", String(updatedProduct.category));
-
-    if (updatedProduct.price !== initialPrice) {
-      formData.append("oldPrice", String(initialPrice));
-    }
-
-    if (updatedProduct.image) {
-      formData.append("image", updatedProduct.image);
-    }
-
-    const response = await fetch(`http://waseet.runasp.net/api/Product/UpdateProduct`, {
-      method: "PUT",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) throw new Error(result.message || "Update failed");
-
-    alert("✅ Product updated successfully!");
-    setInitialPrice(updatedProduct.price);
-    navigate("/dashboard/addProduct");
-  } catch (err) {
-    console.error("Update Error:", err);
-    alert("❌ Failed to update product.");
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+  };
 
   if (fetching) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -184,7 +179,7 @@ const handleSubmit = async (e) => {
               onChange={handleChange}
               required
               disabled={loading}
-              className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
+              className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50"
             />
           </div>
 
@@ -196,7 +191,7 @@ const handleSubmit = async (e) => {
               onChange={handleChange}
               required
               disabled={loading}
-              className="w-full resize-y min-h-16 max-h-32  pl-4 pr-4 focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
+              className="w-full resize-y min-h-16 max-h-32 pl-4 pr-4 focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50"
             />
           </div>
 
@@ -210,7 +205,7 @@ const handleSubmit = async (e) => {
                 onChange={handleChange}
                 required
                 disabled={loading}
-                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
+                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50"
               />
             </div>
 
@@ -221,7 +216,7 @@ const handleSubmit = async (e) => {
                 name="oldPrice"
                 value={initialPrice}
                 disabled
-                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
+                className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50"
               />
             </div>
           </div>
@@ -233,7 +228,7 @@ const handleSubmit = async (e) => {
               accept="image/*"
               onChange={handleImageChange}
               disabled={loading}
-              className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
+              className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50"
             />
           </div>
 
@@ -245,7 +240,7 @@ const handleSubmit = async (e) => {
               onChange={handleChange}
               required
               disabled={loading}
-              className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
+              className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50"
             >
               <option value="">-- Select Category --</option>
               {categories.map((cat) => (
@@ -281,6 +276,26 @@ const handleSubmit = async (e) => {
           )}
         </div>
       </motion.main>
+
+      {/* Popup Modal */}
+      {popupMessage && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+        >
+          <div className="bg-white dark:bg-zinc-900 text-black dark:text-white p-6 rounded-xl shadow-lg text-center max-w-md mx-auto">
+            <p className="mb-4">{popupMessage}</p>
+            <button
+              onClick={() => setPopupMessage(null)}
+              className="mt-2 bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark transition-all"
+            >
+              OK
+            </button>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 };

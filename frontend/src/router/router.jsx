@@ -32,6 +32,7 @@ import AllOrdersCustomer from "../customer/AllOrdersCustomer";
 import DetailsAllOrders from "../admin/ordersAdmin/DetailsAllOrders";
 import Payment from "../payment/Payment";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
