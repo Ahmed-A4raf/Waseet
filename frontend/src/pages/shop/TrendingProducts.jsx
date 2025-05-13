@@ -5,31 +5,45 @@ import { fadeIn } from "../../utils/animationVariants";
 
 const TrendingProducts = () => {
   const [products, setProducts] = useState([]);
-  const [visibleProducts, setVisibleProducts] = useState(8);
+  const [visibleCount, setVisibleCount] = useState(8); // نبدأ بـ 8 منتجات
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          "http://waseet.runasp.net/api/Product/ProductsCards"
-        );
-        const data = await response.json();
-        if (Array.isArray(data.products)) {
-          // فقط المنتجات اللي فيها rating رقمي
-          const filteredAndSorted = data.products
-            .filter((product) => typeof product.rating === "number")
-            .sort((a, b) => b.rating - a.rating);
-          setProducts(filteredAndSorted);
+        let page = 1;
+        let allProducts = [];
+        let keepFetching = true;
+
+        while (keepFetching) {
+          const response = await fetch(
+            `http://waseet.runasp.net/api/Product/ProductsCards?pageIndex=${page}&pageSize=50`
+          );
+          const data = await response.json();
+
+          if (Array.isArray(data.products) && data.products.length > 0) {
+            allProducts = [...allProducts, ...data.products];
+            page += 1;
+          } else {
+            keepFetching = false;
+          }
         }
+
+        // ✅ فلترة المنتجات اللي عندها rating رقمي وأكبر من 0، ثم ترتيبهم
+        const filteredAndSorted = allProducts
+          .filter((product) => typeof product.rating === "number" && product.rating > 0)
+          .sort((a, b) => b.rating - a.rating);
+
+        setProducts(filteredAndSorted.slice(0, 50)); // ممكن تغير الحد الأعلى حسب احتياجك
       } catch (error) {
         console.error("Error fetching products:", error);
       }
     };
+
     fetchProducts();
   }, []);
 
-  const loadMoreProducts = () => {
-    setVisibleProducts((prevCount) => prevCount + 4);
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 4); // عرض 4 إضافيين كل مرة
   };
 
   return (
@@ -46,19 +60,18 @@ const TrendingProducts = () => {
         </p>
       </motion.div>
 
-      {/* products card */}
+      {/* عرض المنتجات */}
       <div className="my-12">
-        <ProductCards products={products.slice(0, visibleProducts)} />
+        <ProductCards products={products.slice(0, visibleCount)} />
       </div>
 
-      {/* load more button */}
-      <div className="product__btn">
-        {visibleProducts < products.length && (
-          <button className="btn" onClick={loadMoreProducts}>
+      {visibleCount < products.length && (
+        <div className="text-center">
+          <button className="btn" onClick={handleLoadMore}>
             Load More
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </section>
   );
 };

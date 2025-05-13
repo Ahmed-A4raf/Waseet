@@ -2,29 +2,39 @@ import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
 
-const CheckoutForm = () => {
+const CheckoutForm = ({ clientSecret }) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!stripe || !elements) return;
+    if (!stripe || !elements || !clientSecret) return;
 
     setLoading(true);
     setError(null);
 
-    const result = await stripe.confirmCardPayment(elements.getElement(CardElement));
+    const cardElement = elements.getElement(CardElement);
+
+    const result = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: cardElement,
+        billing_details: {
+          name: "Customer Name", // يمكن تغييره لاحقًا بناءً على بيانات المستخدم
+        },
+      },
+    });
 
     if (result.error) {
       setError(result.error.message);
       setLoading(false);
     } else {
       if (result.paymentIntent.status === "succeeded") {
-        alert("Payment succeeded!");
-        navigate("/orderCustomer"); // أو صفحة نجاح خاصة زي /payment-success
+        alert("✅ Payment succeeded!");
+        navigate("/orderCustomer"); // يمكنك تغييره إلى صفحة نجاح مثل /payment-success
       }
     }
   };

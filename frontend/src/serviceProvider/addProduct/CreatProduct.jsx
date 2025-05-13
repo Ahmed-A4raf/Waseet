@@ -51,9 +51,35 @@ const CreateProduct = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
+  const aiFormData = new FormData();
+  aiFormData.append("image", product.image);
+
+  let aiAccepted = true;
+
+  try {
+    const aiResponse = await fetch("https://b6bf-102-189-85-35.ngrok-free.app/predict", {
+      method: "POST",
+      body: aiFormData,
+    });
+
+    if (aiResponse.ok) {
+      const aiResult = await aiResponse.json();
+      if (aiResult.overall_status !== "accepted") {
+        alert("❌ The image was rejected by the AI due to inappropriate content.");
+        return;
+      }
+    } else {
+      alert("⚠️ AI server responded with error, skipping AI check...");
+    }
+  } catch (error) {
+    alert("⚠️ AI server is not reachable, skipping AI check...");
+  }
+
+  // Upload product normally
+  try {
     const formData = new FormData();
     formData.append("name", product.name);
     formData.append("description", product.description);
@@ -61,26 +87,25 @@ const CreateProduct = () => {
     formData.append("image", product.image);
     formData.append("category", product.category);
 
-    try {
-      const response = await fetch("http://waseet.runasp.net/api/Product/AddProduct", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
-      });
+    const response = await fetch("http://waseet.runasp.net/api/Product/AddProduct", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
 
-      if (response.ok) {
-        alert("Product created successfully!");
-        navigate("/dashboard/addProduct");
-      } else {
-        alert("Failed to create product.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("An error occurred.");
+    if (response.ok) {
+      alert("✅ Product created successfully!");
+      navigate("/dashboard/addProduct");
+    } else {
+      alert("❌ Failed to create product.");
     }
-  };
+  } catch (error) {
+    console.error("Error submitting product:", error);
+    alert("❌ An error occurred while submitting the product.");
+  }
+};
 
   return (
     <div className="flex-1 overflow-auto relative z-10">

@@ -1,23 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom"; // ضفت useNavigate هنا
+import { Link, useParams, useNavigate } from "react-router-dom";
 import RatingStars from "../../../components/RatingStars";
 import ReviewsCard from "../reviews/ReviewsCard";
 import { syncCartWithServer } from "../../../redux/features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
-
 import { motion } from "framer-motion";
 import { fadeIn } from "../../../utils/animationVariants";
 
 const SingleProduct = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const [popupMessage, setPopupMessage] = useState(null); // حالة الرسالة
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.products);
-  const navigate = useNavigate(); // تعريف النفيجيشن
+  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
     const fetchProduct = async () => {
       try {
         const response = await fetch(
@@ -39,8 +38,14 @@ const SingleProduct = () => {
 
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user?.token;
+
     if (!token) {
-      navigate("/login"); // نفيجيشن لو مفيش توكن
+      navigate("/login");
+      return;
+    }
+
+    if (user?.role !== "customer") {
+      setPopupMessage("You must be logged in as a customer to add items to your cart.");
       return;
     }
 
@@ -80,7 +85,22 @@ const SingleProduct = () => {
 
   return (
     <div className="pt-24">
-      {/* shop header */}
+      {/* Popup message */}
+      {popupMessage && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white text-center p-6 rounded-xl shadow-xl max-w-xs">
+            <p className="text-red-600 font-semibold mb-4">{popupMessage}</p>
+            <button
+              onClick={() => setPopupMessage(null)}
+              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* باقي الصفحة */}
       <motion.section
         variants={fadeIn("up", 0.2)}
         initial="hidden"
@@ -92,13 +112,13 @@ const SingleProduct = () => {
           Single Product Page
         </h2>
         <div className="section__subheader space-x-2">
-          <span className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
-            <Link to="/">Home</Link>
-          </span>
+          <Link to="/" className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
+            Home
+          </Link>
           <i className="ri-arrow-right-s-line"></i>
-          <span className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
-            <Link to="/shop">Shop</Link>
-          </span>
+          <Link to="/shop" className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
+            Shop
+          </Link>
           <i className="ri-arrow-right-s-line"></i>
           <span className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
             {product.name}
@@ -106,10 +126,9 @@ const SingleProduct = () => {
         </div>
       </motion.section>
 
-      {/* Single product */}
+      {/* تفاصيل المنتج */}
       <section className="section__container mt-8">
         <div className="flex flex-col md:flex-row gap-8 p-4 rounded-md">
-          {/* Single product image */}
           <motion.div
             variants={fadeIn("right", 0.2)}
             initial="hidden"
@@ -124,7 +143,6 @@ const SingleProduct = () => {
             />
           </motion.div>
 
-          {/* Single product details */}
           <motion.div
             variants={fadeIn("left", 0.2)}
             initial="hidden"
@@ -153,16 +171,10 @@ const SingleProduct = () => {
               {product.description}
             </p>
             <hr />
-            {/* additional info */}
             <div className="mt-4">
-              <p>
-                <strong>Category: </strong>
-                {product.category}
-              </p>
+              <p><strong>Category: </strong>{product.category}</p>
               <div className="flex gap-1">
-                <div className="dark:text-zinc-50">
-                  <strong>Rating: </strong>
-                </div>
+                <strong className="dark:text-zinc-50">Rating: </strong>
                 <div className="pt-1">
                   <RatingStars rating={product.rating} />
                 </div>
@@ -183,7 +195,7 @@ const SingleProduct = () => {
         </div>
       </section>
 
-      {/* Display reviews */}
+      {/* المراجعات */}
       <motion.section
         variants={fadeIn("up", 0.2)}
         initial="hidden"
@@ -191,8 +203,7 @@ const SingleProduct = () => {
         viewport={{ once: true, amount: 0.2 }}
         className="section__container"
       >
-        <ReviewsCard productId={id} />{" "}
-        {/* Pass the product ID to ReviewsCard */}
+        <ReviewsCard productId={id} />
       </motion.section>
     </div>
   );

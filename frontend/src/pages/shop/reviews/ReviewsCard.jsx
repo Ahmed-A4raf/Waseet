@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
 import { motion } from "framer-motion";
 import { fadeIn } from "../../../utils/animationVariants";
+import { Star } from "lucide-react";
 
-export default function ReviewsCard({ productId }) {
+const ReviewsCard = ({ productId }) => {
   const [user, setUser] = useState(null);
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(5);
   const [reviews, setReviews] = useState([]);
   const [showToast, setShowToast] = useState({ show: false, message: "" });
   const [currentPage, setCurrentPage] = useState(1);
+  const [popupMessage, setPopupMessage] = useState(null);
   const navigate = useNavigate(); 
 
   const reviewsPerPage = 3;
@@ -49,6 +51,11 @@ export default function ReviewsCard({ productId }) {
   const handleSubmit = async () => {
     if (!user || !user.token) {
       navigate("/login");
+      return;
+    }
+
+    if (user?.role !== "customer") {
+      setPopupMessage("You must be logged in as a customer to submit a review.");
       return;
     }
 
@@ -102,7 +109,6 @@ export default function ReviewsCard({ productId }) {
       if (!res.ok) throw new Error("Failed to delete review");
 
       setReviews((prev) => prev.filter((rev) => rev.id !== id));
-
       setShowToast({ show: true, message: "Review deleted!" });
 
       setTimeout(() => {
@@ -118,7 +124,6 @@ export default function ReviewsCard({ productId }) {
     (currentPage - 1) * reviewsPerPage,
     currentPage * reviewsPerPage
   );
-
 
   return (
     <div className="mx-auto p-6 bg-white shadow-md rounded-2xl relative dark:bg-zinc-800">
@@ -172,9 +177,17 @@ export default function ReviewsCard({ productId }) {
                     <p className="text-sm text-gray-500 dark:text-zinc-400">
                       {new Date(rev.date).toLocaleDateString()}
                     </p>
-                    <div className="text-yellow-400 text-sm mt-1">
-                      {"★".repeat(rev.rating)}
-                      {"☆".repeat(5 - rev.rating)}
+
+                    {/* ⭐ Lucide Stars */}
+                    <div className="flex items-center mt-1 text-yellow-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          size={16}
+                          fill={i < rev.rating ? "#facc15" : "none"}
+                          stroke="#facc15"
+                        />
+                      ))}
                     </div>
                   </div>
 
@@ -256,13 +269,14 @@ export default function ReviewsCard({ productId }) {
           </h3>
           <div className="flex space-x-1 mb-4 cursor-pointer text-2xl text-yellow-400">
             {[1, 2, 3, 4, 5].map((star) => (
-              <span
+              <Star
                 key={star}
                 onClick={() => setRating(star)}
-                className={star <= rating ? "text-yellow-400" : "text-gray-300"}
-              >
-                ★
-              </span>
+                size={24}
+                fill={star <= rating ? "#facc15" : "none"}
+                stroke="#facc15"
+                className="cursor-pointer"
+              />
             ))}
           </div>
 
@@ -289,6 +303,23 @@ export default function ReviewsCard({ productId }) {
           {showToast.message}
         </div>
       )}
+
+      {/* Popup Message */}
+      {popupMessage && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white text-center p-6 rounded-xl shadow-xl max-w-xs">
+            <p className="text-red-600 font-semibold mb-4">{popupMessage}</p>
+            <button
+              onClick={() => setPopupMessage(null)}
+              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
+
+export default ReviewsCard;

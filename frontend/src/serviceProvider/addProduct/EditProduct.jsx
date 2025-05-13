@@ -89,10 +89,39 @@ const EditProduct = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
+  try {
+    // Check image using AI only if the user has uploaded a new one
+    if (updatedProduct.image) {
+      try {
+        const aiFormData = new FormData();
+        aiFormData.append("image", updatedProduct.image);
+
+        const aiResponse = await fetch("https://b6bf-102-189-85-35.ngrok-free.app/predict", {
+          method: "POST",
+          body: aiFormData,
+        });
+
+        if (aiResponse.ok) {
+          const aiResult = await aiResponse.json();
+
+          if (aiResult.overall_status !== "accepted") {
+            alert("❌ The image was rejected by the AI due to inappropriate content.");
+            setLoading(false);
+            return;
+          }
+        } else {
+          alert("⚠️ AI server responded with error, skipping AI check...");
+        }
+      } catch (error) {
+        alert("⚠️ AI server is not reachable, skipping AI check...");
+      }
+    }
+
+    // Build form data for update
     const formData = new FormData();
     formData.append("id", id);
     formData.append("name", updatedProduct.name);
@@ -100,7 +129,6 @@ const EditProduct = () => {
     formData.append("price", String(updatedProduct.price));
     formData.append("category", String(updatedProduct.category));
 
-    // أهم تعديل هنا 👇
     if (updatedProduct.price !== initialPrice) {
       formData.append("oldPrice", String(initialPrice));
     }
@@ -109,31 +137,30 @@ const EditProduct = () => {
       formData.append("image", updatedProduct.image);
     }
 
-    try {
-      const response = await fetch(
-        `http://waseet.runasp.net/api/Product/UpdateProduct`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+    const response = await fetch(`http://waseet.runasp.net/api/Product/UpdateProduct`, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formData,
+    });
 
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || "Update failed");
+    const result = await response.json();
 
-      alert("Product updated successfully!");
-      setInitialPrice(updatedProduct.price); // بعد التحديث خزن السعر الجديد
-      navigate("/dashboard/addProduct");
-    } catch (err) {
-      console.error("Update Error:", err);
-      alert("Failed to update product.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    if (!response.ok) throw new Error(result.message || "Update failed");
+
+    alert("✅ Product updated successfully!");
+    setInitialPrice(updatedProduct.price);
+    navigate("/dashboard/addProduct");
+  } catch (err) {
+    console.error("Update Error:", err);
+    alert("❌ Failed to update product.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   if (fetching) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;

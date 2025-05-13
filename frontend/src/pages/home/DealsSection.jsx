@@ -5,7 +5,7 @@ import { fadeIn } from "../../utils/animationVariants";
 
 const DealsSection = () => {
   const [timeLeft, setTimeLeft] = useState({});
-  const dealEndDate = new Date("2025-05-30T23:59:59");
+  const dealEndDate = new Date("2025-06-13T23:59:59");
 
   useEffect(() => {
     const updateCountdown = () => {
