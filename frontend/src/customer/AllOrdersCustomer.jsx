@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Loading from "../components/common/Loading";
 import { motion } from "framer-motion";
 import { fadeIn } from "../utils/animationVariants";
 
@@ -38,8 +39,8 @@ const AllOrdersCustomer = () => {
 
   if (loading)
     return (
-      <div className="pt-24 text-center text-lg dark:text-zinc-100">
-        Loading...
+      <div className="pt-24 flex justify-center items-center min-h-[60vh]">
+        <Loading size="large" />
       </div>
     );
 

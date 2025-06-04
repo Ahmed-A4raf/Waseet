@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import CheckoutForm from "../payment/CheckoutForm";
+import Loading from "../components/common/Loading";
 
 // ✅ Stripe publishable key
 const stripePromise = loadStripe("pk_test_51RFk3eLZYn6WqnTpq6DDHzTASPcudgYCIFU3Xljm1Q8sjTCvBeavPM7nBjMBmLktqD6fHavN4oCqiYggBzLqmrXd00EoBUIYVH");
@@ -58,8 +59,8 @@ const Payment = () => {
 
   if (!clientSecret) {
     return (
-      <div className="pt-24 text-center text-gray-500">
-        Loading payment session...
+      <div className="pt-24 flex justify-center items-center min-h-[60vh]">
+        <Loading size="large" />
       </div>
     );
   }

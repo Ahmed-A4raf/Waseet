@@ -6,6 +6,7 @@ import { syncCartWithServer } from "../../../redux/features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import { fadeIn } from "../../../utils/animationVariants";
+import Loading from "../../../components/common/Loading";
 
 const SingleProduct = () => {
   const { id } = useParams();
@@ -80,7 +81,7 @@ const SingleProduct = () => {
   };
 
   if (!product) {
-    return <div className="pt-24 text-center">Loading...</div>;
+    return <div className="pt-24 text-center"><Loading /></div>;
   }
 
   return (

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/features/auth/authSlice";
 import avatarImg from "/src/assets/avatar.png";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ProfileCustomer = () => {
   const dispatch = useDispatch();
@@ -32,7 +32,6 @@ const ProfileCustomer = () => {
 
   const handleSave = async () => {
     try {
-      // If image exists, check with AI
       if (rawFile) {
         const aiFormData = new FormData();
         aiFormData.append("image", rawFile);
@@ -90,112 +89,175 @@ const ProfileCustomer = () => {
       setIsEditing(false);
     } catch (error) {
       console.error("Error updating profile:", error);
+      setPopupMessage("❌ Failed to update profile. Please try again.");
     }
   };
 
   return (
-    <div className="flex-1 pt-24 overflow-auto relative z-10">
+    <div className="pt-24 bg-gray-50 dark:bg-zinc-900">
       <div className="max-w-4xl mx-auto py-10 px-4 lg:px-8">
         <motion.div
-          className="bg-white p-6 rounded-xl shadow-lg grid grid-cols-1 md:grid-cols-3 gap-6 items-center dark:bg-zinc-800"
+          className="relative bg-white dark:bg-zinc-800 rounded-2xl shadow-xl overflow-hidden"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <div className="flex justify-center md:justify-start">
-            <img
-              src={profileImage || avatarImg}
-              alt="Profile"
-              className="w-28 h-28 md:w-32 md:h-32 rounded-full border-2 border-primary object-cover dark:border-zinc-600"
-            />
-          </div>
+          {/* Profile Header/Banner */}
+          <div className="h-32 bg-gradient-to-r from-primary/80 to-primary"></div>
+          
+          {/* Profile Content */}
+          <div className="px-6 pb-6">
+            {/* Profile Image */}
+            <div className="relative -mt-16 mb-6">
+              <img
+                src={profileImage || avatarImg}
+                alt="Profile"
+                className="w-32 h-32 rounded-full border-4 border-white dark:border-zinc-800 object-cover shadow-lg"
+              />
+            </div>
 
-          <div className="md:col-span-2 space-y-2">
-            <p className="font-bold text-xl text-gray-800 dark:text-zinc-50">Username: {username}</p>
-            <p className="text-gray-600 text-sm dark:text-zinc-400">Bio: {bio}</p>
-            <p className="text-gray-600 text-sm dark:text-zinc-400">Profession: {profession}</p>
-            <button
-              className="mt-4 px-4 py-2 bg-primary-light text-primary font-medium rounded hover:bg-primary/10 transition-all dark:bg-primary dark:text-zinc-50 dark:hover:bg-primary-dark"
-              onClick={() => setIsEditing(true)}
-            >
-              <i className="ri-edit-line mr-2"></i>Edit Profile
-            </button>
+            {/* Profile Info */}
+            <div className="space-y-6">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{username}</h1>
+                  <p className="text-primary dark:text-primary-light font-medium">{profession}</p>
+                </div>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-all dark:bg-zinc-700 dark:text-primary-light"
+                >
+                  <i className="ri-edit-line"></i>
+                  <span>Edit Profile</span>
+                </button>
+              </div>
+
+              {/* Bio Section */}
+              <div className="bg-gray-50 dark:bg-zinc-700/50 rounded-xl p-6">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">About</h2>
+                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">{bio}</p>
+              </div>
+              
+            </div>
           </div>
         </motion.div>
 
-        {isEditing && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 px-4">
-            <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md space-y-4 dark:bg-zinc-900">
-              <h2 className="text-2xl font-bold mb-2 text-center dark:text-zinc-50">Edit Profile</h2>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Username</label>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Upload Image</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Bio</label>
-                <textarea
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                  className="w-full p-2 border resize-y min-h-[60px] bg-gray-100 focus:outline-primary hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
-                ></textarea>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Profession</label>
-                <input
-                  type="text"
-                  value={profession}
-                  onChange={(e) => setProfession(e.target.value)}
-                  className="w-full focus:outline-primary bg-primary-light hover:border px-5 py-3 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-800 dark:focus:outline-zinc-900"
-                />
-              </div>
-
-              <button
-                className="w-full bg-primary text-white py-2 rounded hover:bg-primary-dark transition-all"
-                onClick={handleSave}
+        {/* Edit Profile Modal */}
+        <AnimatePresence>
+          {isEditing && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50 px-4"
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-white dark:bg-zinc-800 p-8 rounded-2xl shadow-2xl w-full max-w-md"
               >
-                Save Changes
-              </button>
-            </div>
-          </div>
-        )}
+                <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">Edit Profile</h2>
 
-        {/* AI Popup Modal */}
-        {popupMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
-          >
-            <div className="bg-white dark:bg-zinc-900 text-black dark:text-white p-6 rounded-xl shadow-lg text-center max-w-md mx-auto">
-              <p className="mb-4">{popupMessage}</p>
-              <button
-                onClick={() => setPopupMessage(null)}
-                className="mt-2 bg-primary text-white px-6 py-2 rounded hover:bg-primary-dark transition-all"
-              >
-                OK
-              </button>
-            </div>
-          </motion.div>
-        )}
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Profile Picture
+                    </label>
+                    <div className="flex items-center space-x-4">
+                      <img
+                        src={profileImage || avatarImg}
+                        alt="Preview"
+                        className="w-16 h-16 rounded-full object-cover"
+                      />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="flex-1 text-sm text-gray-600 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-light file:text-primary hover:file:bg-primary-light/80"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Username
+                    </label>
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-zinc-700 dark:border-zinc-600 dark:text-white"
+                      placeholder="Enter your username"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Profession
+                    </label>
+                    <input
+                      type="text"
+                      value={profession}
+                      onChange={(e) => setProfession(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-zinc-700 dark:border-zinc-600 dark:text-white"
+                      placeholder="Enter your profession"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Bio
+                    </label>
+                    <textarea
+                      value={bio}
+                      onChange={(e) => setBio(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 dark:bg-zinc-700 dark:border-zinc-600 dark:text-white resize-none h-32"
+                      placeholder="Tell us about yourself"
+                    ></textarea>
+                  </div>
+
+                  <div className="flex gap-4">
+                    <button
+                      className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition-all dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600"
+                      onClick={() => setIsEditing(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="flex-1 bg-primary text-white py-3 rounded-lg hover:bg-primary-dark transition-all"
+                      onClick={handleSave}
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {/* Notification Modal */}
+        <AnimatePresence>
+          {popupMessage && (
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40"
+            >
+              <div className="bg-white dark:bg-zinc-800 p-6 rounded-xl shadow-lg max-w-md mx-auto">
+                <p className="text-center text-lg mb-4 dark:text-white">{popupMessage}</p>
+                <button
+                  onClick={() => setPopupMessage(null)}
+                  className="w-full bg-primary text-white py-2 rounded-lg hover:bg-primary-dark transition-all"
+                >
+                  OK
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

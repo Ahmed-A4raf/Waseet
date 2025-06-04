@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HeaderSp from "../../serviceProvider/commenSp/HeaderSp";
 import StatCardSp from "../../serviceProvider/commenSp/StatCardSp";
+import Loading from "../../components/common/Loading";
 import { Package, Clock, Truck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -71,7 +72,9 @@ const OrdersAdmin = () => {
 
         {/* TABLE */}
         {loading ? (
-          <p className="text-center text-gray-500 dark:text-zinc-300 mt-4">Loading...</p>
+          <div className="flex justify-center items-center min-h-[200px]">
+            <Loading size="large" />
+          </div>
         ) : (
           <motion.div
           initial={{ opacity: 0, y: 20 }}

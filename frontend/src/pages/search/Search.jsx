@@ -3,6 +3,7 @@ import ProductCards from "../shop/ProductCards";
 
 import { motion } from "framer-motion";
 import { fadeIn } from "../../utils/animationVariants";
+import Loading from "../../components/common/Loading";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -106,7 +107,7 @@ const Search = () => {
 
         {loading ? (
           <p className="text-center text-2xl font-semibold text-primary">
-            Loading...
+            <Loading />
           </p>
         ) : filteredProducts.length === 0 ? (
           <p className="text-center text-2xl font-semibold">

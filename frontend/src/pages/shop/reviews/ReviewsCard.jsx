@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { fadeIn } from "../../../utils/animationVariants";
 import { Star } from "lucide-react";
 
@@ -126,115 +126,126 @@ const ReviewsCard = ({ productId }) => {
   );
 
   return (
-    <div className="mx-auto p-6 bg-white shadow-md rounded-2xl relative dark:bg-zinc-800">
+    <div className="mx-auto p-8 bg-white/80 backdrop-blur-md shadow-lg rounded-2xl relative dark:bg-zinc-800/80 border border-gray-100 dark:border-zinc-700">
       <motion.h2
         variants={fadeIn("up", 0.2)}
         initial="hidden"
         whileInView={"show"}
         viewport={{ once: true, amount: 0.7 }}
-        className="text-2xl font-semibold mb-6 text-center dark:text-zinc-50"
+        className="text-3xl font-bold mb-8 text-center bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent"
       >
-        Product Feedback
+        Product Reviews
       </motion.h2>
 
-      <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col md:flex-row gap-10">
         {/* Reviews Section */}
         <motion.div
           variants={fadeIn("right", 0.2)}
           initial="hidden"
           whileInView={"show"}
           viewport={{ once: true, amount: 0.7 }}
-          className="md:w-1/2"
+          className="md:w-1/2 space-y-6"
         >
-          <h3 className="text-xl font-semibold mb-4 dark:text-zinc-50">
-            Product Reviews
+          <h3 className="text-2xl font-semibold mb-6 dark:text-zinc-50 flex items-center gap-2">
+            <i className="ri-chat-3-line text-primary"></i>
+            Customer Feedback
           </h3>
+          
           {paginatedReviews.length === 0 ? (
-            <p className="text-gray-500 mb-6 dark:text-zinc-400">
-              No reviews yet. Be the first to review this product!
-            </p>
+            <div className="flex flex-col items-center justify-center py-10 text-center space-y-4">
+              <i className="ri-chat-off-line text-4xl text-gray-400 dark:text-zinc-500"></i>
+              <p className="text-gray-500 dark:text-zinc-400">
+                No reviews yet. Be the first to review this product!
+              </p>
+            </div>
           ) : (
-            paginatedReviews.map((rev, index) => (
-              <div
-                key={index}
-                className="mb-6 border-b pb-4 dark:border-zinc-600"
-              >
-                <div className="flex items-center space-x-4 mb-2">
-                  {rev.profileImage ? (
-                    <img
-                      src={rev.profileImage}
-                      alt={rev.name}
-                      className="w-10 h-10 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-primary font-bold text-lg">
-                      {rev.name?.charAt(0).toUpperCase()}
-                    </div>
-                  )}
+            <div className="space-y-6">
+              {paginatedReviews.map((rev, index) => (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  key={index}
+                  className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 dark:bg-zinc-900/50 dark:border-zinc-700"
+                >
+                  <div className="flex items-center space-x-4">
+                    {rev.profileImage ? (
+                      <img
+                        src={rev.profileImage}
+                        alt={rev.name}
+                        className="w-12 h-12 rounded-full object-cover ring-2 ring-primary/20"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary/20 to-primary/30 flex items-center justify-center text-primary font-bold text-xl ring-2 ring-primary/20">
+                        {rev.name?.charAt(0).toUpperCase()}
+                      </div>
+                    )}
 
-                  <div className="flex-1">
-                    <p className="font-semibold text-primary">{rev.name}</p>
-                    <p className="text-sm text-gray-500 dark:text-zinc-400">
-                      {new Date(rev.date).toLocaleDateString()}
-                    </p>
-
-                    {/* ⭐ Lucide Stars */}
-                    <div className="flex items-center mt-1 text-yellow-400">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          size={16}
-                          fill={i < rev.rating ? "#facc15" : "none"}
-                          stroke="#facc15"
-                        />
-                      ))}
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <p className="font-semibold text-lg text-primary">{rev.name}</p>
+                        {rev.userId === user?.id && (
+                          <button
+                            onClick={() => handleDelete(rev.id)}
+                            className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 transition-colors"
+                          >
+                            <i className="ri-delete-bin-line text-xl"></i>
+                          </button>
+                        )}
+                      </div>
+                      <p className="text-sm text-gray-500 dark:text-zinc-400">
+                        {new Date(rev.date).toLocaleDateString('en-US', { 
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </p>
+                      <div className="flex items-center mt-2">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            size={18}
+                            className={`${
+                              i < rev.rating
+                                ? "text-yellow-400 fill-yellow-400"
+                                : "text-gray-300 dark:text-zinc-600"
+                            }`}
+                          />
+                        ))}
+                      </div>
                     </div>
                   </div>
-
-                  {rev.userId === user?.id && (
-                    <button
-                      onClick={() => handleDelete(rev.id)}
-                      className="text-red-600 text-xl border-none cursor-pointer hover:text-red-800 dark:text-red-400 dark:hover:text-red-600"
-                    >
-                      <i className="ri-delete-bin-line"></i>
-                    </button>
-                  )}
-                </div>
-
-                <p className="text-gray-700 mt-2 dark:text-zinc-200">
-                  {rev.comment}
-                </p>
-              </div>
-            ))
+                  <p className="mt-4 text-gray-700 dark:text-zinc-300 leading-relaxed">
+                    {rev.comment}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
           )}
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex justify-center items-center mt-4 space-x-2">
+            <div className="flex justify-center items-center mt-8 gap-2">
               <motion.button
-                variants={fadeIn("right", 0.2)}
-                initial="hidden"
-                whileInView={"show"}
-                viewport={{ once: true, amount: 0.7 }}
-                className="p-1 w-10 h-10 mx-1 rounded-full bg-gray-200 text-black dark:text-white dark:bg-zinc-900"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 transition-colors disabled:opacity-50"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage(currentPage - 1)}
               >
-                <i className="ri-arrow-left-wide-line"></i>
+                <i className="ri-arrow-left-s-line text-xl"></i>
               </motion.button>
 
               {[...Array(totalPages)].map((_, i) => (
                 <motion.button
-                  variants={fadeIn("up", 0.2)}
-                  initial="hidden"
-                  whileInView={"show"}
-                  viewport={{ once: true, amount: 0.5 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   key={i}
                   onClick={() => setCurrentPage(i + 1)}
-                  className={`p-1 w-10 h-10 mx-1 rounded-full ${
+                  className={`w-10 h-10 rounded-lg font-medium transition-colors ${
                     currentPage === i + 1
-                      ? "bg-primary text-zinc-900"
-                      : "bg-white dark:bg-zinc-700"
+                      ? "bg-primary text-white"
+                      : "bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30"
                   }`}
                 >
                   {i + 1}
@@ -242,15 +253,13 @@ const ReviewsCard = ({ productId }) => {
               ))}
 
               <motion.button
-                variants={fadeIn("left", 0.2)}
-                initial="hidden"
-                whileInView={"show"}
-                viewport={{ once: true, amount: 0.7 }}
-                className="p-1 w-10 h-10 mx-1 rounded-full bg-gray-200 text-black dark:text-white dark:bg-zinc-900"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 transition-colors disabled:opacity-50"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage(currentPage + 1)}
               >
-                <i className="ri-arrow-right-wide-line"></i>
+                <i className="ri-arrow-right-s-line text-xl"></i>
               </motion.button>
             </div>
           )}
@@ -264,60 +273,101 @@ const ReviewsCard = ({ productId }) => {
           viewport={{ once: true, amount: 0.7 }}
           className="md:w-1/2"
         >
-          <h3 className="text-xl font-semibold mb-4 dark:text-zinc-50">
-            Your Rating
-          </h3>
-          <div className="flex space-x-1 mb-4 cursor-pointer text-2xl text-yellow-400">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                onClick={() => setRating(star)}
-                size={24}
-                fill={star <= rating ? "#facc15" : "none"}
-                stroke="#facc15"
-                className="cursor-pointer"
-              />
-            ))}
+          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 dark:bg-zinc-900/50 dark:border-zinc-700">
+            <h3 className="text-2xl font-semibold mb-6 dark:text-zinc-50 flex items-center gap-2">
+              <i className="ri-star-smile-line text-primary"></i>
+              Rate & Review
+            </h3>
+            
+            <div className="flex items-center gap-2 mb-6">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <motion.div
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                  key={star}
+                >
+                  <Star
+                    onClick={() => setRating(star)}
+                    size={20}
+                    className={`cursor-pointer transition-colors ${
+                      star <= rating
+                        ? "text-yellow-400 fill-yellow-400"
+                        : "text-gray-300 dark:text-zinc-600"
+                    }`}
+                  />
+                </motion.div>
+              ))}
+            </div>
+
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Share your experience with this product..."
+              className="w-full p-4 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none dark:bg-zinc-800/50 dark:border-zinc-700 dark:text-zinc-50 dark:placeholder-zinc-400"
+              rows={6}
+            />
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleSubmit}
+              className="w-full mt-4 py-3 bg-primary text-white rounded-xl font-medium hover:bg-primary-dark transition-colors flex items-center justify-center gap-2"
+            >
+              <i className="ri-send-plane-fill"></i>
+              Submit Review
+            </motion.button>
           </div>
-
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Share your thoughts about this product..."
-            className="w-full focus:outline-primary bg-primary-light border px-5 py-3 resize-y min-h-36 max-h-80 rounded-md dark:bg-zinc-800 dark:text-zinc-50 dark:border-zinc-600 dark:focus:outline-zinc-800"
-            rows={5}
-          />
-
-          <button
-            onClick={handleSubmit}
-            className="w-full mt-4 px-6 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-all"
-          >
-            Submit Review
-          </button>
         </motion.div>
       </div>
 
       {/* Toast Message */}
-      {showToast.show && (
-        <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded shadow-lg transition-opacity duration-300 z-50">
-          {showToast.message}
-        </div>
-      )}
+      <AnimatePresence>
+        {showToast.show && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg z-50 flex items-center gap-2"
+          >
+            <i className="ri-checkbox-circle-line"></i>
+            {showToast.message}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Popup Message */}
-      {popupMessage && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white text-center p-6 rounded-xl shadow-xl max-w-xs dark:bg-zinc-800">
-            <p className="text-red-600 font-semibold mb-4 dark:text-red-400">{popupMessage}</p>
-            <button
-              onClick={() => setPopupMessage(null)}
-              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary-dark"
+      <AnimatePresence>
+        {popupMessage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white dark:bg-zinc-800 p-6 rounded-xl shadow-xl max-w-md mx-4"
             >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+              <div className="text-center">
+                <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i className="ri-error-warning-line text-3xl text-red-600 dark:text-red-400"></i>
+                </div>
+                <p className="text-lg font-medium text-red-600 dark:text-red-400 mb-6">{popupMessage}</p>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setPopupMessage(null)}
+                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors"
+                >
+                  Got it
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

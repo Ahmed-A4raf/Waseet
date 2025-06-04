@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HeaderSp from "../../serviceProvider/commenSp/HeaderSp";
 import { useParams, useNavigate } from "react-router-dom";
+import Loading from "../../components/common/Loading";
 
 import { motion } from "framer-motion";
 
@@ -49,7 +50,9 @@ const DetailsAllOrders = () => {
       <HeaderSp title="Order Details" />
       <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
         {loading ? (
-          <p className="text-center text-gray-500 dark:text-zinc-300">Loading...</p>
+          <div className="flex justify-center items-center min-h-[200px]">
+            <Loading size="large" />
+          </div>
         ) : error ? (
           <p className="text-center text-red-500 dark:text-red-400">{error}</p>
         ) : order ? (

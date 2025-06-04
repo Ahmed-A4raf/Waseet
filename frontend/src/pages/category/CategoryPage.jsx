@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ProductCards from "../shop/ProductCards";
+import Loading from "../../components/common/Loading";
 
 import { motion } from "framer-motion";
 import { fadeIn } from "../../utils/animationVariants";
@@ -95,9 +96,9 @@ const CategoryPage = () => {
         </motion.h3>
 
         {loading ? (
-          <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900">
-            <span className="text-orange-500">Loading...</span>
-          </h4>
+          <div className="flex justify-center items-center py-8">
+            <Loading size="large" className="text-primary" />
+          </div>
         ) : products.length > 0 ? (
           <ProductCards products={products} />
         ) : (
