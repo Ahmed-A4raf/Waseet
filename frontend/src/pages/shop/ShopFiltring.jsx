@@ -25,7 +25,7 @@ const ShopFiltring = ({
   };
 
   return (
-    <div className="space-y-5 flex-shrink-0 dark:text-zinc-50">
+    <div className="space-y-5 flex-shrink-0 dark:text-zinc-50 w-full">
       <motion.h3
         variants={fadeIn("up", 0.2)}
         initial="hidden"

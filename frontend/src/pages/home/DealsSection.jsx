@@ -5,7 +5,7 @@ import { fadeIn } from "../../utils/animationVariants";
 
 const DealsSection = () => {
   const [timeLeft, setTimeLeft] = useState({});
-  const dealEndDate = new Date("2025-06-13T23:59:59");
+  const dealEndDate = new Date("2025-07-07T23:59:59");
 
   useEffect(() => {
     const updateCountdown = () => {
@@ -59,7 +59,7 @@ const DealsSection = () => {
         className="deals__content"
       >
         <h5>Your one From Thousand of Products</h5>
-        <h4 className="dark:text-zinc-50">Deals of the Month</h4>
+        <h4 className="dark:text-zinc-50"><span className="text-primary">Deals</span> of the Month</h4>
         <p className="dark:text-zinc-400">
           Get exclusive limited-time offers you won't find anywhere else. Shop before they're gone!
         </p>

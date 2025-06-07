@@ -47,14 +47,14 @@ const TrendingProducts = () => {
   };
 
   return (
-    <section className="section__container product__container">
+    <section className="section__container product__container mb-8 rounded-3xl">
       <motion.div
         variants={fadeIn("up", 0.2)}
         initial="hidden"
         whileInView={"show"}
         viewport={{ once: true, amount: 0.7 }}
       >
-        <h2 className="section__header dark:text-zinc-50">Trending Products</h2>
+        <h2 className="section__header dark:text-zinc-50"><span className="text-primary">Trending</span> Products</h2>
         <p className="section__subheader dark:text-zinc-400">
           Check out our top-rated products – chosen by customers like you!
         </p>

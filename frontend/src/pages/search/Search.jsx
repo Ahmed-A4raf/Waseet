@@ -65,20 +65,28 @@ const Search = () => {
   return (
     <div className="pt-24">
       {/* search header */}
-      <motion.section
+      <motion.div
         variants={fadeIn("up", 0.2)}
         initial="hidden"
         whileInView={"show"}
         viewport={{ once: true, amount: 0.7 }}
-        className="section__container bg-primary-light rounded-md dark:bg-zinc-800"
+        className="relative py-8 sm:py-12"
       >
-        <h2 className="section__header capitalize dark:text-zinc-50">
-          Search Page
-        </h2>
-        <p className="section__subheader dark:text-zinc-400">
-          Find the best products for your needs.
-        </p>
-      </motion.section>
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none section__container rounded-3xl my-4">
+          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-primary/5 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-primary/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative section__container">
+          <h2 className="section__header capitalize dark:text-zinc-50">
+            Search Page
+          </h2>
+          <p className="section__subheader dark:text-zinc-400">
+            Find the best products for your needs.
+          </p>
+        </div>
+      </motion.div>
 
       {/* search input */}
       <motion.section

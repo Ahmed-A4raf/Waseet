@@ -19,7 +19,7 @@ const Blogs = () => {
        whileInView={"show"}
        viewport={{ once: true, amount: 0.7 }}
       >
-        <h2 className="section__header dark:text-zinc-50">Latest From Blog</h2>
+        <h2 className="section__header dark:text-zinc-50">Latest From <span className="text-primary">Blog</span></h2>
         <p className="section__subheader dark:text-zinc-400">
           Stay ahead with expert guides, shopping hacks, and insider updates from the world of online shopping.
         </p>
