@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductCards from "./ProductCards";
 import ShopFiltring from "./ShopFiltring";
+import Loading from "../../components/common/Loading";
 
 import { motion } from "framer-motion";
 import { fadeIn } from "../../utils/animationVariants";
@@ -148,8 +149,8 @@ const ShopPage = () => {
             </motion.h3>
 
             {loading ? (
-              <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-900">
-                <span className="text-orange-500">Loading...</span>
+              <h4 className="text-xl text-center font-semibold mb-5 bg-white p-1 rounded-md dark:bg-zinc-800">
+                <Loading size="large" />
               </h4>
             ) : products.length > 0 ? (
               <div>

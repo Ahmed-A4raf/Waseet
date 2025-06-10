@@ -30,13 +30,13 @@ const OverViewAdmin = () => {
           <StatCardSp
             name="New Users"
             icon={Users}
-            value="1,234"
+            value="74"
             color="#EC4899"
           />
           <StatCardSp
             name="Total Products"
             icon={ShoppingBag}
-            value="56"
+            value="39"
             color="#10B981"
           />
         </motion.div>

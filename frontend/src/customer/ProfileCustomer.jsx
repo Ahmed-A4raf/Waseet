@@ -30,6 +30,16 @@ const ProfileCustomer = () => {
     }
   };
 
+  const handleCancel = () => {
+    // Reset all form values to their original state
+    setUsername(storedUser?.displayName || "");
+    setProfileImage(storedUser?.profileImage || "");
+    setBio(storedUser?.bio || "N/A");
+    setProfession(storedUser?.profession || "N/A");
+    setRawFile(null);
+    setIsEditing(false);
+  };
+
   const handleSave = async () => {
     try {
       if (rawFile) {
@@ -220,7 +230,7 @@ const ProfileCustomer = () => {
                   <div className="flex gap-4">
                     <button
                       className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition-all dark:bg-zinc-700 dark:text-white dark:hover:bg-zinc-600"
-                      onClick={() => setIsEditing(false)}
+                      onClick={handleCancel}
                     >
                       Cancel
                     </button>

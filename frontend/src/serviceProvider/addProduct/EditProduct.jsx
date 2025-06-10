@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import HeaderSp from "../commenSp/HeaderSp";
 import { motion } from "framer-motion";
+import Loading from "../../components/common/Loading";
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -157,7 +158,7 @@ const EditProduct = () => {
     }
   };
 
-  if (fetching) return <p>Loading...</p>;
+  if (fetching) return <div className="flex justify-center items-center min-h-[200px]"><Loading size="large" /></div>;
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (

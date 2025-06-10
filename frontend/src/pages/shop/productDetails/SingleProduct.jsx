@@ -107,23 +107,31 @@ const SingleProduct = () => {
         initial="hidden"
         whileInView={"show"}
         viewport={{ once: true, amount: 0.7 }}
-        className="section__container bg-primary-light rounded-md dark:bg-zinc-800"
+        className="relative py-8 sm:py-12"
       >
-        <h2 className="section__header capitalize dark:text-zinc-50">
-          Single Product Page
-        </h2>
-        <div className="section__subheader space-x-2">
-          <Link to="/" className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
-            Home
-          </Link>
-          <i className="ri-arrow-right-s-line"></i>
-          <Link to="/shop" className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
-            Shop
-          </Link>
-          <i className="ri-arrow-right-s-line"></i>
-          <span className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
-            {product.name}
-          </span>
+        {/* Decorative Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none section__container rounded-3xl my-4">
+          <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-primary/5 rounded-full blur-3xl"></div>
+          <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-primary/5 rounded-full blur-3xl"></div>
+        </div>
+
+        <div className="relative section__container">
+          <h2 className="section__header capitalize dark:text-zinc-50">
+            Single Product Page
+          </h2>
+          <div className="section__subheader space-x-2 dark:text-zinc-400">
+            <Link to="/" className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
+              Home
+            </Link>
+            <i className="ri-arrow-right-s-line"></i>
+            <Link to="/shop" className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
+              Shop
+            </Link>
+            <i className="ri-arrow-right-s-line"></i>
+            <span className="hover:text-primary dark:text-zinc-400 hover:dark:text-primary">
+              {product.name}
+            </span>
+          </div>
         </div>
       </motion.section>
 

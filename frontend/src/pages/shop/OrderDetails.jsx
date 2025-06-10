@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../../redux/features/cart/cartSlice";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../components/common/Loading";
 
 const OrderDetails = () => {
   const [formData, setFormData] = useState({
@@ -137,7 +138,7 @@ const OrderDetails = () => {
           disabled={loading || !basketId}
           className="bg-primary text-white py-2 px-4 rounded hover:bg-primary-dark w-full"
         >
-          {loading ? "Loading..." : "Continue to Payment"}
+          {loading ? <Loading size="small" /> : "Continue to Payment"}
         </button>
       </form>
     </div>

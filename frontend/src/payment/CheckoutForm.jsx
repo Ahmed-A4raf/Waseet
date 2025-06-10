@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../redux/features/cart/cartSlice";
 
 const CheckoutForm = ({ clientSecret }) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -74,6 +77,9 @@ const CheckoutForm = ({ clientSecret }) => {
         // 🟢 احذف من localStorage
         localStorage.removeItem("shippingInfo");
         localStorage.removeItem("basketId");
+
+        // 🟢 نظف حالة السلة في Redux
+        dispatch(clearCart());
 
         // 🟢 توجه لصفحة التأكيد
         navigate(`/orderCustomer/${data.id}`);

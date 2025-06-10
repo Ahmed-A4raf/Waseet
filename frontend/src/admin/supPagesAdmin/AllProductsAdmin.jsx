@@ -20,9 +20,9 @@ const AllProductsAdmin = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
-          <StatCardSp name="Total Products" icon={Package} value={1234} color="#6366F1" />
-          <StatCardSp name="Top Selling" icon={TrendingUp} value={89} color="#10B981" />
-          <StatCardSp name="Total Revenue" icon={DollarSign} value={"$543,210"} color="#EF4444" />
+          <StatCardSp name="Total Products" icon={Package} value={39} color="#6366F1" />
+          <StatCardSp name="Top Selling" icon={TrendingUp} value={34} color="#10B981" />
+          <StatCardSp name="Total Revenue" icon={DollarSign} value={"$52,210"} color="#EF4444" />
         </motion.div>
 
         {/* ALL PRODUCTS TABLE */}
