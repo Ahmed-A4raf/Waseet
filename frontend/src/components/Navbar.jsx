@@ -112,16 +112,26 @@ const Navbar = () => {
     };
   }, [isDropdownOpen]);
 
-  const adminDropdown = () => [{ label: "Dashboard", path: "/admin" }];
+  const adminDropdown = () => [
+    { label: "Dashboard", path: "/admin", icon: "ri-dashboard-line" },
+  ];
 
   const serviceProviderDropdown = () => [
-    { label: "Dashboard", path: "/dashboard" },
-    { label: "Profile", path: "/dashboard/profile" },
+    { label: "Dashboard", path: "/dashboard", icon: "ri-dashboard-line" },
+    {
+      label: "Profile",
+      path: "/dashboard/profile",
+      icon: "ri-user-settings-line",
+    },
   ];
 
   const customerDropdown = () => [
-    { label: "Profile", path: "/profileCustomer" },
-    { label: "My Orders", path: "/orderCustomer" },
+    { label: "Profile", path: "/profileCustomer", icon: "ri-user-line" },
+    {
+      label: "My Orders",
+      path: "/orderCustomer",
+      icon: "ri-shopping-bag-line",
+    },
   ];
 
   const dropDownMenus =
@@ -132,7 +142,7 @@ const Navbar = () => {
       : customerDropdown();
 
   return (
-    <header className="fixed-nav-bar w-nav shadow-sm z-50 fixed w-full bg-[#fffffff9] dark:bg-zinc-800">
+    <header className="fixed-nav-bar w-nav z-50 fixed w-full bg-white/95 shadow-[0_10px_40px_-15px_rgba(0,0,0,0.2)] dark:bg-zinc-800/95 dark:border-zinc-700/30">
       <nav className="max-w-screen-2xl mx-auto flex px-4 justify-between items-center">
         {/* nav links */}
         <ul className="nav__links">
@@ -207,28 +217,46 @@ const Navbar = () => {
                   />
 
                   {isDropdownOpen && (
-                    <div className="absolute right-0 mt-3 p-4 w-48 border border-gray-200 bg-white rounded-lg shadow-lg z-50 dark:bg-zinc-800 dark:border-zinc-600">
-                      <ul className="font-medium space-y-4 p-2">
-                        {dropDownMenus.map((menu, index) => (
-                          <li key={index}>
-                            <Link
-                              onClick={() => setIsDropdownOpen(false)}
-                              className="dropdown-items dark:text-zinc-50"
-                              to={menu.path}
+                    <div className="absolute right-0 mt-3 w-64 rounded-2xl border border-gray-100/20 bg-white/95 backdrop-blur-sm shadow-[0_10px_40px_-15px_rgba(0,0,0,0.2)] dark:bg-zinc-800/95 dark:border-zinc-700/30 overflow-hidden transform origin-top-right animate-dropdown">
+                      <div className="p-2">
+                        <ul className="font-medium">
+                          {dropDownMenus.map((menu, index) => (
+                            <li key={index} className="mb-1">
+                              <Link
+                                onClick={() => setIsDropdownOpen(false)}
+                                className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-gray-50/80 dark:hover:bg-zinc-700/50 dark:text-zinc-50 transition-all duration-200 group"
+                                to={menu.path}
+                              >
+                                <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary/10 dark:bg-primary/20 group-hover:bg-primary/20 dark:group-hover:bg-primary/30 transition-colors">
+                                  <i
+                                    className={`${menu.icon} text-primary text-lg`}
+                                  ></i>
+                                </span>
+                                <div>
+                                  <span className="font-medium text-lg">
+                                    {menu.label}
+                                  </span>
+                                </div>
+                              </Link>
+                            </li>
+                          ))}
+                          <li>
+                            <button
+                              onClick={handleLogout}
+                              className="flex w-full items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 dark:text-zinc-50 transition-all duration-200 group"
                             >
-                              {menu.label}
-                            </Link>
+                              <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100/80 dark:bg-red-900/30 group-hover:bg-red-200 dark:group-hover:bg-red-900/40 transition-colors">
+                                <i className="ri-logout-box-line text-red-600 dark:text-red-400 text-lg"></i>
+                              </span>
+                              <div>
+                                <span className="font-medium text-red-600 dark:text-red-400">
+                                  Logout
+                                </span>
+                              </div>
+                            </button>
                           </li>
-                        ))}
-                        <li>
-                          <Link
-                            onClick={handleLogout}
-                            className="dropdown-items dark:text-zinc-50"
-                          >
-                            Logout
-                          </Link>
-                        </li>
-                      </ul>
+                        </ul>
+                      </div>
                     </div>
                   )}
                 </>
