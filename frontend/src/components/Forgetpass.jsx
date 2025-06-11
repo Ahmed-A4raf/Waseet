@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { fadeIn } from "../utils/animationVariants";
 
 const Forgetpass = () => {
-  // Access email passed from login page (if available)
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -14,6 +13,7 @@ const Forgetpass = () => {
   const [code, setCode] = useState("");
   const [resetToken, setResetToken] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   // Step 1: Send reset code to email
   const handleSendCode = async (e) => {
@@ -27,7 +27,7 @@ const Forgetpass = () => {
 
       if (response.ok) {
         alert("Code sent to your email.");
-        setStep(2); // Move to next step
+        setStep(2);
       } else {
         const error = await response.json();
         alert(error.message || "Something went wrong.");
@@ -51,7 +51,7 @@ const Forgetpass = () => {
         const result = await response.json();
         setResetToken(result.resetToken);
         alert("Code verified. Now set your new password.");
-        setStep(3); // Move to next step
+        setStep(3);
       } else {
         const error = await response.json();
         alert(error.message || "Invalid code.");
@@ -88,37 +88,44 @@ const Forgetpass = () => {
   };
 
   return (
-    <section className="relative h-screen flex items-center justify-center bg-primary/5 dark:bg-zinc-900 overflow-hidden">
-      {/* Background SVG Wave (Same as login) */}
-      <motion.svg
-        variants={fadeIn("up", 0.7)}
-        initial="hidden"
-        whileInView={"show"}
-        viewport={{ once: true, amount: 0.5 }}
-        className="absolute bottom-0 left-0 w-full"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1440 320"
-      >
-        <path
-          fill="#fd7e14"
-          fillOpacity="0.5"
-          d="M0,64L48,58.7C96,53,192,43,288,74.7C384,107,480,181,576,224C672,267,768,277,864,272C960,267,1056,245,1152,202.7C1248,160,1344,96,1392,64L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-        ></path>
-      </motion.svg>
+    <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/10 dark:from-zinc-900 dark:to-zinc-800 p-4">
+      {/* Decorative Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-1/2 -right-1/2 w-full h-full bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-1/2 -left-1/2 w-full h-full bg-primary/5 rounded-full blur-3xl"></div>
+      </div>
 
-      {/* Main form card */}
       <motion.div
         variants={fadeIn("up", 0.2)}
         initial="hidden"
         whileInView="show"
         viewport={{ once: true, amount: 0.7 }}
-        className="max-w-sm bg-white shadow p-8 rounded-md dark:bg-zinc-800 z-10"
+        className="relative w-full max-w-md bg-white/80 backdrop-blur-xl dark:bg-zinc-800/80 p-8 rounded-2xl shadow-2xl shadow-primary/10"
       >
-        <h2 className="text-2xl text-center font-bold dark:text-white">
-          {step === 1 && "Forgot Password"}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-white px-6 py-2 rounded-full text-sm font-medium shadow-lg">
+          Password Recovery
+        </div>
+
+        <h2 className="text-3xl text-center font-bold mt-4 bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
+          {step === 1 && "Reset Password"}
           {step === 2 && "Verify Code"}
-          {step === 3 && "Set New Password"}
+          {step === 3 && "New Password"}
         </h2>
+
+        <div className="flex justify-center space-x-2 mt-6">
+          {[1, 2, 3].map((s) => (
+            <div
+              key={s}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                s === step
+                  ? "bg-primary scale-110"
+                  : s < step
+                  ? "bg-primary/50"
+                  : "bg-gray-300 dark:bg-zinc-700"
+              }`}
+            />
+          ))}
+        </div>
 
         <form
           onSubmit={
@@ -128,60 +135,78 @@ const Forgetpass = () => {
               ? handleVerifyCode
               : handleResetPassword
           }
-          className="space-y-5 pt-8"
+          className="space-y-6 mt-8"
         >
-          {/* Step 1: Email input */}
           {step === 1 && (
-            <input
-              className="w-full bg-primary-light px-5 py-3 rounded-md dark:bg-zinc-900 dark:text-white"
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <div className="relative">
+              <input
+                className="w-full bg-white/50 dark:bg-zinc-900/50 px-5 py-3 rounded-xl outline-none border border-primary/20 focus:border-primary transition-all duration-300 pl-10"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <i className="ri-mail-line absolute left-3 top-1/2 -translate-y-1/2 text-primary"></i>
+            </div>
           )}
 
-          {/* Step 2: Code input */}
           {step === 2 && (
-            <input
-              className="w-full bg-primary-light px-5 py-3 rounded-md dark:bg-zinc-900 dark:text-white"
-              type="text"
-              placeholder="Enter verification code"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              required
-            />
+            <div className="relative">
+              <input
+                className="w-full bg-white/50 dark:bg-zinc-900/50 px-5 py-3 rounded-xl outline-none border border-primary/20 focus:border-primary transition-all duration-300 pl-10"
+                type="text"
+                placeholder="Enter verification code"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                required
+              />
+              <i className="ri-shield-keyhole-line absolute left-3 top-1/2 -translate-y-1/2 text-primary"></i>
+            </div>
           )}
 
-          {/* Step 3: New password input */}
           {step === 3 && (
-            <input
-              className="w-full bg-primary-light px-5 py-3 rounded-md dark:bg-zinc-900 dark:text-white"
-              type="password"
-              placeholder="Enter new password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              required
-            />
+            <div className="relative">
+              <input
+                className="w-full bg-white/50 dark:bg-zinc-900/50 px-5 py-3 rounded-xl outline-none border border-primary/20 focus:border-primary transition-all duration-300 pl-10"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter new password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
+              <i className="ri-lock-line absolute left-3 top-1/2 -translate-y-1/2 text-primary"></i>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary transition-colors"
+              >
+                {showPassword ? (
+                  <i className="ri-eye-off-line"></i>
+                ) : (
+                  <i className="ri-eye-line"></i>
+                )}
+              </button>
+            </div>
           )}
 
-          {/* Submit button */}
           <button
             type="submit"
-            className="w-full bg-primary text-white py-3 font-medium rounded-md transition-all duration-200"
+            className="w-full bg-gradient-to-r from-primary to-primary-dark text-white py-3 rounded-xl font-medium 
+            hover:shadow-lg hover:shadow-primary/20 transform hover:-translate-y-0.5 
+            active:translate-y-0 transition-all duration-300"
           >
             {step === 1 && "Send Code"}
             {step === 2 && "Verify Code"}
             {step === 3 && "Reset Password"}
           </button>
 
-          {/* Back to login link */}
-          <div className="text-center pt-3">
-            <Link to="/login" className="text-primary hover:underline">
-              Return to login
-            </Link>
-          </div>
+          <Link
+            to="/login"
+            className="block text-center text-primary hover:text-primary-dark transition-colors text-sm mt-4"
+          >
+            Back to Login
+          </Link>
         </form>
       </motion.div>
     </section>
